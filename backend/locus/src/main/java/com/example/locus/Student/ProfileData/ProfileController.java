@@ -1,4 +1,4 @@
-package com.example.locus.StudentProfile;
+package com.example.locus.Student.ProfileData;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,8 +17,8 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @PostMapping(value = "/students/createNewProfileData")
-    public boolean createNewProfileData(@RequestBody ProfileDataModel profileDataModel){
-        return profileService.createNewProfileData(profileDataModel);
+    @PostMapping(value = "/students/saveNewProfileData")
+    public boolean createNewProfileData(@RequestBody ProfileData profileDataModel){
+        return profileService.saveNewProfileData(profileDataModel);
     }
 }
