@@ -2,7 +2,7 @@ const Fetch = () => {
   const data = { email: 'test@test.com', password: 'pewd', firstName: 'FN', lastName: 'LN' }
 
   function handleClick () {
-    fetch('http://localhost:8080/students/createNewProfileData', {
+    fetch('http://localhost:8080/students/saveNewProfileData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
