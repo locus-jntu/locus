@@ -5,6 +5,8 @@ interface AutoProps {
   label?: string
   fullWidth?: boolean
   name: string
+  value: any
+  onChange?: any
 }
 
 const Autofill = (props: AutoProps) => (
@@ -13,6 +15,8 @@ const Autofill = (props: AutoProps) => (
       id="combo-box-demo"
       className='mx-3 mt-3 mb-5'
       options={top100Films}
+      value={props.value}
+      onChange={props.onChange}
       sx={{ width: '50%' }}
       renderInput={(params) => <TextField {...params} label={props.name} />}
     />
