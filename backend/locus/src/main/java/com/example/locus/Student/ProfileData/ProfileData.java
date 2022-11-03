@@ -1,109 +1,92 @@
 package com.example.locus.Student.ProfileData;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class Address{
+    public String streetAddress;
+    public String streetAddress2;
+    public String district;
+    public String state;
+    public String city;
+    public String pin;
+}
+class Internship{
+    public String role;
+    public String org;
+    public String dur;
+}
+
+class Course{
+    public String cname;
+    public String org;
+}
 @Document
 public class ProfileData {
+
     @Id
     String rollNumber;
+
+    @JsonProperty("email")
     String email;
+
+    @JsonProperty("firstName")
     String firstName;
+
+    @JsonProperty("lastName")
     String lastName;
+
+    @JsonProperty("department")
     String department;
-    String pincode;
-    String district;
-    String address;
+
+    @JsonProperty("degree")
     String degree;
+
+    @JsonProperty("parentName")
     String parentName;
+
+    @JsonProperty("tenthGrade")
     String tenthGrade;
+
+    @JsonProperty("interGrade")
     String interGrade;
 
-    public String getDepartment() {
-        return department;
-    }
+    @JsonProperty("mobile")
+    String mobile;
 
-    public void setDepartment(String department) {
-        this.department = department;
-    }
+    @JsonProperty("passingYear")
+    String passingYear;
 
-    public String getPincode() {
-        return pincode;
-    }
+    @JsonProperty("eamcetEcetRank")
+    String eamcetEcetRank;
 
-    public void setPincode(String pincode) {
-        this.pincode = pincode;
-    }
+    @JsonProperty("ugAggregate")
+    String ugAggregate;
 
-    public String getDistrict() {
-        return district;
-    }
+    @JsonProperty("currentBacklogs")
+    String currentBacklogs;
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
+    @JsonProperty("historyOfBacklogs")
+    String historyOfBacklogs;
 
-    public String getAddress() {
-        return address;
-    }
+    @JsonProperty("skills")
+    List<String> skills;
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    @JsonProperty("languages")
+    List<String> languages;
 
-    public String getDegree() {
-        return degree;
-    }
+    @JsonProperty("internships")
+    List<Internship> internships;
 
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
+    @JsonProperty("course")
+    List<Course> course;
 
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
-
-    public String getTenthGrade() {
-        return tenthGrade;
-    }
-
-    public void setTenthGrade(String tenthGrade) {
-        this.tenthGrade = tenthGrade;
-    }
-
-    public String getInterGrade() {
-        return interGrade;
-    }
-
-    public void setInterGrade(String interGrade) {
-        this.interGrade = interGrade;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    @JsonProperty("address")
+    private Address address;
 }
