@@ -17,6 +17,6 @@ public class ProfileServiceImpl implements ProfileService{
     public boolean saveNewProfileData(ProfileData profileData) {
         // Do validation before storing the data.
         profileRepository.save(profileData);
-        return false;
+        return true;
     }
 }
