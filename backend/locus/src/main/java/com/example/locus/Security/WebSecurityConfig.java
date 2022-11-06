@@ -48,10 +48,11 @@ public class WebSecurityConfig{
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .authorizeRequests(p -> {
+                    p.antMatchers("/").permitAll();
+                    p.antMatchers(HttpMethod.POST,"/api/login").permitAll();
+                    p.anyRequest().authenticated();
+                })
                 .addFilterBefore(new JWTAuthenticationFilter("/api/login",customAuthenticationManager(http)),
                         UsernamePasswordAuthenticationFilter.class)
 //                // And filter other requests to check the presence of JWT in header --> for Authorization

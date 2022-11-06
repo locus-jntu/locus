@@ -15,7 +15,6 @@ import java.util.Date;
 
 import static java.util.Collections.emptyList;
 
-@Service
 public class JWTTokenAuthenticationService {
     final long EXPIRATIONTIME = 864_000_000; // 10 days
     final String TOKEN_PREFIX = "Bearer ";
