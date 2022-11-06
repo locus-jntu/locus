@@ -1,7 +1,6 @@
 package com.example.locus.Security;
 
-import com.example.locus.Security.jwt.JWTAuthenticationFilter;
-import com.example.locus.Security.jwt.JWTAuthorizationFilter;
+import com.example.locus.Security.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,10 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig{
 
     private final UserDetailsService userDetailsService;
+    private final JwtTokenFilter jwtTokenFilter;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsService userDetailsService){
+    public WebSecurityConfig(UserDetailsService userDetailsService,JwtTokenFilter jwtTokenFilter){
         this.userDetailsService = userDetailsService;
+        this.jwtTokenFilter = jwtTokenFilter;
     }
 
     @Bean
@@ -33,7 +34,7 @@ public class WebSecurityConfig{
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject
                 (AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+                .passwordEncoder(bCryptPasswordEncoder());
         return authenticationManagerBuilder.build();
     }
 
@@ -53,11 +54,7 @@ public class WebSecurityConfig{
                     p.antMatchers(HttpMethod.POST,"/api/login").permitAll();
                     p.anyRequest().authenticated();
                 })
-                .addFilterBefore(new JWTAuthenticationFilter("/api/login",customAuthenticationManager(http)),
-                        UsernamePasswordAuthenticationFilter.class)
-//                // And filter other requests to check the presence of JWT in header --> for Authorization
-                .addFilterBefore(new JWTAuthorizationFilter(),
-                        UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtTokenFilter,UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
