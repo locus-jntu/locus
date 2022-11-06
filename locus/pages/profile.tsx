@@ -1,12 +1,13 @@
 import { Button, Chip } from "@mui/material";
 import React from "react";
 import lightTheme from "../styles/theme/lightTheme";
-import Autofill from "./Autofill";
-import Heading from "./Heading";
-import Input from "./Input";
-import Note from "./Note";
+import Autofill from "../components/Autofill";
+import Heading from "../components/Heading";
+import Input from "../components/Input";
+import Note from "../components/Note";
 import { saveToDb } from "../utility/saveToDb";
-import { data as profileData } from "../utility/profileData";
+import { data as profileData } from "../utility/data/profileData";
+import Popup from "../components/Popup";
 
 const ProfileForm = () => {
   const [data, setData] = React.useState(profileData);
@@ -19,6 +20,9 @@ const ProfileForm = () => {
     org: "",
     dur: "",
   });
+
+  const [status, setStatus] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
   return (
     <div className="flex justify-center bg-gray-200">
@@ -122,22 +126,22 @@ const ProfileForm = () => {
             Permanent Address{" "}
           </label>
           <Input
-            value={data.address.streetAdress}
+            value={data.address.streetAddress}
             onChange={(e: any) =>
               setData({
                 ...data,
-                address: { ...data.address, streetAdress: e.target.value },
+                address: { ...data.address, streetAddress: e.target.value },
               })
             }
             name="st-addr"
             helperText="Enter street address"
           />
           <Input
-            value={data.address.streetAdress2}
+            value={data.address.streetAddress2}
             onChange={(e: any) =>
               setData({
                 ...data,
-                address: { ...data.address, streetAdress2: e.target.value },
+                address: { ...data.address, streetAddress2: e.target.value },
               })
             }
             name="st-addr2"
@@ -556,7 +560,7 @@ const ProfileForm = () => {
           </div>
 
           <Button
-            onClick={() => saveToDb(data)}
+            onClick={() => {setOpen(true); saveToDb(data, setStatus)}}
             className="rounded w-full py-3 bg-secondary text-white hover:text-white"
             sx={{
               boxShadow: "none",
@@ -567,6 +571,9 @@ const ProfileForm = () => {
           >
             SUBMIT
           </Button>
+
+          <Popup open={open} setOpen={setOpen} status={status} />
+
         </div>
       </form>
     </div>

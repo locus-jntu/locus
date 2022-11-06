@@ -84,8 +84,8 @@ public class ProfileData {
     @JsonProperty("internships")
     List<Internship> internships;
 
-    @JsonProperty("course")
-    List<Course> course;
+    @JsonProperty("courses")
+    List<Course> courses;
 
     @JsonProperty("address")
     private Address address;

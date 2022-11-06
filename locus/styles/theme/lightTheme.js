@@ -9,8 +9,8 @@ const lightTheme = createTheme({
     secondary: {
       main: '#00C6A9'
     },
-    bg: {
-      main: '#F2E9E4'
+    info: {
+      main: '#c8a2c8'
     }
   },
   typography: {

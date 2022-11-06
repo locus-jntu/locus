@@ -1,17 +1,8 @@
-export function saveToDb(data){
-    // const data= {
-    //     firstName: 'FN',
-    //     lastName: "lN",
-    //     email: 'test@test.com',
-    //     address: {
-    //         streetAdress: "home",
-    //         streetAdress2: "hoe1",
-    //         district: "dis",
-    //         city: "hyd",
-    //         state: "ts",
-    //         pin: "500000"
-    //     },
-    // }
+import Popup from "../components/Popup";
+
+export function saveToDb(data, setStatus){
+    console.log("profile Data : ", data);
+    setStatus("loading");
     fetch('http://localhost:8080/students/saveNewProfileData', {
       method: 'POST',
       headers: {
@@ -19,8 +10,9 @@ export function saveToDb(data){
       },
       body: JSON.stringify(data)
     }).then(async response => await response.json())
-      .then(data => console.log(data))
+      .then(data => setStatus(data ? "success" : "fail"))
       .catch(error => {
+        setStatus("fail");
         console.error(error)
       })
 }

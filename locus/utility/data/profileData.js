@@ -9,8 +9,8 @@ export const data = {
     mobile: "mob",
     passingYear: "23",
     address: {
-        streetAdress: "home",
-        streetAdress2: "hoe1",
+        streetAddress: "home",
+        streetAddress2: "hoe1",
         district: "dis",
         city: "hyd",
         state: "ts",

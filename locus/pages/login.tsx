@@ -1,0 +1,49 @@
+import { Button } from "@mui/material";
+import lightTheme from "../styles/theme/lightTheme";
+import Input from "../components/Input";
+import { creds as credentials } from "../utility/data/credentials";
+import React from "react";
+
+const LoginForm = () => {
+
+    const [creds, setCreds] = React.useState(credentials);
+
+    return (
+        <div className="flex h-screen bg-gray-200 text-primary">
+            <div className="w-0 md:w-1/2 lg:w-8/12 flex flex-col justify-center items-end font-extrabold font-montserrat text-4xl">
+              <div style={{height: 134}}>
+                <div style={{width: 280}} className="tracking-wide pr-4 relative">
+                    <p className="text-right z-10 absolute">Welcome to <span className="text-6xl text-secondary inline-block">locus</span></p>
+                    <img className="relative float-right" style={{height: 48, top: 70, left: 22}} src="underline.png" />
+                </div>
+              </div>
+              <p className="text-base font-medium ml-4 text-right">An <span className="text-secondary font-semibold text-lg">AI powered</span> placement portal.</p>
+            </div>
+            <div className="flex flex-grow justify-center w-screen overflow-hidden relative">
+                <form style={{width: 350, margin: 'auto', zIndex: 20, filter: 'drop-shadow(4px 4px 8px hsl(0deg 0% 0% / 0.5))', boxShadow: 'rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px'}}  className="bg-white rounded p-8">
+                    <p className="text-3xl font-bold">Login</p>
+                    <p className="text-gray-400 mt-2 mb-4">please enter your crediantials to enter locus.</p>
+                    <Input value={creds.userId} onChange={(e: any) => setCreds({...creds, userId: e.target.value}) } label="USER ID" size="small"  style={{margin: '4px 0 16px 0'}} labelStyles={{margin: 0, fontSize: 13}} placeholder="eg: 19011p0525" name="rollNumber" />
+                    <Input value={creds.password} onChange={(e: any) => setCreds({...creds, password: e.target.value}) } label="PASSWORD" size="small" style={{margin: '4px 0 16px 0'}} labelStyles={{margin: 0, fontSize: 13}} name="password" />
+                    <p className="text-sm mb-6 mt-3 text-right hover:underline hover:underline-offset-4 hover:cursor-pointer">Forgot Password ?</p>
+                    <Button
+                        onClick={() => console.log(creds)}
+                        className="rounded w-full py-3 bg-secondary text-white hover:text-white"
+                        sx={{
+                            boxShadow: "none",
+                            color: lightTheme.palette.secondary.main,
+                        }}
+                        color="secondary"
+                        variant="contained"
+                        >
+                        LOGIN
+                    </Button>
+                </form>
+                <img className="hidden lg:block" style={{position: 'absolute', transform:'scale(1.6)', backgroundPosition: "right top" ,top: 72 ,filter: 'blur(0.8px)'}} src="vector-bg.png" alt="bg" />
+            </div>
+        </div>
+    )
+}
+
+
+export default LoginForm;
