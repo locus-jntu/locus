@@ -3,6 +3,8 @@ package com.example.locus.Security;
 import com.example.locus.Security.jwt.JwtUtil;
 import com.example.locus.Security.jwt.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,13 +27,15 @@ public class AuthenticationController {
     JwtUtil jwtUtil;
 
     @PostMapping("/api/login")
-    public Map<String,String> login(@RequestBody UserCredentials userCredentials){
-        System.out.println("Inside login method");
+    public ResponseEntity<String> login(@RequestBody UserCredentials userCredentials){
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(),userCredentials.getPassword());
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         String jwtToken = jwtUtil.generate(userCredentials.getUsername());
-        Map<String,String> payload = new HashMap<>();
-        payload.put("jwt",jwtToken);
-        return payload;
+
+        ResponseCookie cookie = ResponseCookie.from("jwt",jwtToken)
+                .httpOnly(true)
+                .build();
+
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,cookie.toString()).build();
     }
 }
