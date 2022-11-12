@@ -31,6 +31,8 @@ public class AuthenticationController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt",jwtToken)
                 .httpOnly(true)
+                .sameSite("none")
+                .path("/")
                 .build();
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,cookie.toString()).build();
