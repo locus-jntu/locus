@@ -9,6 +9,7 @@ interface popupProps{
     open: boolean
     status: string
     setOpen: any
+    loadingText: string
 }
 
 const style = {
@@ -51,7 +52,7 @@ export default function Popup(props: popupProps) {
                 </Button>
               </> : props.status === "loading" ? 
               <>
-                <p className='my-4'>Saving your data. </p>
+                <p className='my-4'>{props.loadingText}</p>
                 <p>Please wait ... </p>
               </> :
               <>

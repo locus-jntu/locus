@@ -6,6 +6,8 @@ import lightTheme from "../styles/theme/lightTheme"
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { useRecoilValue } from "recoil"
+import { jwtTokenAtom } from "../recoil/atoms"
 
 const Home = () => {
   const data = {
@@ -17,6 +19,11 @@ const Home = () => {
     ongoing: 13
   }
 
+  const jwtToken = useRecoilValue(jwtTokenAtom);
+
+  console.log("index jwt : ", jwtToken);
+
+  
   const [stats, setStats] = useState({total: 0, applied: 0, ongoing: 0})
 
   useEffect(() => {
@@ -77,7 +84,7 @@ const Home = () => {
        </div>
 
        <div className="h-96 bg-primary">
-         <p className="font-lobster text-6xl text-white text-center py-12">Make things possible !</p>
+         <p className="font-lobster text-6xl text-white text-center py-12">Make things<span className="text-secondary"> possible !</span>  </p>
          <div className="flex justify-between text-white p-12">
            <div>
              <p className=" text-2xl pb-4">LOCUS</p>

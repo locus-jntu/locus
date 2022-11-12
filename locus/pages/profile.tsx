@@ -1,13 +1,16 @@
 import { Button, Chip } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import lightTheme from "../styles/theme/lightTheme";
 import Autofill from "../components/Autofill";
 import Heading from "../components/Heading";
 import Input from "../components/Input";
 import Note from "../components/Note";
-import { saveToDb } from "../utility/saveToDb";
+import  useFetch from "../utility/hooks/useFetch.js";
 import { data as profileData } from "../utility/data/profileData";
 import Popup from "../components/Popup";
+import { useRecoilValue } from "recoil";
+import { jwtTokenAtom } from "../recoil/atoms";
+import { Token } from "../providers/TokenProvider";
 
 const ProfileForm = () => {
   const [data, setData] = React.useState(profileData);
@@ -21,8 +24,33 @@ const ProfileForm = () => {
     dur: "",
   });
 
+  const creds = {
+    username: "admin",
+    password: "password"
+  }
+
+  const {jwtToken, setJwtToken} = useContext(Token);
+
+  console.log("profile jwt : ", jwtToken)
+
   const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
+
+  const returnFunc = useFetch(data, "students/saveNewProfileData", "POST");
+
+  const clickHandler = async() => { 
+    try{
+      setOpen(true);
+      setStatus("loading");
+      const data = await returnFunc();
+      setStatus("success");
+      console.log("data is : ", data);
+    }catch(err){
+        console.log("Error : ",err);
+        setStatus("failed");
+    }
+  }
+
 
   return (
     <div className="flex justify-center bg-gray-200">
@@ -41,7 +69,7 @@ const ProfileForm = () => {
           />
 
           <label htmlFor="fname" className="m-3">
-            Full name
+            Full name {jwtToken}
           </label>
           <div className="flex">
             <Input
@@ -560,7 +588,7 @@ const ProfileForm = () => {
           </div>
 
           <Button
-            onClick={() => {setOpen(true); saveToDb(data, setStatus)}}
+            onClick={clickHandler}
             className="rounded w-full py-3 bg-secondary text-white hover:text-white"
             sx={{
               boxShadow: "none",
@@ -572,7 +600,7 @@ const ProfileForm = () => {
             SUBMIT
           </Button>
 
-          <Popup open={open} setOpen={setOpen} status={status} />
+          <Popup open={open} setOpen={setOpen} status={status} loadingText="Saving your data.." />
 
         </div>
       </form>

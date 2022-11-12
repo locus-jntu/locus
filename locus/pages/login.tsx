@@ -2,11 +2,40 @@ import { Button } from "@mui/material";
 import lightTheme from "../styles/theme/lightTheme";
 import Input from "../components/Input";
 import { creds as credentials } from "../utility/data/credentials";
-import React from "react";
+import  useFetch from "../utility/hooks/useFetch.js";
+import React, {useState, useContext} from "react";
+import Popup from "../components/Popup";
+import { useRecoilState } from "recoil";
+import { jwtTokenAtom } from '../recoil/atoms';
+import { setToken, Token } from "../providers/TokenProvider";
 
 const LoginForm = () => {
 
-    const [creds, setCreds] = React.useState(credentials);
+    const [creds, setCreds] = useState(credentials);
+    const [open, setOpen] = useState(false);
+    const [status, setStatus] = useState("");
+
+    const returnFunc = useFetch({username: "admin", password: "password"}, "api/login", "POST");
+
+    const {jwtToken, setJwtToken} = useContext(Token);
+
+    console.log("login jwt : ", jwtToken)
+    
+    const onclicked = async() => { 
+      setJwtToken("New one ");
+      try{
+        setOpen(true);
+        setStatus("loading");
+        const data = await returnFunc();
+        setOpen(false);
+        localStorage.setItem("jwt", data.jwt)
+        console.log("jwt is : ", data.jwt);
+      }catch(err){
+          console.log(err);
+          setStatus("failed");
+      }
+    }
+
 
     return (
         <div className="flex h-screen bg-gray-200 text-primary">
@@ -27,7 +56,7 @@ const LoginForm = () => {
                     <Input value={creds.password} onChange={(e: any) => setCreds({...creds, password: e.target.value}) } label="PASSWORD" size="small" style={{margin: '4px 0 16px 0'}} labelStyles={{margin: 0, fontSize: 13}} name="password" />
                     <p className="text-sm mb-6 mt-3 text-right hover:underline hover:underline-offset-4 hover:cursor-pointer">Forgot Password ?</p>
                     <Button
-                        onClick={() => console.log(creds)}
+                        onClick={onclicked}
                         className="rounded w-full py-3 bg-secondary text-white hover:text-white"
                         sx={{
                             boxShadow: "none",
@@ -41,6 +70,9 @@ const LoginForm = () => {
                 </form>
                 <img className="hidden lg:block" style={{position: 'absolute', transform:'scale(1.6)', backgroundPosition: "right top" ,top: 72 ,filter: 'blur(0.8px)'}} src="vector-bg.png" alt="bg" />
             </div>
+
+            <Popup open={open} setOpen={setOpen} status={status} loadingText="Logging In" />
+
         </div>
     )
 }
