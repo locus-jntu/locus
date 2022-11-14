@@ -25,32 +25,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String cookie = request.getHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println(cookie);
-        String jwt = null;
+        String authorizationHeader = request.getHeader("Authorization");
+        System.out.println(authorizationHeader + " from JwtTokenFilter");
 
-        //Get the jwt token from the header.
-        if(cookie != null){
-            String[] values = cookie.split(";");
-            for(String value : values){
-               if(value.startsWith("jwt")){
-                   jwt = value.split("=")[1];
-                   break;
-               }
-            }
-        }
-
-        if(cookie == null || jwt == null){
+        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer")){
             filterChain.doFilter(request,response);
             return;
         }
 
-        if(!jwtUtil.validate(jwt)){
+        String token = authorizationHeader.split(" ")[1].trim();
+        if(!jwtUtil.validate(token)){
            filterChain.doFilter(request,response);
            return;
         }
 
-        String username = jwtUtil.getUsername(jwt);
+        String username = jwtUtil.getUsername(token);
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,null,new ArrayList<>());
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);

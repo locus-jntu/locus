@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*",allowCredentials = "true")
 public class AuthenticationController {
 
     @Autowired
@@ -27,17 +29,12 @@ public class AuthenticationController {
     JwtUtil jwtUtil;
 
     @PostMapping("/api/login")
-    public ResponseEntity<String> login(@RequestBody UserCredentials userCredentials){
+    public ResponseEntity<String> login(HttpServletResponse response, @RequestBody UserCredentials userCredentials){
+        System.out.println("Inside login method");
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(),userCredentials.getPassword());
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         String jwtToken = jwtUtil.generate(userCredentials.getUsername());
 
-        ResponseCookie cookie = ResponseCookie.from("jwt",jwtToken)
-                .httpOnly(true)
-                .sameSite("none")
-                .path("/")
-                .build();
-
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,cookie.toString()).build();
+        return ResponseEntity.ok(jwtToken);
     }
 }
