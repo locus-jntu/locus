@@ -24,8 +24,9 @@ public class AnnouncementServiceImpl implements AnnouncementService{
     @Override
     public boolean createNewAnnouncement(CreateRequest createRequest) {
         Announcement announcement = new Announcement();
-        announcement.setMessage(createRequest.getMessage());
+        announcement.setDescription(createRequest.getDescription());
         announcement.setDate(new Date());
+        announcement.setTitle(createRequest.getTitle());
 
         announcementRepository.save(announcement);
         return true;

@@ -1,4 +1,4 @@
 export const creds = {
-    userId: "",
-    password: ""
+    username: "admin",
+    password: "password"
 }

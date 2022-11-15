@@ -8,6 +8,11 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { useRecoilValue } from "recoil"
 import { jwtTokenAtom } from "../recoil/atoms"
+import Footer from "../components/Footer"
+import ShortCompanyCard from "../components/company-cards/shortCompanyCard"
+import ShortAnnouncement from "../components/announcements/shortAnnouncement"
+import Link from "next/link"
+import { data as companyData } from "../components/company-cards/data";
 
 const Home = () => {
   const data = {
@@ -34,7 +39,7 @@ const Home = () => {
   return (
     <div className="h-screen overflow-hidden flex">
 
-      <Sidebar />
+      <Sidebar component="dashboard" />
 
       <div className="bg-gray-200 flex-grow text-primary overflow-y-auto relative">
           <Nav role='student' />
@@ -57,9 +62,11 @@ const Home = () => {
               <p className="tracking-wider mb-2 "><span className="mr-2">{data.rollNumber}</span> | <span className="ml-2">{data.department}</span></p>
             </div>
           </div>
-          <p className="text-center my-24 text-xl hover:underline underline-offset-4 cursor-pointer"> Apply for your dream companies &nbsp;&nbsp;&nbsp;<span className="text-3xl"> &rarr; </span> </p> 
+          <Link href="/companies">
+            <p className="text-center my-24 text-xl hover:underline underline-offset-4 cursor-pointer"> Apply for your dream companies &nbsp;&nbsp;&nbsp;<span className="text-3xl"> &rarr; </span> </p> 
+          </Link>
 
-       <div className="m-12 ">
+       <div className="m-12 mx-8">
          <div className="flex justify-between">
            <p className="py-4 px-8 font-comforta text-2xl font-bold">Reminders !</p>
            <div className="py-4 px-8">
@@ -71,52 +78,26 @@ const Home = () => {
            </div>
          </div>
          <div className="py-2 px-2 bg-white h-96 rounded-lg shadow-2xl">
-           <p className="text-right font-gray-400 "><span className="bg-primary text-white rounded py-1 text-sm px-4"> Total </span></p>
+           <p className="text-right font-gray-400 mb-2"><span className="bg-primary text-white rounded py-1 text-sm px-4"> Total </span></p>
+           {
+             companyData.map(item => <ShortCompanyCard data={item} />)
+           }
          </div>
        </div>
 
-       <div className="m-12 ">
+       <div className="m-12 mx-8">
          <div className="flex justify-between">
            <p className="py-4 px-8 font-comforta text-2xl font-bold">Announcements !</p>
            <p className="pr-8 pt-8 hover:underline underline-offset-4">show all <span>&nbsp;&nbsp;&nbsp;&rarr;</span></p>
          </div>
-         <div className="flex bg-white h-96 rounded-lg shadow-2xl"></div>
+         <div className="bg-white w-full h-96 rounded-lg shadow-2xl p-4">
+              <ShortAnnouncement />
+              <ShortAnnouncement />
+              <ShortAnnouncement />
+         </div>
        </div>
 
-       <div className="h-96 bg-primary">
-         <p className="font-lobster text-6xl text-white text-center py-12">Make things<span className="text-secondary"> possible !</span>  </p>
-         <div className="flex justify-between text-white p-12">
-           <div>
-             <p className=" text-2xl pb-4">LOCUS</p>
-             <p className="text-base font-jost">CSE Department</p>
-             <p className="text-base font-jost py-1">JNTUHUCEH, Kukatpally</p>
-             <p className="text-base font-jost">Hyderabad, Telangana - 500000 </p>
-           </div>
-           <div className="flex font-jost">
-             <div className="text-right mr-12">
-               <p>About Us</p>
-               <p className="my-1">Contact Us</p>
-               <p>FAQ</p>
-             </div>
-             <div>
-               <p className="mb-2">Follow Us</p>
-               <span>
-                  <FacebookIcon />
-                  <InstagramIcon className="mx-2" />
-                  <LinkedInIcon />
-               </span>
-             </div>
-           </div>
-         </div>
-         <hr />
-         <div className="flex justify-between text-xs py-2 px-4 text-gray-400 bg-primary">
-           <p>LOCUS &copy; 2022 - All rights reserved</p>
-           <p>
-             <span>Privacy Policy</span>
-             <span className="mx-12">Terms of Use</span>
-           </p>
-         </div>
-       </div>
+       <Footer />
 
 
       </div>

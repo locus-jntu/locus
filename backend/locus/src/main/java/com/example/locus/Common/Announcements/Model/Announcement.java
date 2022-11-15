@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class Announcement {
-    String message;
+    String title;
+    String description;
     Date date;
 }

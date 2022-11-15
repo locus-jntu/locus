@@ -8,8 +8,11 @@ import Popup from "../components/Popup";
 import { useRecoilState } from "recoil";
 import { jwtTokenAtom } from '../recoil/atoms';
 import { setToken, Token } from "../providers/TokenProvider";
+import { Router, useRouter } from "next/router";
 
 const LoginForm = () => {
+
+    const router = useRouter();
 
     const [creds, setCreds] = useState(credentials);
     const [open, setOpen] = useState(false);
@@ -17,19 +20,15 @@ const LoginForm = () => {
 
     const returnFunc = useFetch({username: "admin", password: "password"}, "api/login", "POST");
 
-    const {jwtToken, setJwtToken} = useContext(Token);
-
-    console.log("login jwt : ", jwtToken)
     
     const onclicked = async() => { 
-      setJwtToken("New one ");
       try{
         setOpen(true);
         setStatus("loading");
         const data = await returnFunc();
         setOpen(false);
-        localStorage.setItem("jwt", data.jwt)
-        console.log("jwt is : ", data.jwt);
+        router.push("/profile");
+        localStorage.setItem("jwt", data.jwt);
       }catch(err){
           console.log(err);
           setStatus("failed");
@@ -52,7 +51,7 @@ const LoginForm = () => {
                 <form style={{width: 350, margin: 'auto', zIndex: 20, filter: 'drop-shadow(4px 4px 8px hsl(0deg 0% 0% / 0.5))', boxShadow: 'rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px'}}  className="bg-white rounded p-8">
                     <p className="text-3xl font-bold">Login</p>
                     <p className="text-gray-400 mt-2 mb-4">please enter your crediantials to enter locus.</p>
-                    <Input value={creds.userId} onChange={(e: any) => setCreds({...creds, userId: e.target.value}) } label="USER ID" size="small"  style={{margin: '4px 0 16px 0'}} labelStyles={{margin: 0, fontSize: 13}} placeholder="eg: 19011p0525" name="rollNumber" />
+                    <Input value={creds.username} onChange={(e: any) => setCreds({...creds, username: e.target.value}) } label="USER ID" size="small"  style={{margin: '4px 0 16px 0'}} labelStyles={{margin: 0, fontSize: 13}} placeholder="eg: 19011p0525" name="rollNumber" />
                     <Input value={creds.password} onChange={(e: any) => setCreds({...creds, password: e.target.value}) } label="PASSWORD" size="small" style={{margin: '4px 0 16px 0'}} labelStyles={{margin: 0, fontSize: 13}} name="password" />
                     <p className="text-sm mb-6 mt-3 text-right hover:underline hover:underline-offset-4 hover:cursor-pointer">Forgot Password ?</p>
                     <Button
@@ -68,7 +67,7 @@ const LoginForm = () => {
                         LOGIN
                     </Button>
                 </form>
-                <img className="hidden lg:block" style={{position: 'absolute', transform:'scale(1.6)', backgroundPosition: "right top" ,top: 72 ,filter: 'blur(0.8px)'}} src="vector-bg.png" alt="bg" />
+                <img className="hidden lg:block" style={{position: 'absolute', transform:'scale(1.6)', backgroundPosition: "right top" ,top: 72 ,filter: 'blur(0.89px)'}} src="vector-bg.png" alt="bg" />
             </div>
 
             <Popup open={open} setOpen={setOpen} status={status} loadingText="Logging In" />

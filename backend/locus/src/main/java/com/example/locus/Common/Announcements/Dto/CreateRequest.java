@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class CreateRequest {
-    String message;
+    String description;
+    String title;
 }

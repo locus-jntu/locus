@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*",allowCredentials = "true")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthenticationController {
 
     @Autowired
@@ -29,12 +29,14 @@ public class AuthenticationController {
     JwtUtil jwtUtil;
 
     @PostMapping("/api/login")
-    public ResponseEntity<String> login(HttpServletResponse response, @RequestBody UserCredentials userCredentials){
+    public Map<String,String> login(HttpServletResponse response, @RequestBody UserCredentials userCredentials){
         System.out.println("Inside login method");
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(),userCredentials.getPassword());
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         String jwtToken = jwtUtil.generate(userCredentials.getUsername());
 
-        return ResponseEntity.ok(jwtToken);
+        Map<String,String> payload = new HashMap<>();
+        payload.put("jwt",jwtToken);
+        return payload;
     }
 }

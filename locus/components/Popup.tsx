@@ -4,12 +4,14 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import lightTheme from '../styles/theme/lightTheme';
 import { Button } from '@mui/material';
+import { useRouter } from 'next/router';
 
 interface popupProps{
     open: boolean
     status: string
     setOpen: any
     loadingText: string
+    successPageRoute?: string
 }
 
 const style = {
@@ -27,6 +29,8 @@ export default function Popup(props: popupProps) {
   
   const handleClose = () => props.setOpen(false);
 
+  const router = useRouter();
+
   return (
       <Modal
         open={props.open}
@@ -39,7 +43,7 @@ export default function Popup(props: popupProps) {
                 <CheckCircleIcon style={{fontSize: 48}} color='success' />
                 <p className='my-4'>Successfully Updated !</p>
                 <Button
-                  //onClick={}
+                  onClick={() => router.push(props.successPageRoute ?? "")}
                   className="rounded w-full py-3 bg-secondary text-white hover:text-white"
                   sx={{
                     boxShadow: "none",
