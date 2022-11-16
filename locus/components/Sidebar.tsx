@@ -5,6 +5,10 @@ import CampaignIcon from "@mui/icons-material/Campaign";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Link from "next/link";
+import { Avatar } from "@mui/material";
+import PersonIcon from '@mui/icons-material/Person';
+import lightTheme from "../styles/theme/lightTheme";
+
 
 const Sidebar = ({ component }) => {
   const classname = (id) =>
@@ -15,9 +19,18 @@ const Sidebar = ({ component }) => {
       style={{ transition: "width 0.5s" }}
       className="group text-primary hidden flex relative text-left pt-8 px-2 bg-secondary shadow-2xl w-20 rounded m-2 hover:w-60 lg:block"
     >
-      <div className="flex px-4  mb-12 font-bold">
-        <MenuIcon /> <span className="hidden group-hover:block pl-8">Menu</span>
-      </div>
+      <Link href="/profile">
+        <div className="flex p-2 px-2 h-16 mb-12 font-bold">
+          <Avatar sx={{ bgcolor: lightTheme.palette.primary.main }}>
+              <PersonIcon />
+          </Avatar>
+          <span className="hidden group-hover:block pl-8">
+            Welcome ! <br/>
+            SaiMahesh 
+          </span>
+        </div>
+      </Link>
+
 
       <Link href="/">
         <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("dashboard")}`}>

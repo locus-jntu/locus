@@ -9,7 +9,6 @@ import  useFetch from "../utility/hooks/useFetch.js";
 import { data as profileData } from "../utility/data/profileData";
 import Popup from "../components/Popup";
 import { useRecoilValue } from "recoil";
-import { jwtTokenAtom } from "../recoil/atoms";
 import { Token } from "../providers/TokenProvider";
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar";

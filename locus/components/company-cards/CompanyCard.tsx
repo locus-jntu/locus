@@ -1,0 +1,52 @@
+import { Button, Chip } from "@mui/material";
+import lightTheme from "../../styles/theme/lightTheme";
+
+const CompanyCard = ({data}) => {
+
+    return (
+    <div>
+     <div className="hover:border-primary cursor-pointer border-white border-2 py-2 flex text-primary bg-white rounded">
+       <div className="text-base w-7/12 md:w-1/2 p-4 m-1">
+          <p className="text-xl font-semibold">{data.name}</p>
+          <p className="mt-1 mb-4 text-base font-medium text-secondary">
+            <span className="md:pr-4 block md:inline">{data.role}</span>
+            <span className="md:px-4 block md:inline">{data.type}</span>
+            <span className="md:pl-4 block md:inline">{data.ctc}</span>
+          </p>
+          <p className="mb-4 font-medium">{data.date}</p>
+          <p className="text-sm underline underline-offset-4 mb-2 font-semibold text-gray-400">Eligibility : </p>
+          <p>{data.eligibility}</p>
+       </div>
+       <div className="flex flex-col w-5/12 md:w-1/2 p-2 px-4 mt-1 items-end">
+          <Chip style={{fontSize: 16}} className="text-xs font-medium md:text-medium" color="info"  label={data.status} />
+          <div className="flex w-full h-full flex-col justify-end" >
+            <div className="flex flex-wrap justify-end md:justify-start ">
+            {
+                data.labels.map(dept => (
+                    <Chip color="secondary" className="font-medium m-2 px-4 text-white" label={dept} />
+                ))
+            }
+            </div>
+            <span className="text-right text-sm my-2">Assignee : {data.assignee} </span>
+            <Button
+                //onClick={}
+                className="flex self-end rounded w-full py-2 bg-secondary text-white hover:text-white"
+                sx={{
+                boxShadow: "none",
+                color: lightTheme.palette.secondary.main,
+                }}
+                color="secondary"
+                variant="contained"
+                disabled={data.applied === 'true'}
+            >
+                {data.applied==='true' ? `Applied` : `Apply`}
+            </Button>
+            </div>
+       </div>
+     </div>
+     <hr className="border-gray-400 border-1 "/>
+    </div>
+    )
+}
+
+export default CompanyCard;
