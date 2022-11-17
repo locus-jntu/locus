@@ -19,8 +19,8 @@ public class CompanyController {
     CompanyService companyService;
 
     @GetMapping(value = "/shared/getAllCompanies")
-    public Map<String,List<Company>> getAllCompanies(){
-        Map<String,List<Company>> payload = new HashMap<>();
+    public Map<String,Object> getAllCompanies(){
+        Map<String,Object> payload = new HashMap<>();
         List<Company> companies = companyService.getAllCompanies();
         payload.put("companies",companies);
         return payload;

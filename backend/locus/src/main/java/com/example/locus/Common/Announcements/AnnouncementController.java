@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.CacheRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class AnnouncementController {
@@ -20,8 +23,11 @@ public class AnnouncementController {
     AnnouncementService announcementService;
 
     @GetMapping(value = "/shared/getAllAnnouncements")
-    public List<Announcement> getAllAnnouncements(){
-        return announcementService.getAllAnnouncement();
+    public Map<String,Object> getAllAnnouncements(){
+        Map<String, Object> payload = new HashMap<>();
+        List<Announcement> announcements = announcementService.getAllAnnouncement();
+        payload.put("announcements",announcements);
+        return payload;
     }
 
     // To be accessed by tpo only. Need to add role based authorization.
