@@ -1,12 +1,10 @@
 package com.example.locus.Security.jwt;
 
+import com.example.locus.Security.UserDetailsServiceImpl;
+import com.example.locus.Security.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,10 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class JwtTokenFilter extends OncePerRequestFilter {
 
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
     @Autowired
     JwtUtil jwtUtil;
 
@@ -41,8 +43,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String username = jwtUtil.getUsername(token);
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,null,new ArrayList<>());
-        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        // Creating user information model
+        // Can optimize heavily by storing userId into the jwt token.
+        Map<String,Object> userInformation = new HashMap<>();
+        UserModel userModel = userDetailsService.loadUser(username);
+        userInformation.put("username",userModel.getUsername());
+        userInformation.put("userId",userModel.getId());
+
+        // Setting the user information details.
+        authToken.setDetails(userInformation);
         SecurityContextHolder.getContext().setAuthentication(authToken);
+
         filterChain.doFilter(request,response);
 
     }

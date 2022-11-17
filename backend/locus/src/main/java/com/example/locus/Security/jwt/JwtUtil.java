@@ -18,7 +18,7 @@ public class JwtUtil {
 
     private final static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public String generate(String username) {
+    public String generate(String username){
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuer("jntuPlacementPortal.com")

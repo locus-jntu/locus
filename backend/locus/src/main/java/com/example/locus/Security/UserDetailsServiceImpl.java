@@ -23,4 +23,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return new User(userModel.getUsername(),userModel.getPassword(),userModel.getAuthorities());
     }
+
+    public UserModel loadUser(String username) throws UsernameNotFoundException {
+        UserModel userModel = userRepository.findUserByUsername(username);
+        if(userModel == null){
+            throw new UsernameNotFoundException(username);
+        }
+
+        return userModel;
+    }
 }
