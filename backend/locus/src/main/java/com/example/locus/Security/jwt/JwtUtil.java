@@ -24,7 +24,7 @@ public class JwtUtil {
                 .setIssuer("jntuPlacementPortal.com")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expireInMs))
-                .signWith(key)
+                .signWith(Keys.hmacShaKeyFor("23432klrfjadslkfjlasdkjf3sadlfkasdlkfjklsdajflkdsajflkadsjflkadsjfkladsjflkadsjflkadsjflkasdjfkladsjfkldsajfkldsafjkladsfjkladsfjladksfjkladsj2".getBytes()))
                 .compact();
     }
     public boolean validate(String token) {
@@ -45,6 +45,9 @@ public class JwtUtil {
     }
 
     private Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor("23432klrfjadslkfjlasdkjf3sadlfkasdlkfjklsdajflkdsajflkadsjflkadsjfkladsjflkadsjflkadsjflkasdjfkladsjfkldsajfkldsafjkladsfjkladsfjladksfjkladsj2".getBytes()))
+                .build()
+                .parseClaimsJws(token).getBody();
     }
 }
