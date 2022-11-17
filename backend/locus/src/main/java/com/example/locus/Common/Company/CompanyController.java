@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CompanyController {
@@ -17,8 +19,11 @@ public class CompanyController {
     CompanyService companyService;
 
     @GetMapping(value = "/shared/getAllCompanies")
-    public List<Company> getAllCompanies(){
-        return companyService.getAllCompanies();
+    public Map<String,List<Company>> getAllCompanies(){
+        Map<String,List<Company>> payload = new HashMap<>();
+        List<Company> companies = companyService.getAllCompanies();
+        payload.put("companies",companies);
+        return payload;
     }
 
     // should be in tpo route / pc route
