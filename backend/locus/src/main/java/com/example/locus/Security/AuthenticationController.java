@@ -3,17 +3,15 @@ package com.example.locus.Security;
 import com.example.locus.Security.jwt.JwtUtil;
 import com.example.locus.Security.jwt.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,14 +27,19 @@ public class AuthenticationController {
     JwtUtil jwtUtil;
 
     @PostMapping("/api/login")
-    public Map<String,String> login(HttpServletResponse response, @RequestBody UserCredentials userCredentials){
+    public Map<String,Object> login(HttpServletResponse response, @RequestBody UserCredentials userCredentials){
         System.out.println("Inside login method");
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(),userCredentials.getPassword());
-        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        String jwtToken = jwtUtil.generate(userCredentials.getUsername());
+        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        System.out.println(authentication.getPrincipal());
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        Map<String,String> payload = new HashMap<>();
+        String jwtToken = jwtUtil.generate(userDetails.getUsername());
+
+        Map<String, Object> payload = new HashMap<>();
         payload.put("jwt",jwtToken);
+        payload.put("roles",userDetails.getAuthorities());
+        payload.put("username",userDetails.getUsername());
         return payload;
     }
 }
