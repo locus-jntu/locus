@@ -23,11 +23,8 @@ public class AnnouncementController {
     AnnouncementService announcementService;
 
     @GetMapping(value = "/shared/getAllAnnouncements")
-    public Map<String,Object> getAllAnnouncements(){
-        Map<String, Object> payload = new HashMap<>();
-        List<Announcement> announcements = announcementService.getAllAnnouncement();
-        payload.put("announcements",announcements);
-        return payload;
+    public List<Announcement> getAllAnnouncements(){
+        return announcementService.getAllAnnouncement();
     }
 
     // To be accessed by tpo only. Need to add role based authorization.

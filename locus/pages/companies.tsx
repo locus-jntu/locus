@@ -4,9 +4,23 @@ import Nav from "../components/Nav"
 import Sidebar from "../components/Sidebar"
 import SortIcon from '@mui/icons-material/Sort';
 import Footer from "../components/Footer";
-import { data } from "../components/company-cards/data";
+import useFetch from "../utility/hooks/useFetch";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { companiesAtom } from "../recoil/atoms";
 
 const Companies = () => {
+  
+  const [companies, setCompanies] = useRecoilState(companiesAtom);
+
+  const getCompaniesFunction = useFetch(null, "shared/getAllCompanies", "GET");
+
+  useEffect( () => {
+    companies.length==0 && 
+    getCompaniesFunction()
+     .then((res) => setCompanies(res));
+   }, [])
+
 
   return (
     <div className="h-screen overflow-hidden flex">
@@ -32,7 +46,7 @@ const Companies = () => {
             
             <div className="bg-white rounded shadow-xl pb-4">
               {
-                data.map(item => <CompanyCard data={item} />)
+                companies.map(item => <CompanyCard data={item} />)
               }
             </div>
           </div>

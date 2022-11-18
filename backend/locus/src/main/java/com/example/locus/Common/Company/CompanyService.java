@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CompanyService{
     List<Company> getAllCompanies();
-    boolean insertNewCompany();
+    boolean insertNewCompany(CreateCompanyRequest companyRequest);
 }

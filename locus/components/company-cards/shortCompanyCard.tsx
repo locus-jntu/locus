@@ -15,7 +15,7 @@ const ShortCompanyCard = ({data}) => {
             </p>
         </div>
         <div className="flex justify-between w-1/2">
-            <p>{data.date}</p>
+            <p>{data.date.substring(0,10)}</p>
             <Chip style={{fontSize: 13}} className="text-xs font-medium md:text-medium" color="info"  label={data.status} />
         </div>
         </div>

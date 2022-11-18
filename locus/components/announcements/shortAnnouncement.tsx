@@ -1,17 +1,8 @@
-import { Button, Chip } from "@mui/material";
-import lightTheme from "../../styles/theme/lightTheme";
-import PushPinIcon from '@mui/icons-material/PushPin';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import CampaignIcon from '@mui/icons-material/Campaign';
 
 const ShortAnnouncement = ({data}) => {
 
-    // const data = {
-    //     title: "TCS Exam postponed",
-    //     desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veniam omnis ad perferendis repellendus nisi nihil illum",
-    //     date: "08/11/2022"
-    // }
-    
     return (
      <>
         <div className="hover:border-primary p-2 pl-4 pb-4 cursor-pointer border-white border-2 items-center justify-between flex text-primary bg-white rounded">
@@ -22,7 +13,7 @@ const ShortAnnouncement = ({data}) => {
             </p>
         </div>
         <div>
-            <p>{data.date}</p>
+            <p>{data.date.substring(0,10)}</p>
         </div>
         <div>
            <PushPinOutlinedIcon />

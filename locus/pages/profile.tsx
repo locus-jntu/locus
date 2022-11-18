@@ -30,10 +30,6 @@ const ProfileForm = () => {
     password: "password"
   }
 
-  const {jwtToken, setJwtToken} = useContext(Token);
-
-  console.log("profile jwt : ", jwtToken)
-
   const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
 

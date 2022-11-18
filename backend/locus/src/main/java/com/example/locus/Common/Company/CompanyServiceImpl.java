@@ -1,5 +1,6 @@
 package com.example.locus.Common.Company;
 
+import com.example.locus.Common.Announcements.Model.Announcement;
 import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
 import com.example.locus.Common.Company.Model.Company;
 import com.example.locus.Common.Enum.Branch;
@@ -24,19 +25,21 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public boolean insertNewCompany() {
+    public boolean insertNewCompany(CreateCompanyRequest companyRequest) {
+
 //        company.
+
         Company company = new Company();
-        company.setName("goldman sach");
+        company.setName(companyRequest.getName());
         company.setDate(new Date());
-        company.setCtc("5lpa");
-        company.setEligibility("2 backlogs compulsory");
+        company.setCtc(companyRequest.getCtc());
+        company.setEligibility(companyRequest.getEligibility());
         company.setAssignee(List.of("Bilal","Vasanth")); // Should be user id mapping
         company.setJobOfferType(JobCategory.SUPER_DREAM);
-        company.setRole("CEO");
-        company.setDescription("Need to manage all the chicks in the company");
+        company.setRole(companyRequest.getRole());
+        company.setDescription(companyRequest.getDescription());
         company.setLabels(List.of(Branch.CSE,Branch.EC,Branch.MECH));
-        company.setStatus("Interview Phase");
+        company.setStatus(companyRequest.getStatus());
 
         companyRepository.save(company);
         return true;

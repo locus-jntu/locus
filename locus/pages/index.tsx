@@ -1,19 +1,15 @@
 import { ButtonGroup, Button } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Nav from "../components/Nav"
 import Sidebar from "../components/Sidebar"
 import lightTheme from "../styles/theme/lightTheme"
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState } from "recoil"
 import Footer from "../components/Footer"
 import ShortCompanyCard from "../components/company-cards/shortCompanyCard"
 import ShortAnnouncement from "../components/announcements/shortAnnouncement"
 import Link from "next/link"
-import { data as companyData } from "../components/company-cards/data";
 import useFetch from "../utility/hooks/useFetch"
-import { announcementsAtom } from "../recoil/atoms"
+import { announcementsAtom, companiesAtom } from "../recoil/atoms"
 
 const Home = () => {
   const data = {
@@ -25,15 +21,22 @@ const Home = () => {
     ongoing: 13
   }
 
-  const returnFunc = useFetch(null, "shared/getAllAnnouncements", "GET");
+  const getAnnouncementsFunction = useFetch(null, "shared/getAllAnnouncements", "GET");
+  const getCompaniesFunction = useFetch(null, "shared/getAllCompanies", "GET");
 
   const [announcements, setAnnouncements] = useRecoilState(announcementsAtom);
+  const [companies, setCompanies] = useRecoilState(companiesAtom);
   
   
   useEffect(() => {
     announcements.length==0 && 
-    returnFunc()
-    .then(res => {setAnnouncements(res); console.log("went in index"); });
+    getAnnouncementsFunction()
+    .then(res => setAnnouncements(res));
+
+    companies.length==0 &&
+    getCompaniesFunction()
+    .then(res => setCompanies(res));
+
   }, []);
   
 
@@ -81,7 +84,7 @@ const Home = () => {
          <div className="py-2 px-2 bg-white h-96 rounded-lg shadow-2xl">
            <p className="text-right font-gray-400 mb-2"><span className="bg-primary text-white rounded py-1 text-sm px-4"> Total </span></p>
            {
-             companyData.map(item => <ShortCompanyCard data={item} />)
+             companies.map(item => <ShortCompanyCard data={item} />)
            }
          </div>
        </div>

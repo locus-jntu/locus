@@ -13,7 +13,7 @@ const CompanyCard = ({data}) => {
             <span className="md:px-4 block md:inline">{data.type}</span>
             <span className="md:pl-4 block md:inline">{data.ctc}</span>
           </p>
-          <p className="mb-4 font-medium">{data.date}</p>
+          <p className="mb-4 font-medium">{data.date.substring(0,10)}</p>
           <p className="text-sm underline underline-offset-4 mb-2 font-semibold text-gray-400">Eligibility : </p>
           <p>{data.eligibility}</p>
        </div>

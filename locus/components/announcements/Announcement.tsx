@@ -22,7 +22,7 @@ const Announcements = ({data}) => {
             </p>
         </div>
         <div>
-            <p>{data.date}</p>
+            <p>{data.date.substring(0,10)}</p>
         </div>
         <div>
            <PushPinOutlinedIcon />
