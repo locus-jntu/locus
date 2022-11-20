@@ -34,7 +34,7 @@ public class AuthenticationController {
         System.out.println(authentication.getPrincipal());
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        String jwtToken = jwtUtil.generate(userDetails.getUsername());
+        String jwtToken = jwtUtil.generate(userDetails.getUsername(),authentication.getAuthorities());
 
         Map<String, Object> payload = new HashMap<>();
         payload.put("jwt",jwtToken);

@@ -4,6 +4,7 @@ import com.example.locus.Security.UserDetailsServiceImpl;
 import com.example.locus.Security.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -49,8 +52,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         UserModel userModel = userDetailsService.loadUser(username);
         userInformation.put("username",userModel.getUsername());
         userInformation.put("userId",userModel.getId());
+        List<GrantedAuthority> authorityList = jwtUtil.getAuthorities(token);
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,null,userModel.getAuthorities());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,null,authorityList);
         // Setting the user information details.
         authToken.setDetails(userInformation);
         SecurityContextHolder.getContext().setAuthentication(authToken);
