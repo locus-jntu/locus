@@ -18,6 +18,7 @@ import lightTheme from "../../styles/theme/lightTheme";
 import LButton from "../../components/LButton";
 import { Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import ExcelToJSON from "../../utility/excel/excelToJSON";
 
 const Companies = () => {
  
@@ -152,6 +153,7 @@ const Companies = () => {
             </form>
             
             <div className="h-64 bg-secondary w-full mb-4">
+                  <ExcelToJSON></ExcelToJSON>
 
             </div>
 
