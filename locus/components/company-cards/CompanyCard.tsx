@@ -10,7 +10,7 @@ const CompanyCard = ({data}) => {
           <p className="text-xl font-semibold">{data.name}</p>
           <p className="mt-1 mb-4 text-base font-medium text-secondary">
             <span className="md:pr-4 block md:inline">{data.role}</span>
-            <span className="md:px-4 block md:inline">{data.type}</span>
+            <span className="md:px-4 block md:inline">{data.jobOfferType}</span>
             <span className="md:pl-4 block md:inline">{data.ctc}</span>
           </p>
           <p className="mb-4 font-medium">{data.date.substring(0,10)}</p>
@@ -27,7 +27,7 @@ const CompanyCard = ({data}) => {
                 ))
             }
             </div>
-            <span className="text-right text-sm my-2">Assignee : {data.assignee} </span>
+            <span className="text-right text-sm my-2">Assignee : {data.assignee.map(i => <span>{i}{" "}</span>)} </span>
             <Button
                 //onClick={}
                 className="flex self-end rounded w-full py-2 bg-secondary text-white hover:text-white"

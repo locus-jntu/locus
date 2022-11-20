@@ -49,7 +49,6 @@ const ProfileForm = () => {
     }
   }
 
-
   return (
     <div className="h-screen overflow-hidden flex">
 
@@ -74,7 +73,7 @@ const ProfileForm = () => {
             />
 
             <label htmlFor="fname" className="m-3">
-              Full name {jwtToken}
+              Full name 
             </label>
             <div className="flex">
               <Input

@@ -1,15 +1,17 @@
 import { TextField, Autocomplete } from '@mui/material'
+import { forwardRef } from 'react'
 
 interface AutoProps {
   size?: 'small' | 'large'
   label?: string
   fullWidth?: boolean
   name: string
-  value: any
+  value?: any
   onChange?: any
+  clearOnBlur?:boolean
 }
 
-const Autofill = (props: AutoProps) => (
+const Autofill = forwardRef((props: AutoProps, ref) => (
     <Autocomplete
       disablePortal
       id="combo-box-demo"
@@ -17,23 +19,16 @@ const Autofill = (props: AutoProps) => (
       options={top100Films}
       value={props.value}
       onChange={props.onChange}
-      sx={{ width: '50%' }}
-      renderInput={(params) => <TextField {...params} label={props.name} />}
+      sx={{ width: props.fullWidth ? '90%' : '45%' }}
+      renderInput={(params) => <TextField {...params} label={props.name} inputRef={ref} />}
     />
-)
+))
 
 const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
-  {
-    label: 'The Lord of the Rings: The Return of the King',
-    year: 2003
-  }
+  'The Shawshank Redemption',
+  'The Godfather',
+  'The Godfather: Part II',
+  'Other'
 ]
 
 export default Autofill

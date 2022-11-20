@@ -1,19 +1,20 @@
 import { Button, ButtonGroup } from "@mui/material"
-import CompanyCard from "../components/company-cards/CompanyCard"
-import Nav from "../components/Nav"
-import Sidebar from "../components/Sidebar"
+import CompanyCard from "../../components/company-cards/CompanyCard"
+import Nav from "../../components/Nav"
+import Sidebar from "../../components/Sidebar"
 import SortIcon from '@mui/icons-material/Sort';
-import Footer from "../components/Footer";
-import useFetch from "../utility/hooks/useFetch";
+import Footer from "../../components/Footer";
+import useFetch from "../../utility/hooks/useFetch";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { companiesAtom } from "../recoil/atoms";
+import { companiesAtom } from "../../recoil/atoms";
 
 const Companies = () => {
   
   const [companies, setCompanies] = useRecoilState(companiesAtom);
 
   const getCompaniesFunction = useFetch(null, "shared/getAllCompanies", "GET");
+  
 
   useEffect( () => {
     companies.length==0 && 

@@ -10,7 +10,7 @@ const ShortCompanyCard = ({data}) => {
             <p className="text-lg font-semibold">{data.name}</p>
             <p className="mt-1 text-secondary">
                 <span className="md:pr-4 block md:inline">{data.role}</span>
-                <span className="md:px-4 block md:inline">{data.type}</span>
+                <span className="md:px-4 block md:inline">{data.jobOfferType}</span>
                 <span className="md:pl-4 block md:inline">{data.ctc}</span>
             </p>
         </div>
