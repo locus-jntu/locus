@@ -42,7 +42,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         String username = jwtUtil.getUsername(token);
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,null,new ArrayList<>());
 
         // Creating user information model
         // Can optimize heavily by storing userId into the jwt token.
@@ -51,6 +50,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         userInformation.put("username",userModel.getUsername());
         userInformation.put("userId",userModel.getId());
 
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,null,userModel.getAuthorities());
         // Setting the user information details.
         authToken.setDetails(userInformation);
         SecurityContextHolder.getContext().setAuthentication(authToken);

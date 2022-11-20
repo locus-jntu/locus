@@ -17,12 +17,12 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping(value = "/students/checkHealth")
+    @GetMapping(value = "/api/shared/checkHealth")
     public String checkHealth(){
         return "Hello World";
     }
 
-    @PostMapping(value = "/students/saveNewProfileData")
+    @PostMapping(value = "/api/student/saveNewProfileData")
     public boolean createNewProfileData(@RequestBody ProfileData profileDataModel){
         return profileService.saveNewProfileData(profileDataModel);
     }

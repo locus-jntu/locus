@@ -22,6 +22,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.locus.Common.Enum.UserRole.PC;
+import static com.example.locus.Common.Enum.UserRole.STUDENT;
+import static com.example.locus.Common.Enum.UserRole.TPO;
+
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig{
@@ -63,6 +67,11 @@ public class WebSecurityConfig{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests(p -> {
+                    p.antMatchers("/api/shared/*").authenticated();
+                    p.antMatchers("/api/admin/*").hasAnyRole(PC.toString(),TPO.toString());
+                    p.antMatchers("/api/pc/*").hasRole(PC.toString());
+                    p.antMatchers("/api/tpo/*").hasRole(TPO.toString());
+                    p.antMatchers("/api/student/*").hasRole(STUDENT.toString());
                     p.antMatchers("/").permitAll();
                     p.antMatchers(HttpMethod.POST,"/api/login").permitAll();
                     p.anyRequest().authenticated();

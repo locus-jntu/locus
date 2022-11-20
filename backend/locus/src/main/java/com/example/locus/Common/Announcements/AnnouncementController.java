@@ -21,14 +21,16 @@ public class AnnouncementController {
 
     @Autowired
     AnnouncementService announcementService;
-
-    @GetMapping(value = "/shared/getAllAnnouncements")
-    public List<Announcement> getAllAnnouncements(){
-        return announcementService.getAllAnnouncement();
+    @GetMapping(value = "/api/shared/getAllAnnouncements")
+    public Map<String,Object> getAllAnnouncements(){
+        Map<String, Object> payload = new HashMap<>();
+        List<Announcement> announcements = announcementService.getAllAnnouncement();
+        payload.put("announcements",announcements);
+        return payload;
     }
 
     // To be accessed by tpo only. Need to add role based authorization.
-    @PostMapping(value ="/shared/createNewAnnouncements")
+    @PostMapping(value ="/api/tpo/createNewAnnouncements")
     public boolean createNewAnnouncement(@RequestBody CreateRequest createRequest){
         return announcementService.createNewAnnouncement(createRequest);
     }

@@ -18,14 +18,17 @@ public class CompanyController {
     @Autowired
     CompanyService companyService;
 
-    @GetMapping(value = "/shared/getAllCompanies")
-    public List<Company> getAllCompanies(){
-         return companyService.getAllCompanies();
+    @GetMapping(value = "/api/shared/getAllCompanies")
+    public Map<String,Object> getAllCompanies(){
+        Map<String,Object> payload = new HashMap<>();
+        List<Company> companies = companyService.getAllCompanies();
+        payload.put("companies",companies);
+        return payload;
     }
 
     // should be in tpo route / pc route
-    @PostMapping(value = "/shared/admin/createNewCompany")
-    public boolean createNewCompany(@RequestBody CreateCompanyRequest companyRequest){
-        return companyService.insertNewCompany(companyRequest);
+    @PostMapping(value = "/api/admin/createNewCompany")
+        public boolean createNewCompany(@RequestBody CreateCompanyRequest companyRequest){
+            return companyService.insertNewCompany(companyRequest);
     }
 }
