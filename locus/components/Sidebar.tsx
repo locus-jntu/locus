@@ -33,8 +33,8 @@ const Sidebar = ({ component, name="user" }) => {
 
   return (
     <div
-      style={{ transition: "width 0.5s" }}
-      className="group text-primary hidden flex relative text-left pt-8 px-2 bg-secondary shadow-2xl w-20 rounded m-2 hover:w-60 lg:block"
+      style={{ transition: "width 0.1s" }}
+      className="group text-primary hidden flex relative text-left pt-8 px-2 bg-secondary shadow-2xl w-20 hover:w-60 lg:block"
     >
       <Link href={`/${role}/profile`}>
         <div className="flex p-2 px-2 h-16 mb-12 font-bold">

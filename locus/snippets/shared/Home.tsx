@@ -30,7 +30,7 @@ const Home = (props: HomeProps) => {
       {
         role!= props.roleName ? <NoAccess />
        :
-       <Layout>
+       <Layout component="dashboard">
           <HomeIntro role={role}/>
           <CompaniesSM />
           <AnnouncementsSM role={role} />
