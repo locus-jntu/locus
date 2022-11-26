@@ -5,7 +5,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Image from 'next/image';
 
 interface NavProps{
-    role: string
+    role?: string
 }
 
 const Nav = (props: NavProps) => {

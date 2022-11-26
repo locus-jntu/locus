@@ -4,7 +4,9 @@ import { Button } from "@mui/material";
 interface ButtonProps {
   name: string
   width?: number
+  onClick?: any;
   height?: number
+  style?: any
 }
 
 const LButton = (props: ButtonProps) => (
@@ -18,9 +20,11 @@ const LButton = (props: ButtonProps) => (
         color: lightTheme.palette.secondary.main,
         padding: "4px 2px"
         }}
+        style={props.style}
         size="small"
         color="secondary"
         variant="contained"
+        onClick={props.onClick}
     >
       {props.name}
     </Button>

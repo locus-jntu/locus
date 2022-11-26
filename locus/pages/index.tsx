@@ -10,6 +10,7 @@ import ShortAnnouncement from "../components/announcements/shortAnnouncement"
 import Link from "next/link"
 import useFetch from "../utility/hooks/useFetch"
 import { announcementsAtom, companiesAtom } from "../recoil/atoms"
+import { useRouter } from "next/router"
 
 const Home = () => {
   const data = {
@@ -21,29 +22,35 @@ const Home = () => {
     ongoing: 13
   }
 
-  const getAnnouncementsFunction = useFetch(null, "shared/getAllAnnouncements", "GET");
-  const getCompaniesFunction = useFetch(null, "shared/getAllCompanies", "GET");
+  const router = useRouter();
+
+  const getAnnouncementsFunction = useFetch(null, "api/shared/getAllAnnouncements", "GET");
+  const getCompaniesFunction = useFetch(null, "api/shared/getAllCompanies", "GET");
 
   const [announcements, setAnnouncements] = useRecoilState(announcementsAtom);
   const [companies, setCompanies] = useRecoilState(companiesAtom);
   
   
   useEffect(() => {
-    announcements.length==0 && 
-    getAnnouncementsFunction()
-    .then(res => setAnnouncements(res));
-
-    companies.length==0 &&
-    getCompaniesFunction()
-    .then(res => setCompanies(res));
-
+    
+    if(localStorage.getItem("jwt")){
+        announcements.length==0 && 
+        getAnnouncementsFunction()
+        .then(res => setAnnouncements(res.announcements));
+    
+        companies.length==0 &&
+        getCompaniesFunction()
+        .then(res => setCompanies(res.companies));
+    }else{
+      router.push('/login');
+    }
   }, []);
   
 
   return (
     <div className="h-screen overflow-hidden flex">
 
-      <Sidebar component="dashboard" />
+      <Sidebar component="dashboard" name="Bhramara" />
 
       <div className="bg-gray-200 flex-grow text-primary overflow-y-auto relative">
           <Nav role='student' />

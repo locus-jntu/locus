@@ -3,10 +3,9 @@ import lightTheme from "../styles/theme/lightTheme";
 import Input from "../components/Input";
 import { creds as credentials } from "../utility/data/credentials";
 import  useFetch from "../utility/hooks/useFetch.js";
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useRef} from "react";
 import Popup from "../components/Popup";
 import { useRecoilState } from "recoil";
-import { jwtTokenAtom } from '../recoil/atoms';
 import { setToken, Token } from "../providers/TokenProvider";
 import { Router, useRouter } from "next/router";
 
@@ -14,21 +13,32 @@ const LoginForm = () => {
 
     const router = useRouter();
 
-    const [creds, setCreds] = useState(credentials);
+    const [creds, setCreds] = useState({username: '', password: ''});
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState("");
 
-    const returnFunc = useFetch({username: "admin", password: "password"}, "api/login", "POST");
+    const returnFunc = useFetch(creds, "api/login", "POST");
 
     
-    const onclicked = async() => { 
+    const onclicked = async() => {
       try{
         setOpen(true);
         setStatus("loading");
         const data = await returnFunc();
         setOpen(false);
-        router.push("/profile");
+        switch(data.roles[0].authority){
+            case "ROLE_TPO":
+                router.push("/tpo");
+                break;
+            case "ROLE_PC":
+                router.push("/pc");
+                break;
+            case "ROLE_STUDENT":
+                router.push("/student/profile");
+                break;
+        }
         localStorage.setItem("jwt", data.jwt);
+        localStorage.setItem("role", data.roles[0].authority);
       }catch(err){
           console.log(err);
           setStatus("failed");

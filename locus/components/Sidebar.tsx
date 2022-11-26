@@ -8,31 +8,47 @@ import Link from "next/link";
 import { Avatar } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import lightTheme from "../styles/theme/lightTheme";
+import { useState, useEffect } from "react";
 
-
-const Sidebar = ({ component }) => {
+const Sidebar = ({ component, name="user" }) => {
   const classname = (id) =>
     component == id ? "text-white" : "";
+  
+  const [role, setRole] = useState("");
+  
+  useEffect(() => {
+    switch(localStorage.getItem("role")){
+      case 'ROLE_TPO':
+        setRole("tpo");
+        break;
+      case 'ROLE_STUDENT':
+        setRole("student");
+        break;
+      case 'ROLE_PC':
+        setRole("pc");
+        break;
+    }
+  }, [])
+  
 
   return (
     <div
       style={{ transition: "width 0.5s" }}
       className="group text-primary hidden flex relative text-left pt-8 px-2 bg-secondary shadow-2xl w-20 rounded m-2 hover:w-60 lg:block"
     >
-      <Link href="/profile">
+      <Link href={`/${role}/profile`}>
         <div className="flex p-2 px-2 h-16 mb-12 font-bold">
           <Avatar sx={{ bgcolor: lightTheme.palette.primary.main }}>
               <PersonIcon />
           </Avatar>
-          <span className="hidden group-hover:block pl-8">
-            Welcome ! <br/>
-            SaiMahesh 
+          <span className="hidden group-hover:block pl-8 flex flex-nowrap">
+            Welcome <br/> {name} 
           </span>
         </div>
       </Link>
 
 
-      <Link href="/">
+      <Link href={`/${role}`}>
         <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("dashboard")}`}>
           <DashboardIcon />{" "}
           <span className="hidden group-hover:block pl-8">
@@ -41,7 +57,7 @@ const Sidebar = ({ component }) => {
         </div>
       </Link>
 
-      <Link href="/companies">
+      <Link href={`/${role}/companies`}>
         <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("companies")}`}>
           <BusinessIcon />{" "}
           <span className="hidden group-hover:block pl-8">
@@ -50,7 +66,7 @@ const Sidebar = ({ component }) => {
         </div>
       </Link>
 
-      <Link href="/announcements">
+      <Link href={`/${role}/announcements`}>
         <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("announcements")}`}>
           <CampaignIcon />{" "}
           <span className="hidden group-hover:block pl-8">

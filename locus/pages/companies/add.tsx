@@ -1,12 +1,8 @@
 import CompanyCard from "../../components/company-cards/CompanyCard"
 import Nav from "../../components/Nav"
 import Sidebar from "../../components/Sidebar"
-import SortIcon from '@mui/icons-material/Sort';
 import Footer from "../../components/Footer";
-import useFetch from "../../utility/hooks/useFetch";
 import { createRef, useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { companiesAtom } from "../../recoil/atoms";
 import Input from "../../components/Input";
 import Modal from '@mui/material/Modal';
 import Autofill from "../../components/Autofill";
@@ -19,6 +15,8 @@ import LButton from "../../components/LButton";
 import { Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import ExcelToJSON from "../../utility/excel/excelToJSON";
+import { useGenerateKeys } from "../../utility/useGenerateKeys.js";
+import { getType, getValues } from "../../utility/helperInput.js";
 
 const Companies = () => {
  
@@ -33,6 +31,14 @@ const Companies = () => {
     ]
   }
 
+  const fixedkeys = [
+      "firstName","gendere"
+   ];
+
+  const [defaultKeys, setDefaultKeys] = useState([]);
+  const [optional, setOptional] = useState([]);
+
+
   const [constraints, setConstraints] = useState([]);
   
   const refs = useRef([]);
@@ -45,7 +51,7 @@ const Companies = () => {
 
   refs.current = []
 
-  const [keys,setKeys] = useState(["gender", "location"])
+  const [keys,setKeys] = useState(["firstName", "lastName", "gendere", "location", "salary"])
 
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState();
@@ -53,33 +59,31 @@ const Companies = () => {
 
   const [type, setType] = useState('');  
 
-  const [companyKeys, setCompanyKeys] = useState([])  
-
   const addString = () => {
-     const name = stringRef.current.value=="" ? keys.at(index) : stringRef.current.value;
+     const name = stringRef.current.value=="" ? optional.at(index) : stringRef.current.value;
      const component = <Input containerStyle={{width: '100%'}} name={name} label={name} />
-     setCompanyKeys(keys => [...keys, {component, name}])
-     setKeys(keys => keys.filter((_,ind) => ind!=index))
+     setDefaultKeys(keys => [...keys, {component, name}])
+     setOptional(keys => keys.filter((_,ind) => ind!=index))
      setOpen(false)
      setType('')
   }
 
   const addRadio = () => {
-    const label = radioLabelRef.current.value=="" ? keys.at(index) : radioLabelRef.current.value;
+    const label = radioLabelRef.current.value=="" ? optional.at(index) : radioLabelRef.current.value;
     const names = radioValuesRef.current.value;
       const component = <Radio row={true} label={label} values={names.split(",")} />
-      setCompanyKeys(keys => [...keys, {component, name:label}])
-      setKeys(keys => keys.filter((_,ind) => ind!=index))
+      setDefaultKeys(keys => [...keys, {component, name:label}])
+      setOptional(keys => keys.filter((_,ind) => ind!=index))
       setOpen(false)
       setType('')
   }
 
   const addCheckbox = () => {
-    const label = checkBoxLabelRef.current.value=="" ? keys.at(index) : checkBoxLabelRef.current.value;
+    const label = checkBoxLabelRef.current.value=="" ? optional.at(index) : checkBoxLabelRef.current.value;
     const names = checkBoxvaluesRef.current.value;
     const component = <Checkbox row={true} label={label} values={names.split(",")} />
-    setCompanyKeys(keys => [...keys, {component, name: label}])
-    setKeys(keys => keys.filter((_,ind) => ind!=index))
+    setDefaultKeys(keys => [...keys, {component, name: label}])
+    setOptional(keys => keys.filter((_,ind) => ind!=index))
     setOpen(false)
     setType('')
 }
@@ -94,14 +98,34 @@ const Companies = () => {
 
   const removeItem = (i) => {
       const name = i.name;
-      setCompanyKeys(keys => keys.filter(item => item.name!=name))
-      setKeys(keys => [...keys, name])
+      setDefaultKeys(keys => keys.filter(item => item.name!=name))
+      setOptional(keys => [...keys, name])
   }
 
   const addRef = (el) => {
      if(el && !refs.current.includes(el)){
          refs.current.push(el);
      }
+  }
+
+  const keysFunc = useGenerateKeys(fixedkeys, keys, setDefaultKeys, setOptional);
+
+  const genKeys = () => {
+    keysFunc();
+    setDefaultKeys(keys => keys.map(i => 
+      {
+        let component = null;
+        if(getType(i) == 'string') component = <Input containerStyle={{width: '100%'}} name={i} label={i} />
+        if(getType(i) == 'radio') component = <Radio row={true} label={i} values={getValues(i).split(",")} />
+        return {
+          component,
+          name: i
+        }
+      }
+    )
+    )
+    console.log(defaultKeys);
+    
   }
 
   return (
@@ -154,17 +178,16 @@ const Companies = () => {
             
             <div className="h-64 bg-secondary w-full mb-4">
                   <ExcelToJSON></ExcelToJSON>
-
             </div>
 
-              <LButton name="Generate Keys" width={164} />
+              <LButton onClick={genKeys} name="Generate Keys" width={164} />
               
               <p className="pt-4 px-8 mt-8 font-comforta text-center text-lg font-bold underline underline-offset-4"> company form  </p>
 
               <div className="mt-4 mb-4 w-full md:w-11/12 bg-white lg:w-9/12 p-4 rounded shadow-xl">
 
               {
-                companyKeys.map(i => (
+                defaultKeys.map(i => (
                     <div className="flex w-full justify-between items-center">
                         {i.component}
                         <Button onClick={() => removeItem(i)} style={{height: 48}}> x </Button>
@@ -173,13 +196,14 @@ const Companies = () => {
               }
               </div>
 
-              <div className="flex w-full mt-8 mb-4 text-primary justify-start">
+              <div className="grid grid-cols-2 w-full mt-8 mb-4 text-primary justify-start">
               {
-                keys.map((i, index) => (
+                optional.map((i, index) => (
                       <Autofill
                         label={i}
                         name={i}
                         value=''
+                        fullWidth={true}
                         ref={addRef}
                         onChange={(e,v) => changeHandler(e,v,index)}
                       /> 

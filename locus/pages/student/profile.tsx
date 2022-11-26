@@ -1,17 +1,17 @@
 import { Button, Chip } from "@mui/material";
 import React, { useContext } from "react";
-import lightTheme from "../styles/theme/lightTheme";
-import Autofill from "../components/Autofill";
-import Heading from "../components/Heading";
-import Input from "../components/Input";
-import Note from "../components/Note";
-import  useFetch from "../utility/hooks/useFetch.js";
-import { data as profileData } from "../utility/data/profileData";
-import Popup from "../components/Popup";
+import lightTheme from "../../styles/theme/lightTheme";
+import Autofill from "../../components/Autofill";
+import Heading from "../../components/Heading";
+import Input from "../../components/Input";
+import Note from "../../components/Note";
+import  useFetch from "../../utility/hooks/useFetch.js";
+import { data as profileData } from "../../utility/data/profileData";
+import Popup from "../../components/Popup";
 import { useRecoilValue } from "recoil";
-import { Token } from "../providers/TokenProvider";
-import Nav from "../components/Nav";
-import Sidebar from "../components/Sidebar";
+import { Token } from "../../providers/TokenProvider";
+import Nav from "../../components/Nav";
+import Sidebar from "../../components/Sidebar";
 
 const ProfileForm = () => {
   const [data, setData] = React.useState(profileData);
@@ -25,15 +25,9 @@ const ProfileForm = () => {
     dur: "",
   });
 
-  const creds = {
-    username: "admin",
-    password: "password"
-  }
-
   const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
-  // const returnFunc = useFetch(creds, "api/login", "POST");
   const returnFunc = useFetch(data, "students/saveNewProfileData", "POST");
 
   const clickHandler = async() => { 
@@ -604,7 +598,7 @@ const ProfileForm = () => {
               SUBMIT
             </Button>
 
-            <Popup open={open} setOpen={setOpen} status={status} loadingText="Saving your data.." successPageRoute="/" />
+            <Popup open={open} setOpen={setOpen} status={status} loadingText="Saving your data.." successPageRoute="/student" />
 
           </div>
         </form>

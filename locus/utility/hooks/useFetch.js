@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-
 export default function useFetch(payload, route, reqType) {
 
   const _func = async () => {
     const jwt = localStorage.getItem("jwt");
 
-    const headers = jwt ? {
+    const headers = jwt ? {   
       "Content-Type": "application/json",
       "Authorization": "Bearer " + jwt,
     } : {
@@ -18,7 +15,7 @@ export default function useFetch(payload, route, reqType) {
       headers,
       body: payload && JSON.stringify(payload),
     });
-
+    console.log(data);
     const response = await data.json();
 
     return response;

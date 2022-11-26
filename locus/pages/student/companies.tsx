@@ -16,12 +16,10 @@ const Companies = () => {
   const getCompaniesFunction = useFetch(null, "api/shared/getAllCompanies", "GET");
   
 
-  useEffect( () => {
-    console.log(companies);
-    
+  useEffect( () => {    
     companies.length==0 && 
     getCompaniesFunction()
-     .then((res) => setCompanies(res));
+     .then((res) => setCompanies(res.companies));
    }, [])
 
 

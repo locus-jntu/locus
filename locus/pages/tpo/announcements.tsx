@@ -1,27 +1,29 @@
 import { Button, ButtonGroup } from "@mui/material"
-import CompanyCard from "../components/company-cards/CompanyCard"
-import Nav from "../components/Nav"
-import Sidebar from "../components/Sidebar"
+import CompanyCard from "../../components/company-cards/CompanyCard"
+import Nav from "../../components/Nav"
+import Sidebar from "../../components/Sidebar"
 import SortIcon from '@mui/icons-material/Sort';
-import Footer from "../components/Footer";
-import Announcement from "../components/announcements/Announcement";
+import Footer from "../../components/Footer";
+import Announcement from "../../components/announcements/Announcement";
 import { useEffect, useState } from "react";
-import useFetch from "../utility/hooks/useFetch";
+import useFetch from "../../utility/hooks/useFetch";
 import { useRecoilState } from "recoil";
-import { announcementsAtom } from "../recoil/atoms";
+import { announcementsAtom } from "../../recoil/atoms";
 
 
 const Companies = () => {
 
   const [announcements, setAnnouncements] = useRecoilState(announcementsAtom);
 
-  const returnFunc = useFetch(null, "shared/getAllAnnouncements", "GET");
+  const returnFunc = useFetch(null, "api/shared/getAllAnnouncements", "GET");
 
 
  useEffect( () => {
+   console.log(announcements);
+   
    announcements.length==0 && 
     returnFunc()
-    .then((res) => {setAnnouncements(res); console.log("went in announcements"); });
+    .then((res) => setAnnouncements(res.announcements));
   }, [])
 
 
