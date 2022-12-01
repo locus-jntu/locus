@@ -1,10 +1,15 @@
 import { Button, Chip } from "@mui/material";
+import Link from "next/link";
+import { useState } from "react";
 import lightTheme from "../../styles/theme/lightTheme";
 import LButton from "../LButton";
 
 const CompanyCard = ({ data, role }) => {
+
+  const [cName, _] = useState(data.name.split(" ").join("").toLowerCase())
+
   return (
-    <div>
+    <Link href={`/${role}/companies/${cName}`} >
       <div className="hover:border-primary cursor-pointer border-white border-2 py-2 flex text-primary bg-white rounded">
         <div className="text-base w-7/12 md:w-1/2 p-4 m-1">
           <p className="text-xl font-semibold">{data.name}</p>
@@ -43,14 +48,23 @@ const CompanyCard = ({ data, role }) => {
               ))}{" "}
             </span>
            
-           {role == "tpo" ?
+           {role == "pc" ?
             <div className="flex">
-              <LButton style={{ marginRight: 8}} width="100%" name="Apply" />
+              <Link href={`/${role}/companies/${cName}/apply`} >
+                <LButton style={{ marginRight: 8}} width="100%" name="Apply" />
+              </Link>
               <LButton style={{ marginRight: 8}} width={150} name="edit" />
               <LButton style={{ marginRight: 8}} width={150} name="delete" />
             </div> : 
+            role == "tpo" ? 
+              <div className="flex">
+                <LButton style={{ marginRight: 12}} width="100%" name="edit" />
+                <LButton width="100%" name="delete" />
+              </div> :
             <div>
-               <LButton style={{ marginRight: 8}} width="100%" name="Apply" />
+              <Link href={`/${role}/companies/${cName}/apply`} >
+                <LButton style={{ marginRight: 8}} width="100%" name="Apply" />
+              </Link>
             </div>
            }
 
@@ -58,7 +72,7 @@ const CompanyCard = ({ data, role }) => {
         </div>
       </div>
       <hr className="border-gray-400 border-1 " />
-    </div>
+    </Link>
   );
 };
 

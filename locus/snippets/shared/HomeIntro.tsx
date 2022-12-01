@@ -47,7 +47,7 @@ const HomeIntro = (props: HomeIntroProps) => {
             <p className="tracking-wider mb-2 "><span className="mr-2">{data.rollNumber}</span> | <span className="ml-2">{data.department}</span></p>
         </div>
     </div>  
-    <Link href={props.role==="student" ? `/${props.role}/companies` : `/companies/add`}>
+    <Link href={props.role==="student" ? `/${props.role}/companies` : `/${props.role}/companies/add`}>
         <p className="text-center my-24 text-xl hover:underline underline-offset-4 cursor-pointer"> {props.role==="student" ? `Apply for your dream companies` : `Add a new company`} &nbsp;&nbsp;&nbsp;<span className="text-3xl"> &rarr; </span> </p> 
     </Link>
     </>

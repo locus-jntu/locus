@@ -1,23 +1,23 @@
-import CompanyCard from "../../components/company-cards/CompanyCard"
-import Nav from "../../components/Nav"
-import Sidebar from "../../components/Sidebar"
-import Footer from "../../components/Footer";
+import CompanyCard from "../../../components/company-cards/CompanyCard"
+import Nav from "../../../components/Nav"
+import Sidebar from "../../../components/Sidebar"
+import Footer from "../../../components/Footer";
 import { createRef, useEffect, useRef, useState } from "react";
-import Input from "../../components/Input";
+import Input from "../../../components/Input";
 import Modal from '@mui/material/Modal';
-import Autofill from "../../components/Autofill";
-import Radio from "../../components/Radio";
-import Checkbox from "../../components/Checkbox";
+import Autofill from "../../../components/Autofill";
+import Radio from "../../../components/Radio";
+import Checkbox from "../../../components/Checkbox";
 import { useRouter } from "next/router";
-import MultipleSelect from "../../components/Multiselect";
-import lightTheme from "../../styles/theme/lightTheme";
-import LButton from "../../components/LButton";
+import MultipleSelect from "../../../components/Multiselect";
+import lightTheme from "../../../styles/theme/lightTheme";
+import LButton from "../../../components/LButton";
 import { Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import ExcelToJSON from "../../utility/excel/excelToJSON";
-import { useGenerateKeys } from "../../utility/useGenerateKeys.js";
-import { getType, getValues } from "../../utility/helperInput.js";
-import Layout from "../../components/Layout";
+import ExcelToJSON from "../../../utility/excel/excelToJSON";
+import { useGenerateKeys } from "../../../utility/useGenerateKeys.js";
+import { getType, getValues } from "../../../utility/helperInput.js";
+import Layout from "../../../components/Layout";
 
 const Companies = () => {
  

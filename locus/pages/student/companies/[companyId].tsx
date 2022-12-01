@@ -1,18 +1,18 @@
 import { Button, ButtonGroup, FormControl, FormControlLabel, FormGroup, FormLabel, RadioGroup } from "@mui/material"
-import CompanyCard from "../../components/company-cards/CompanyCard"
-import Nav from "../../components/Nav"
-import Sidebar from "../../components/Sidebar"
+import CompanyCard from "../../../components/company-cards/CompanyCard"
+import Nav from "../../../components/Nav"
+import Sidebar from "../../../components/Sidebar"
 import SortIcon from '@mui/icons-material/Sort';
-import Footer from "../../components/Footer";
-import useFetch from "../../utility/hooks/useFetch";
+import Footer from "../../../components/Footer";
+import useFetch from "../../../utility/hooks/useFetch";
 import { createRef, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { companiesAtom } from "../../recoil/atoms";
-import Input from "../../components/Input";
+import { companiesAtom } from "../../../recoil/atoms";
+import Input from "../../../components/Input";
 import Modal from '@mui/material/Modal';
-import Autofill from "../../components/Autofill";
-import Radio from "../../components/Radio";
-import Checkbox from "../../components/Checkbox";
+import Autofill from "../../../components/Autofill";
+import Radio from "../../../components/Radio";
+import Checkbox from "../../../components/Checkbox";
 import { useRouter } from "next/router";
 
 const Companies = () => {

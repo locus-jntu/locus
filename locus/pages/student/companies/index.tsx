@@ -1,4 +1,4 @@
-import Companies from "../../snippets/shared/Companies"
+import Companies from "../../../snippets/shared/Companies"
 
 const StudentCompanies = () =>  (
    <Companies role="student" />
