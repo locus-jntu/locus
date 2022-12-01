@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import SecureLS from "secure-ls";
+import Loader from "../snippets/shared/Loader";
 import NoAccess from "../snippets/shared/NoAccess";
 import Footer from "./Footer"
 import Nav from "./Nav"
@@ -25,6 +26,7 @@ const Layout = (props: any) => {
    return (
     <>
       { 
+        role == ''  ? <Loader /> :
         role!= props.role ? <NoAccess /> :  
           <div className="h-screen overflow-hidden w-screen flex">
 

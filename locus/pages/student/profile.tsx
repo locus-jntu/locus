@@ -45,7 +45,7 @@ const ProfileForm = () => {
   }
 
   return (
-    <Layout role="ROLE_STUDENT">
+    <Layout role="student">
       <div className="flex flex-col items-center justify-center bg-gray-200">
         <p className="pt-4 px-8 font-comforta text-center text-xl font-bold underline underline-offset-4"> Profile  </p>
         <form className="box-border w-full text-primary md:w-11/12 lg:w-9/12 font-montserrat">

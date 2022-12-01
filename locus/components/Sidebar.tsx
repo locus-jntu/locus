@@ -22,17 +22,7 @@ const Sidebar = ({ component, name="user" }) => {
   
   useEffect(() => {
     const ls = new SecureLS({encodingType: 'aes', isCompression: false})
-    switch(ls.get("role")){
-      case 'ROLE_TPO':
-        setRole("tpo");
-        break;
-      case 'ROLE_STUDENT':
-        setRole("student");
-        break;
-      case 'ROLE_PC':
-        setRole("pc");
-        break;
-    }
+    setRole(ls.get("role"));
   }, [])
 
   function logout(){

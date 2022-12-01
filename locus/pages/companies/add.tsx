@@ -131,7 +131,7 @@ const Companies = () => {
 
   return (
     
-    <Layout>
+    <Layout role="tpo">
 
           <div className="flex flex-col justify-center items-center px-4 mt-2 mb-8">
 

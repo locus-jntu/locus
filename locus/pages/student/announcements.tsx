@@ -1,7 +1,7 @@
 import Announcements from "../../snippets/shared/Announcements"
 
 const StudentAnnouncements = () =>  (
-   <Announcements role="ROLE_STUDENT" />
+   <Announcements role="student" />
 )
 
 export default StudentAnnouncements

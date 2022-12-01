@@ -1,7 +1,7 @@
 import Companies from "../../snippets/shared/Companies"
 
 const TpoCompanies = () =>  (
-   <Companies role="ROLE_TPO" />
+   <Companies role="tpo" />
 )
 
 export default TpoCompanies

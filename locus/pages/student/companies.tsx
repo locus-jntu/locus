@@ -1,7 +1,7 @@
 import Companies from "../../snippets/shared/Companies"
 
 const StudentCompanies = () =>  (
-   <Companies role="ROLE_STUDENT" />
+   <Companies role="student" />
 )
 
 export default StudentCompanies

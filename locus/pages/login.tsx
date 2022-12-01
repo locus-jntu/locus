@@ -26,20 +26,24 @@ const LoginForm = () => {
         setStatus("loading");
         const data = await returnFunc();
         setOpen(false);
+        let role;
         switch(data.roles[0].authority){
             case "ROLE_TPO":
+                role = "tpo";
                 router.push("/tpo");
                 break;
             case "ROLE_PC":
+                role = "pc";
                 router.push("/pc");
                 break;
             case "ROLE_STUDENT":
+                role = "student";
                 router.push("/student/profile");
                 break;
         }
         const ls = new SecureLS({encodingType: 'aes', isCompression: false});
         ls.set("jwt", data.jwt);
-        ls.set("role", data.roles[0].authority);
+        ls.set("role", role);
       }catch(err){
           console.log(err);
           setStatus("failed");

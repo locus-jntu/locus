@@ -1,7 +1,7 @@
 import Announcements from "../../snippets/shared/Announcements"
 
 const TpoAnnouncements = () =>  (
-   <Announcements role="ROLE_TPO" />
+   <Announcements role="tpo" />
 )
 
 export default TpoAnnouncements

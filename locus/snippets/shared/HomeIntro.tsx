@@ -20,7 +20,7 @@ const HomeIntro = (props: HomeIntroProps) => {
     <>
     <div className="flex relative">
 
-      {props.role === "ROLE_STUDENT" ? 
+      {props.role === "student" ? 
         <div className="hidden md:block h-96 p-16">
             <p className="text-xl md:text-4xl font-semibold mb-4">Browse. Apply.</p>
             <p className="text-xl md:text-4xl font-semibold mb-8">Prepare Your Future.</p>
@@ -47,8 +47,8 @@ const HomeIntro = (props: HomeIntroProps) => {
             <p className="tracking-wider mb-2 "><span className="mr-2">{data.rollNumber}</span> | <span className="ml-2">{data.department}</span></p>
         </div>
     </div>  
-    <Link href={props.role==="ROLE_STUDENT" ? "/companies" : "/companies/add"}>
-        <p className="text-center my-24 text-xl hover:underline underline-offset-4 cursor-pointer"> {props.role==="ROLE_STUDENT" ? `Apply for your dream companies` : `Add a new company`} &nbsp;&nbsp;&nbsp;<span className="text-3xl"> &rarr; </span> </p> 
+    <Link href={props.role==="student" ? `/${props.role}/companies` : `/companies/add`}>
+        <p className="text-center my-24 text-xl hover:underline underline-offset-4 cursor-pointer"> {props.role==="student" ? `Apply for your dream companies` : `Add a new company`} &nbsp;&nbsp;&nbsp;<span className="text-3xl"> &rarr; </span> </p> 
     </Link>
     </>
   )
