@@ -7,6 +7,7 @@ import com.example.locus.Tpo.ManagePc.Dto.CreatePcRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ public class ManagePcServiceImpl implements ManagePcService{
 
     String PC_PREFIX = "pc.";
     String PC_POSTFIX = "@jntu.in";
+    int PASSWORD_LENGTH = 8;
 
     UserRepository userRepository;
 
@@ -26,7 +28,7 @@ public class ManagePcServiceImpl implements ManagePcService{
     @Override
     public boolean createPc(CreatePcRequest createPcRequest) {
         UserModel userModel = userRepository.findUserByUsername(createPcRequest.getUsername());
-        if(userModel == null){
+        if(userModel != null){
             System.out.println("Pc Already exists.");
             return false;
         }
@@ -41,7 +43,7 @@ public class ManagePcServiceImpl implements ManagePcService{
         userModel.setRoles(roles);
 
         // Create a random password everytime.
-        userModel.setPassword("password");
+        userModel.setPassword(generateRandomPassword(PASSWORD_LENGTH));
 
         // Saving data into db.
         userRepository.save(userModel);
@@ -58,5 +60,24 @@ public class ManagePcServiceImpl implements ManagePcService{
         }
         return false;
     }
+
+    public String generateRandomPassword(int len){
+        // ASCII range – alphanumeric (0-9, a-z, A-Z)
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+
+        // each iteration of the loop randomly chooses a character from the given
+        // ASCII range and appends it to the `StringBuilder` instance
+
+        for (int i = 0; i < len; i++) {
+            int randomIndex = random.nextInt(chars.length());
+            sb.append(chars.charAt(randomIndex));
+        }
+
+        return sb.toString();
+    }
+
 
 }
