@@ -7,36 +7,17 @@ import CompaniesSM from "../../snippets/shared/Companies-sm"
 import AnnouncementsSM from "../../snippets/shared/Announcements-sm"
 
 interface HomeProps {
-   roleName: string
+   role: string
 }
 
 const Home = (props: HomeProps) => {
- 
-  const router = useRouter();
-
-  const [role, setRole] = useState('');
-
-  useEffect(() => {
-    if(localStorage.getItem("jwt")){
-        setRole(localStorage.getItem("role"));
-    }else{
-      router.push('/login');
-    }
-  }, []);
-  
 
   return (
-    <>
-      {
-        role!= props.roleName ? <NoAccess />
-       :
-       <Layout component="dashboard">
-          <HomeIntro role={role}/>
+       <Layout role={props.role} component="dashboard">
+          <HomeIntro role={props.role}/>
           <CompaniesSM />
-          <AnnouncementsSM role={role} />
+          <AnnouncementsSM role={props.role} />
         </Layout>
-      }
-    </>
   )
 }
 

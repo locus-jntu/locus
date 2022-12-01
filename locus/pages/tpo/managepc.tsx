@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import LButton from "../../components/LButton";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useRef } from "react";
+import Layout from "../../components/Layout";
 
 const ManagePC = () => {
 
@@ -16,12 +17,7 @@ const ManagePC = () => {
   const searchRef = useRef(null);
 
   return (
-    <div className="h-screen overflow-hidden flex">
-
-      <Sidebar component="companies"/>
-
-      <div className="bg-gray-200 flex-grow text-primary overflow-y-auto relative">
-          <Nav role='tpo' />
+      <Layout role="ROLE_TPO">
 
           <div className="px-4 mt-2 mb-8">
              <p className="pt-4 px-8 font-comforta text-center text-xl font-bold underline underline-offset-4"> Manage PCs  </p>
@@ -115,12 +111,8 @@ const ManagePC = () => {
             </div>
           </Modal>
 
-          <Footer />
-      </div>
-
-    </div>
+      </Layout>
   )
 }
 
 export default ManagePC
-

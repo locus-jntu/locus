@@ -3,15 +3,16 @@ import { Button } from "@mui/material";
 
 interface ButtonProps {
   name: string
-  width?: number
-  onClick?: any;
-  height?: number
+  width?: number | string
+  onClick?: any
+  height?: number | string
   style?: any
+  color?: "inherit" | "secondary" | "primary" | "success" | "error" | "info" | "warning"
 }
 
 const LButton = (props: ButtonProps) => (
     <Button
-        className="rounded hover:text-white"
+        className="rounded bg-secondary text-white"
         sx={{
         width: props.width ?? 40,
         height: props.height ?? 40,
@@ -22,7 +23,7 @@ const LButton = (props: ButtonProps) => (
         }}
         style={props.style}
         size="small"
-        color="secondary"
+        color={props.color ?? "secondary" } 
         variant="contained"
         onClick={props.onClick}
     >

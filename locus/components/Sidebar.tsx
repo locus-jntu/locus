@@ -9,15 +9,20 @@ import { Avatar } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import lightTheme from "../styles/theme/lightTheme";
 import { useState, useEffect } from "react";
+import SecureLS from "secure-ls";
+import { useRouter } from "next/router";
 
 const Sidebar = ({ component, name="user" }) => {
   const classname = (id) =>
     component == id ? "text-white" : "";
+
+  const router = useRouter();
   
   const [role, setRole] = useState("");
   
   useEffect(() => {
-    switch(localStorage.getItem("role")){
+    const ls = new SecureLS({encodingType: 'aes', isCompression: false})
+    switch(ls.get("role")){
       case 'ROLE_TPO':
         setRole("tpo");
         break;
@@ -29,6 +34,12 @@ const Sidebar = ({ component, name="user" }) => {
         break;
     }
   }, [])
+
+  function logout(){
+    const ls = new SecureLS({encodingType: 'aes', isCompression: false});
+    router.push("/login")
+    ls.removeAll();
+  }
   
 
   return (
@@ -81,8 +92,8 @@ const Sidebar = ({ component, name="user" }) => {
           Events
         </span>
       </div> 
-
-      <div className="flex absolute bottom-8 p-2 px-4 hover:underline underline-offset-4 cursor-pointer">
+ 
+      <div onClick={logout} className="flex absolute bottom-8 p-2 px-4 hover:underline underline-offset-4 cursor-pointer">
         <LogoutIcon />{" "}
         <span className="hidden group-hover:block pl-8">
           Logout

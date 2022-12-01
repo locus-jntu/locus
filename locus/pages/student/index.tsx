@@ -1,7 +1,7 @@
 import Home from "../../snippets/shared/Home"
 
 const StudentHome = () =>  (
-   <Home roleName="ROLE_STUDENT" />
+   <Home role="ROLE_STUDENT" />
 )
 
 export default StudentHome

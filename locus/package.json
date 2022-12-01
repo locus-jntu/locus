@@ -20,6 +20,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "recoil": "^0.7.6",
+    "secure-ls": "^1.2.6",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

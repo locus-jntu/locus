@@ -12,6 +12,7 @@ import { useRecoilValue } from "recoil";
 import { Token } from "../../providers/TokenProvider";
 import Nav from "../../components/Nav";
 import Sidebar from "../../components/Sidebar";
+import Layout from "../../components/Layout";
 
 const ProfileForm = () => {
   const [data, setData] = React.useState(profileData);
@@ -44,12 +45,7 @@ const ProfileForm = () => {
   }
 
   return (
-    <div className="h-screen overflow-hidden flex">
-
-      <Sidebar component="profile"/>
-
-      <div className="bg-gray-200 flex-grow text-primary overflow-y-auto relative">
-          <Nav role='tpo' />
+    <Layout role="ROLE_STUDENT">
       <div className="flex flex-col items-center justify-center bg-gray-200">
         <p className="pt-4 px-8 font-comforta text-center text-xl font-bold underline underline-offset-4"> Profile  </p>
         <form className="box-border w-full text-primary md:w-11/12 lg:w-9/12 font-montserrat">
@@ -603,8 +599,8 @@ const ProfileForm = () => {
           </div>
         </form>
       </div>
-    </div>
-   </div>
+    </Layout>
+   
   );
 };
 

@@ -1,22 +1,49 @@
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import SecureLS from "secure-ls";
+import NoAccess from "../snippets/shared/NoAccess";
 import Footer from "./Footer"
 import Nav from "./Nav"
 import Sidebar from "./Sidebar"
 
-const Layout = (props: any) => (
-    <div className="h-screen overflow-hidden w-screen flex">
+const Layout = (props: any) => {
+   
+  const router = useRouter();
 
-      <div style={{height: '100%'}} className="flex absolute z-10">
-        <Sidebar component={props.component} />
-      </div>
+  const [role, setRole] = useState('');
 
-      <div style={{paddingLeft: 80}} className="bg-gray-200 flex-grow text-primary overflow-y-auto relative">
-          <Nav />
-          {props.children}
-          <Footer />
+  useEffect(() => {
+    var ls = new SecureLS({encodingType: 'aes', isCompression: false})
+    if(ls.get("jwt")){
+        setRole(ls.get("role"));
+    }else{
+      router.push('/login');
+    }
+  }, []);
 
-      </div>
+  
+   return (
+    <>
+      { 
+        role!= props.role ? <NoAccess /> :  
+          <div className="h-screen overflow-hidden w-screen flex">
 
-    </div>
-)
+            <div style={{height: '100%'}} className="flex absolute z-10">
+              <Sidebar component={props.component} />
+            </div>
+
+            <div style={{paddingLeft: 80}} className="bg-gray-200 flex-grow text-primary overflow-y-auto relative">
+                <Nav />
+                {props.children}
+                <Footer />
+
+            </div>
+
+          </div>
+      }
+    </>
+  )
+
+}
 
 export default Layout

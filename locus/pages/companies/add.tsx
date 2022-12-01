@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ExcelToJSON from "../../utility/excel/excelToJSON";
 import { useGenerateKeys } from "../../utility/useGenerateKeys.js";
 import { getType, getValues } from "../../utility/helperInput.js";
+import Layout from "../../components/Layout";
 
 const Companies = () => {
  
@@ -129,12 +130,8 @@ const Companies = () => {
   }
 
   return (
-    <div className="h-screen overflow-hidden flex">
-
-      <Sidebar component="companies"/>
-
-      <div className="bg-gray-200 flex-grow text-primary overflow-y-auto relative">
-          <Nav role='tpo' />
+    
+    <Layout>
 
           <div className="flex flex-col justify-center items-center px-4 mt-2 mb-8">
 
@@ -250,9 +247,7 @@ const Companies = () => {
               
             </div>
           </Modal>
-          <Footer />
-      </div>
-    </div>
+    </Layout>
   )
 }
 

@@ -3,11 +3,12 @@ import lightTheme from "../styles/theme/lightTheme";
 import Input from "../components/Input";
 import { creds as credentials } from "../utility/data/credentials";
 import  useFetch from "../utility/hooks/useFetch.js";
-import React, {useState, useContext, useRef} from "react";
+import React, {useState, useContext, useRef, useEffect} from "react";
 import Popup from "../components/Popup";
 import { useRecoilState } from "recoil";
 import { setToken, Token } from "../providers/TokenProvider";
 import { Router, useRouter } from "next/router";
+import SecureLS from "secure-ls";
 
 const LoginForm = () => {
 
@@ -18,7 +19,6 @@ const LoginForm = () => {
     const [status, setStatus] = useState("");
 
     const returnFunc = useFetch(creds, "api/login", "POST");
-
     
     const onclicked = async() => {
       try{
@@ -37,8 +37,9 @@ const LoginForm = () => {
                 router.push("/student/profile");
                 break;
         }
-        localStorage.setItem("jwt", data.jwt);
-        localStorage.setItem("role", data.roles[0].authority);
+        const ls = new SecureLS({encodingType: 'aes', isCompression: false});
+        ls.set("jwt", data.jwt);
+        ls.set("role", data.roles[0].authority);
       }catch(err){
           console.log(err);
           setStatus("failed");

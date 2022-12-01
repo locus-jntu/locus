@@ -1,7 +1,10 @@
+import SecureLS from "secure-ls";
+
 export default function useFetch(payload, route, reqType) {
 
   const _func = async () => {
-    const jwt = localStorage.getItem("jwt");
+    var ls = new SecureLS({encodingType: 'aes', isCompression: false})
+    const jwt = ls.get("jwt");
 
     const headers = jwt ? {   
       "Content-Type": "application/json",
