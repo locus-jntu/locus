@@ -72,8 +72,8 @@ public class WebSecurityConfig{
                     p.antMatchers("/api/pc/*").hasRole(PC.toString());
                     p.antMatchers("/api/tpo/*").hasRole(TPO.toString());
                     p.antMatchers("/api/student/*").hasRole(STUDENT.toString());
-                    p.antMatchers("/").permitAll();
                     p.antMatchers(HttpMethod.POST,"/api/login").permitAll();
+                    p.antMatchers("/").permitAll();
                     p.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtTokenFilter,UsernamePasswordAuthenticationFilter.class);

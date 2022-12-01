@@ -2,6 +2,7 @@ package com.example.locus.Security;
 
 import com.example.locus.Common.Enum.UserRole;
 import lombok.Data;
+import lombok.ToString;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -19,7 +20,8 @@ import java.util.Set;
 @Document("user")
 @Data
 public class UserModel implements UserDetails {
-    String ROLE_PREFIX = "ROLE_";
+
+    private String ROLE_PREFIX = "ROLE_";
 
     private @MongoId ObjectId id;
     private String username;
