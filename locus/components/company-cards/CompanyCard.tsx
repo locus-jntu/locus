@@ -1,12 +1,11 @@
 import { Button, Chip } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
-import lightTheme from "../../styles/theme/lightTheme";
 import LButton from "../LButton";
 
 const CompanyCard = ({ data, role }) => {
 
-  const [cName, _] = useState(data.name.split(" ").join("").toLowerCase())
+  const [cName, _] = useState(data.name.split(" ").join("").toLowerCase());
 
   return (
     <Link href={`/${role}/companies/${cName}`} >
