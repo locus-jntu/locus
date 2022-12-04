@@ -27,7 +27,9 @@ public class ManagePcServiceImpl implements ManagePcService{
 
     @Override
     public boolean createPc(CreatePcRequest createPcRequest) {
-        UserModel userModel = userRepository.findUserByUsername(createPcRequest.getUsername());
+        String username = PC_PREFIX + createPcRequest.getUsername() + PC_POSTFIX;
+
+        UserModel userModel = userRepository.findUserByUsername(username);
         if(userModel != null){
             System.out.println("Pc Already exists.");
             return false;
@@ -37,7 +39,6 @@ public class ManagePcServiceImpl implements ManagePcService{
 
         Set<UserRole> roles = new HashSet<>();
         roles.add(UserRole.PC);
-        String username = PC_PREFIX + createPcRequest.getUsername() + PC_POSTFIX;
 
         userModel.setUsername(username);
         userModel.setRoles(roles);

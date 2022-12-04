@@ -10,11 +10,26 @@ import LButton from "../../components/LButton";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useRef } from "react";
 import Layout from "../../components/Layout";
+import useFetch from "../../utility/hooks/useFetch";
 
 const ManagePC = () => {
 
   const [open, setOpen] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [pcInput, setPcInput] = useState("");
   const searchRef = useRef(null);
+
+  const selectPc = async() => {    
+     const pcSelectFunction = useFetch({username: pcInput},"api/tpo/createPc", "POST")
+     const data = await pcSelectFunction();
+     
+     if(data) setMsg("PC updated.");
+     else setMsg("Something went wrong! same PC might have already existed.")
+  } 
+
+  const changePcInput = (e) => {
+    setPcInput(e.target.value);
+  }  
 
   return (
       <Layout role="tpo">
@@ -30,7 +45,7 @@ const ManagePC = () => {
                         <p className="pr-2">Bilal Aamer |</p>
                         <p>19011P0506</p>
                     </div>
-                    <EditIcon onClick={() => setOpen(true)} />
+                        <EditIcon onClick={() => {setOpen(true); setPcInput(""); }} />
                 </div>
                 
                 <div className="p-4 flex justify-between border-2 rounded hover:border-gray-800">
@@ -105,8 +120,9 @@ const ManagePC = () => {
                 <div className="w-screen bg-white pt-12 relative pb-24 flex justify-center items-center">
                     <CloseIcon onClick={() => setOpen(false)} className="absolute right-8 top-8" />
                     <SearchIcon style={{fontSize: 38, position: 'relative', top: 8}} />
-                    <Input ref={(searchRef) => {searchRef && searchRef.focus() }} name="pc" labelStyles={{fontWeight: '500'}} containerStyle={{width: '50%'}} label="select a pc" />
-                    <LButton height={54} style={{position: 'relative', top: 5}} width={72} name="SELECT" />
+                    <Input value={pcInput} onChange={changePcInput} ref={(ref) => {ref && ref.focus(); }} name="pc" labelStyles={{fontWeight: '500'}} containerStyle={{width: '50%'}} label="select a pc" />
+                    <LButton onClick={selectPc} height={54} style={{position: 'relative', top: 5}} width={72} name="SELECT" />
+                    <p className="absolute bottom-4">{msg}</p>
                 </div>
             </div>
           </Modal>

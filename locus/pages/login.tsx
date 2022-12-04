@@ -18,13 +18,13 @@ const LoginForm = () => {
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState("");
 
-    const returnFunc = useFetch(creds, "api/login", "POST");
+    const loginFunction = useFetch(creds, "api/login", "POST");
     
     const onclicked = async() => {
       try{
         setOpen(true);
         setStatus("loading");
-        const data = await returnFunc();
+        const data = await loginFunction();
         setOpen(false);
         let role;
         switch(data.roles[0].authority){
