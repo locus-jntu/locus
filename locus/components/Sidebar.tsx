@@ -2,6 +2,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BusinessIcon from "@mui/icons-material/Business";
 import CampaignIcon from "@mui/icons-material/Campaign";
+import PeopleIcon from '@mui/icons-material/People';
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Link from "next/link";
@@ -29,8 +30,7 @@ const Sidebar = ({ component, name="user" }) => {
     const ls = new SecureLS({encodingType: 'aes', isCompression: false});
     router.push("/login")
     ls.removeAll();
-  }
-  
+  } 
 
   return (
     <div
@@ -74,7 +74,18 @@ const Sidebar = ({ component, name="user" }) => {
             Announcements
           </span>
         </div>
-      </Link> 
+      </Link>
+
+      {role=="tpo"?<Link href={`/${role}/managepc`}>
+        <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("announcements")}`}>
+          <PeopleIcon />{" "}
+          <span className="hidden group-hover:block pl-8">
+            Manage PC
+          </span>
+        </div>
+      </Link>: null}
+
+        
 
       <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("events")}`}>
         <VideoLibraryIcon />{" "}
