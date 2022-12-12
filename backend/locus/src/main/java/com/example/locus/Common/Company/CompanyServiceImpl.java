@@ -1,15 +1,16 @@
 package com.example.locus.Common.Company;
 
-import com.example.locus.Common.Announcements.Model.Announcement;
+import com.example.locus.Common.Company.Dto.CreateCompanyProfileTemplateDto;
 import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
 import com.example.locus.Common.Company.Model.Company;
+import com.example.locus.Common.Company.Repository.CompanyRepository;
+import com.example.locus.Common.Company.Model.CompanyUserProfileTemplate;
+import com.example.locus.Common.Company.Repository.CompanyUserProfileTemplateRepository;
 import com.example.locus.Common.Enum.Branch;
 import com.example.locus.Common.Enum.JobCategory;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    CompanyUserProfileTemplateRepository companyUserProfileTemplateRepository;
 
     @Override
     public List<Company> getAllCompanies() {
@@ -42,6 +46,19 @@ public class CompanyServiceImpl implements CompanyService{
         company.setStatus(companyRequest.getStatus());
 
         companyRepository.save(company);
+        return true;
+    }
+
+    @Override
+    public boolean createNewCompanyUserProfileTemplate(CreateCompanyProfileTemplateDto profileTemplate) {
+        CompanyUserProfileTemplate companyUserProfileTemplate = new CompanyUserProfileTemplate();
+
+        companyUserProfileTemplate.setFixed(profileTemplate.getFixed());
+        companyUserProfileTemplate.setExtraData(profileTemplate.getExtraData());
+        companyUserProfileTemplate.setCompanyId(profileTemplate.getCompanyId());
+        companyUserProfileTemplate.setDetails(profileTemplate.getDetails());
+
+        companyUserProfileTemplateRepository.save(companyUserProfileTemplate);
         return true;
     }
 }

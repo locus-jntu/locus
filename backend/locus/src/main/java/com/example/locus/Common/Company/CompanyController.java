@@ -1,5 +1,6 @@
 package com.example.locus.Common.Company;
 
+import com.example.locus.Common.Company.Dto.CreateCompanyProfileTemplateDto;
 import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
 import com.example.locus.Common.Company.Model.Company;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,12 @@ public class CompanyController {
 
     // should be in tpo route / pc route
     @PostMapping(value = "/api/admin/createNewCompany")
-        public boolean createNewCompany(@RequestBody CreateCompanyRequest companyRequest){
-            return companyService.insertNewCompany(companyRequest);
+    public boolean createNewCompany(@RequestBody CreateCompanyRequest companyRequest){
+        return companyService.insertNewCompany(companyRequest);
+    }
+
+    @PostMapping(value = "/api/admin/createCompanyUserProfileTemplate")
+    public boolean createCompanyProfileTemplate(@RequestBody CreateCompanyProfileTemplateDto createCompanyProfileTemplate){
+       return companyService.createNewCompanyUserProfileTemplate(createCompanyProfileTemplate);
     }
 }
