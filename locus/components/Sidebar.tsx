@@ -77,10 +77,10 @@ const Sidebar = ({ component, name="user" }) => {
       </Link>
 
       {role=="tpo"?<Link href={`/${role}/managepc`}>
-        <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("announcements")}`}>
+        <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("managepc")}`}>
           <PeopleIcon />{" "}
           <span className="hidden group-hover:block pl-8">
-            Manage PC
+            ManagePC
           </span>
         </div>
       </Link>: null}

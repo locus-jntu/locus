@@ -32,7 +32,7 @@ const ManagePC = () => {
   }  
 
   return (
-      <Layout role="tpo">
+      <Layout component="managepc" role="tpo">
 
           <div className="px-4 mt-2 mb-8">
              <p className="pt-4 px-8 font-comforta text-center text-xl font-bold underline underline-offset-4"> Manage PCs  </p>

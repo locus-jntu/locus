@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Company from "../../../snippets/shared/Company";
+import Company from "../../../../snippets/shared/Company";
 
 const CompanyDetails = () => {
 
@@ -7,7 +7,7 @@ const CompanyDetails = () => {
   const { companyId } = router.query;
 
   return (
-    <Company role="tpo" cid={companyId}/>
+    <Company role="student" cid={companyId}/>
   )
 }
 
