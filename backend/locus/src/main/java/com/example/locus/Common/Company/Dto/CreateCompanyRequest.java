@@ -9,13 +9,17 @@ import java.util.List;
 public class CreateCompanyRequest {
 
     String name;
+    String year;
     String description;
-    List<String> branches;
+    List<Branch> branches;
     // Need to change type to objectid
     List<String> assignee;
     String status;
     String ctc;
     String role;
-    String jobOfferType;
+    String jobCategory;
     String eligibility;
+
+    List<String> fixedUserProfileSchema;
+    List<ExtraUserProfileSchema> extraUserProfileSchema;
 }
