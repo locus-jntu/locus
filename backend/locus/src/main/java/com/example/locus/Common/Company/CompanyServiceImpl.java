@@ -43,12 +43,12 @@ public class CompanyServiceImpl implements CompanyService{
         company.setDescription(companyRequest.getDescription());
         company.setLabels(companyRequest.getBranches());
         company.setStatus(companyRequest.getStatus());
+        company.setAssignee(List.of("Bilal","Vasanth")); // Should be user id mapping
 
         // Schema for User Profile data
         company.setFixedUserProfileSchema(companyRequest.getFixedUserProfileSchema());
         company.setExtraUserProfileSchema(companyRequest.getExtraUserProfileSchema());
 
-        // change this to dynamic
         switch (JobCategory.valueOf(companyRequest.getJobCategory())){
             case NON_DREAM:
                 company.setJobOfferType(NON_DREAM);

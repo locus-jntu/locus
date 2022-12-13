@@ -31,4 +31,5 @@ public class Company {
 
     List<String> fixedUserProfileSchema;
     List<ExtraUserProfileSchema> extraUserProfileSchema;
+    List<String> assignee;
 }
