@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Accordian from "../../components/Accordian";
 import Footer from "../../components/Footer";
 import Layout from "../../components/Layout";
 import LButton from "../../components/LButton";
@@ -17,7 +18,49 @@ const Company = (props: companyProps) => {
     name : 'Goldman Sachs',
     role : 'SDE',
     jobOfferType: 'Internship',
-    ctc: '1L/mon'
+    ctc: '1L/mon',
+    pastdata: [
+      {
+        year: '2022',
+        depts: [
+          {
+             dept: 'cse',
+             data: [
+              {
+                rollnumber: '19011P0525',
+                name: 'mahesh',
+                linkedIn: 'linkedin/mahesh'
+              },
+              {
+                rollnumber: '19011P0512',
+                name: 'hrushi',
+                linkedIn: 'linkedin/hrushi'
+              },
+             ]
+          },
+        ]
+      },
+      {
+        year: '2021',
+        depts: [
+          {
+             dept: 'cse',
+             data: [
+              {
+                rollnumber: '19011P0525',
+                name: 'mahesh',
+                linkedIn: 'linkedin/mahesh'
+              },
+              {
+                rollnumber: '19011P0512',
+                name: 'hrushi',
+                linkedIn: 'linkedin/hrushi'
+              },
+             ]
+          },
+        ]
+      }
+    ]
   }
  
   return (
@@ -45,13 +88,22 @@ const Company = (props: companyProps) => {
                status comes here
              </div>
           </div>
-          <Link  href={`/${props.role}/companies/add?editcid=${props.cid}`}>
-            <LButton style={{width: '100%'}} name={props.role=='tpo' ? "edit application form" : "view application form"} />
-          </Link>
+
+          {
+            props.role=='tpo' ?
+            <Link  href={`/tpo/companies/add?editcid=${props.cid}`}>
+              <LButton style={{width: '100%'}} name="edit application form" />
+            </Link> : 
+            <Link  href={`/student/companies/${props.cid}/apply`}>
+              <LButton style={{width: '100%'}} name="view application form"/>
+            </Link>
+          }
 
           <p className="text-sm underline underline-offset-4 mb-2 mt-8 font-semibold text-gray-400">
             Past Alumni Details :{" "}
           </p> 
+
+          <Accordian data={data.pastdata} />
 
         </div>
     </Layout>
