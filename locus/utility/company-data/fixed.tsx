@@ -38,12 +38,14 @@ export function getComponent(name: string) {
         case 'degree':
             return <Autofill
             value={data.degree}
+            fullWidth={true}
             name="degree"
             />
         
         case 'department':
             return <Autofill
             value={data.department}
+            fullWidth={true}
             name="department"
           />
         

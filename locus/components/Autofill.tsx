@@ -9,17 +9,18 @@ interface AutoProps {
   value?: any
   onChange?: any
   clearOnBlur?:boolean
+  style?:any
 }
 
 const Autofill = forwardRef((props: AutoProps, ref) => (
     <Autocomplete
       disablePortal
       id="combo-box-demo"
-      className='mx-3 mt-3 mb-5'
+      className='mx-3 my-6'
       options={top100Films}
       value={props.value}
       onChange={props.onChange}
-      sx={{ width: props.fullWidth ? '90%' : '45%' }}
+      sx={{ width: props.fullWidth ? '97%' : '48%' }}
       renderInput={(params) => <TextField {...params} label={props.name} inputRef={ref} />}
     />
 ))
