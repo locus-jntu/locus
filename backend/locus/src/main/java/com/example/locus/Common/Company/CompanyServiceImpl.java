@@ -3,13 +3,16 @@ package com.example.locus.Common.Company;
 import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
 import com.example.locus.Common.Company.Model.Company;
 import com.example.locus.Common.Company.Repository.CompanyRepository;
-import com.example.locus.Common.Enum.Branch;
 import com.example.locus.Common.Enum.JobCategory;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.locus.Common.Enum.JobCategory.DREAM;
 import static com.example.locus.Common.Enum.JobCategory.NON_DREAM;
@@ -28,9 +31,6 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public boolean createNewCompany(CreateCompanyRequest companyRequest) {
-
-        System.out.println(companyRequest);
-//        company.
 
         Company company = new Company();
         company.setName(companyRequest.getName());
@@ -66,5 +66,20 @@ public class CompanyServiceImpl implements CompanyService{
 
         companyRepository.save(company);
         return true;
+    }
+
+    @Override
+    public Map<String,Object> fetchCompanyApplicationForm(ObjectId companyId) {
+        Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
+//        String userId = (String) details.get("userId");
+
+        Map<String,Object> applicationForm = new HashMap<>();
+
+        Company companyApplicationSchema = companyRepository.getCompanyApplicationSchema(companyId);
+        applicationForm.put("fixedUserProfileSchema",companyApplicationSchema.getFixedUserProfileSchema());
+        applicationForm.put("extraUserProfileSchema",companyApplicationSchema.getExtraUserProfileSchema());
+
+        // Need to send user data;
+        return applicationForm;
     }
 }

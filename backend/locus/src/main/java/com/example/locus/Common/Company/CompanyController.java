@@ -2,10 +2,12 @@ package com.example.locus.Common.Company;
 
 import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
 import com.example.locus.Common.Company.Model.Company;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -30,5 +32,10 @@ public class CompanyController {
     @PostMapping(value = "/api/admin/createNewCompany")
     public boolean createNewCompany(@RequestBody CreateCompanyRequest companyRequest){
         return companyService.createNewCompany(companyRequest);
+    }
+
+    @GetMapping(value = "/api/student/getCompanyApplicationForm")
+    public Map<String,Object> getCompanyApplicationForm(@RequestParam(name = "companyId") String companyId){
+        return companyService.fetchCompanyApplicationForm(new ObjectId(companyId));
     }
 }
