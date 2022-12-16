@@ -49,12 +49,12 @@ const CompanyForm = (props: formProps) => {
         <p className="text-xl text-center mb-4 font-bold">{formdata.name} : application form</p>
         <div style={{width: '65%', margin: 'auto'}} className="border-2 rounded p-2">
 
-        <p className="text-sm mb-2 text-center bg-secondary text-white p-2">EXISTING</p>
+        <p className="text-sm mb-2 text-center bg-secondary text-white p-2 rounded">EXISTING</p>
         {
           formdata.fixed.map(i => getComponent(i))
         }
         
-         <p className="text-sm text-center bg-secondary text-white p-2">NEW</p>
+         <p className="text-sm text-center bg-secondary text-white rounded p-2">NEW</p>
         {
           formdata.optionals.map(i => (
             <div>

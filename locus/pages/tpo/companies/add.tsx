@@ -2,7 +2,7 @@ import CompanyCard from "../../../components/company-cards/CompanyCard"
 import Nav from "../../../components/Nav"
 import Sidebar from "../../../components/Sidebar"
 import Footer from "../../../components/Footer";
-import { createRef, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Input from "../../../components/Input";
 import Modal from '@mui/material/Modal';
 import Autofill from "../../../components/Autofill";
@@ -18,26 +18,33 @@ import ExcelToJSON from "../../../utility/excel/excelToJSON";
 import { useGenerateKeys } from "../../../utility/useGenerateKeys.js";
 import { getType, getValues } from "../../../utility/helperInput.js";
 import Layout from "../../../components/Layout";
+import useFetch from "../../../utility/hooks/useFetch";
+import { NoEncryption } from "@mui/icons-material";
 
 const Companies = () => {
  
   const router = useRouter();
-  const { cid } = router.query;
+  const { companyId } = router.query;
 
-  const dataTobeSent = {
-    cid: cid,
-    defaults: ["firstName", "lastName"],
-    optionals: [
-      
-    ]
-  }
+  const nameRef = useRef();
+  const jobTypeRef = useRef();
+  const labelsRef = useRef();
+  const roleRef = useRef();
+  const descriptionRef = useRef();
+
+  const [companyData, setCompanyData] = useState({});
+
+
 
   const fixedkeys = [
-      "firstName","gendere"
+      "firstName","gender"
    ];
 
   const [defaultKeys, setDefaultKeys] = useState([]);
   const [optional, setOptional] = useState([]);
+
+  const [extraUserProfileSchema, setextraUserProfileSchema] = useState([]);
+  const [fixedUserProfileSchema, setfixedUserProfileSchema] = useState([]);
 
 
   const [constraints, setConstraints] = useState([]);
@@ -66,6 +73,7 @@ const Companies = () => {
      setDefaultKeys(keys => [...keys, {component, name}])
      setOptional(keys => keys.filter((_,ind) => ind!=index))
      setOpen(false)
+     setextraUserProfileSchema(keys => [...keys, {name, values: null, type: 'string'}])
      setType('')
   }
 
@@ -75,6 +83,7 @@ const Companies = () => {
       const component = <Radio row={true} label={label} values={names.split(",")} />
       setDefaultKeys(keys => [...keys, {component, name:label}])
       setOptional(keys => keys.filter((_,ind) => ind!=index))
+      setextraUserProfileSchema(keys => [...keys, {name: label, values: names, type: 'radio'}])
       setOpen(false)
       setType('')
   }
@@ -86,6 +95,7 @@ const Companies = () => {
     setDefaultKeys(keys => [...keys, {component, name: label}])
     setOptional(keys => keys.filter((_,ind) => ind!=index))
     setOpen(false)
+    setextraUserProfileSchema(keys => [...keys, {name: label, values: names, type: 'checkbox'}])
     setType('')
 }
 
@@ -100,6 +110,7 @@ const Companies = () => {
   const removeItem = (i) => {
       const name = i.name;
       setDefaultKeys(keys => keys.filter(item => item.name!=name))
+      setextraUserProfileSchema(keys => keys.filter(item => item.name!=name))
       setOptional(keys => [...keys, name])
   }
 
@@ -109,7 +120,7 @@ const Companies = () => {
      }
   }
 
-  const keysFunc = useGenerateKeys(fixedkeys, keys, setDefaultKeys, setOptional);
+  const keysFunc = useGenerateKeys(fixedkeys, keys, setDefaultKeys, setOptional, setfixedUserProfileSchema);
 
   const genKeys = () => {
     keysFunc();
@@ -125,7 +136,27 @@ const Companies = () => {
       }
     )
     )
-    console.log(defaultKeys);
+  }
+
+  const addhandler = async () => {
+    const payload = {
+      name: nameRef.current.value,
+      year: '2022',
+      description: descriptionRef.current.value,
+      branches: labelsRef.current.value,
+      assignee: ['me'],
+      status: 'ppt',
+      ctc: '12',
+      role: roleRef.current.value,
+      jobCategory: 'DREAM',
+      eligibility: 'string for now',
+      fixedUserProfileSchema,
+      extraUserProfileSchema
+    }
+    const companyFunction = useFetch(payload, "api/admin/createNewCompany", "POST");
+    const data = await companyFunction();
+
+    console.log(data);
     
   }
 
@@ -139,14 +170,14 @@ const Companies = () => {
               
              <form className="box-border w-full text-primary md:w-11/12 lg:w-9/12 font-montserrat mb-8">
                 <div className="p-5 mt-4 mb-4 md:p-8 bg-white rounded drop-shadow-2xl">
-                   <Input name="companyName" placeholder="Enter company name here" label="company name" />
+                   <Input ref={nameRef} name="companyName" placeholder="Enter company name here" label="company name" />
 
                    <div className="flex">
-                        <Autofill fullWidth={true} name="job offer type" />
-                        <MultipleSelect label="labels" fullWidth={true} />
+                        <Autofill ref={jobTypeRef} fullWidth={true} name="job offer type" />
+                        <MultipleSelect ref={labelsRef} label="labels" fullWidth={true} />
                    </div>
 
-                   <Input name="role" placeholder="Enter role here" label="role" />
+                   <Input ref={roleRef} name="role" placeholder="Enter role here" label="role" />
                    
                    <div>
                        <label className="pl-4">Eligibility</label>
@@ -167,6 +198,7 @@ const Companies = () => {
                    <Input
                     name="description"
                     label="description"
+                    ref={descriptionRef}
                     multiline
                     rows={4}
                     />
@@ -207,6 +239,8 @@ const Companies = () => {
                 ))
               }
               </div>
+
+              <LButton name="Add company" width='100%' onClick={addhandler} />
           </div>
 
           <Modal open={open} >

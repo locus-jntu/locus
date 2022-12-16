@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import { forwardRef } from 'react';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -22,13 +23,14 @@ const MenuProps = {
 interface MultiSelectProps {
     label: string
     fullWidth?: boolean
+    ref: any
 }
 
 const labels = [
   'CSE', 'ECE', "EEE", "MECH", "CHEM", "METT", "CIVIL"
 ];
 
-export default function MultipleSelect(props: MultiSelectProps) {
+const Autofill = forwardRef((props: MultiSelectProps, ref) => {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState<string[]>([]);
 
@@ -42,13 +44,14 @@ export default function MultipleSelect(props: MultiSelectProps) {
   };
 
   return (
-    <div className='w-2/4 relative top-1 mr-4'>
+    <div className='w-2/4 relative top-1 mr-4 my-3'>
       <FormControl className='w-full' sx={{ m: 1}}>
         <InputLabel>{props.label}</InputLabel>
         <Select
           multiple
           value={personName}
           onChange={handleChange}
+          inputRef={ref}
           input={<OutlinedInput fullWidth={true} label={props.label} />}
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -71,4 +74,6 @@ export default function MultipleSelect(props: MultiSelectProps) {
       </FormControl>
     </div>
   );
-}
+})
+
+export default Autofill;
