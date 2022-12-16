@@ -1,6 +1,8 @@
 package com.example.locus.Common.Announcements.Model;
 
 import lombok.Data;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.Date;
 
@@ -9,4 +11,5 @@ public class Announcement {
     String title;
     String description;
     Date date;
+    private @MongoId ObjectId id;
 }
