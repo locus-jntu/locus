@@ -29,7 +29,7 @@ public class CompanyServiceImpl implements CompanyService{
     CompanyRepository companyRepository;
 
     @Autowired
-    ProfileRepository profileRepository;
+    ProfileService profileService;
 
     @Override
     public List<Company> getAllCompanies() {
@@ -77,15 +77,13 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public Map<String,Object> fetchCompanyApplicationForm(ObjectId companyId) {
-        Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        String userId =(String) details.get("userId");
         Map<String,Object> applicationForm = new HashMap<>();
 
         Company companyApplicationSchema = companyRepository.getCompanyApplicationSchema(companyId);
 
         // Fetches user data.
-        Optional<ProfileData> userData = profileRepository.findProfileByUserId(userId);
-        if(userData.isEmpty()){
+        ProfileData profileData = profileService.fetchProfileData();
+        if(profileData == null){
             System.out.println("Logical error. User data is not present.");
             return null;
         }
@@ -93,7 +91,7 @@ public class CompanyServiceImpl implements CompanyService{
         applicationForm.put("fixedUserProfileSchema",companyApplicationSchema.getFixedUserProfileSchema());
         applicationForm.put("extraUserProfileSchema",companyApplicationSchema.getExtraUserProfileSchema());
         // Need to further optimize by sending the values of the getFixedUserProfileSchema only.
-        applicationForm.put("userData",userData.get());
+        applicationForm.put("userData",profileData);
 
         return applicationForm;
     }
