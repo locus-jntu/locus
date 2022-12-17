@@ -12,4 +12,6 @@ public interface CompanyService{
     boolean createNewCompany(CreateCompanyRequest companyRequest);
 
     Map<String,Object> fetchCompanyApplicationForm(ObjectId companyId);
+
+    Map<String,Object> fetchCompanyDetails(ObjectId companyId);
 }

@@ -34,6 +34,11 @@ public class CompanyController {
         return companyService.createNewCompany(companyRequest);
     }
 
+    @GetMapping(value = "/api/student/getCompanyDetails")
+    public Map<String,Object> getCompanyDetails(@RequestParam(name = "companyId") String companyId){
+        return companyService.fetchCompanyDetails(new ObjectId(companyId));
+    }
+
     @GetMapping(value = "/api/student/getCompanyApplicationForm")
     public Map<String,Object> getCompanyApplicationForm(@RequestParam(name = "companyId") String companyId){
         return companyService.fetchCompanyApplicationForm(new ObjectId(companyId));

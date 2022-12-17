@@ -1,24 +1,18 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Accordian from "../../components/Accordian";
-import Footer from "../../components/Footer";
 import Layout from "../../components/Layout";
 import LButton from "../../components/LButton";
-import Nav from "../../components/Nav";
-import Sidebar from "../../components/Sidebar";
 
 interface companyProps {
-  cid: string
+  companyData: any
   role: string
 }
 
 const Company = (props: companyProps) => {
-
+  
   const data = {
-    name : 'Goldman Sachs',
-    role : 'SDE',
-    jobOfferType: 'Internship',
-    ctc: '1L/mon',
     pastdata: [
       {
         year: '2022',
@@ -66,13 +60,13 @@ const Company = (props: companyProps) => {
   return (
     <Layout role={props.role} component='companies'>
         <div style={{marginTop: 32, borderTopLeftRadius: 28, borderTopRightRadius: 28, borderTopWidth: 2, borderColor: '#264653'}} className="bg-white p-8">
-          <p className="text-2xl font-bold">{data.name}</p>
+          <p className="text-2xl font-bold">{props.companyData.companyDetails.name}</p>
           <div className="flex mb-8">
             <div style={{width: '100%'}}>
               <p className="mt-4 mb-4 text-base font-medium text-secondary">
-               <span className="md:pr-4 block md:inline">{data.role}</span>
-               <span className="md:px-4 block md:inline">{data.jobOfferType}</span>
-               <span className="md:pl-4 block md:inline">{data.ctc}</span>
+               <span className="md:pr-4 block md:inline">{props.companyData.companyDetails.role}</span>
+               <span className="md:px-4 block md:inline">{props.companyData.companyDetails.jobOfferType}</span>
+               <span className="md:pl-4 block md:inline">{props.companyData.companyDetails.ctc}</span>
               </p>
               <p className="text-sm underline underline-offset-4 mb-2 font-semibold text-gray-400">
                 Eligibility :{" "}
@@ -85,16 +79,16 @@ const Company = (props: companyProps) => {
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi quis a eos nobis optio perspiciatis praesentium modi cumque, nihil impedit ipsum cupiditate, placeat obcaecati! Soluta quo praesentium doloribus nulla ducimus.</p>
              </div>
              <div className="border-gray-800 border-2 w-1/2 ml-4">
-               status comes here
+                status comes here
              </div>
           </div>
 
           {
             props.role=='tpo' ?
-            <Link  href={`/tpo/companies/add?editcid=${props.cid}`}>
+            <Link  href={`/tpo/companies/add?editcid=${props.companyData.companyDetails.id}`}>
               <LButton style={{width: '100%'}} name="edit application form" />
             </Link> : 
-            <Link  href={`/student/companies/${props.cid}/apply`}>
+            <Link  href={`/student/companies/${props.companyData.companyDetails.id}/apply`}>
               <LButton style={{width: '100%'}} name="view application form"/>
             </Link>
           }

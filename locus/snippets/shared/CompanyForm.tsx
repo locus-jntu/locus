@@ -1,6 +1,7 @@
 import { FormatShapes } from "@mui/icons-material";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Checkbox from "../../components/Checkbox";
 import Footer from "../../components/Footer";
 import Input from "../../components/Input";
@@ -10,17 +11,22 @@ import Nav from "../../components/Nav";
 import Radio from "../../components/Radio";
 import Sidebar from "../../components/Sidebar";
 import { getComponent } from "../../utility/company-data/fixed";
+import useFetch from "../../utility/hooks/useFetch";
 
 interface formProps {
   formData?: any
   role: string
+  companyId: string
 }
 
 const CompanyForm = (props: formProps) => {
-  const formdata = {
+
+  const router = useRouter();
+  
+  const formdataa = {
     name: "Goldman Sachs",
-    fixed: ['name', 'rollnumber','passingyear'],
-    optionals: [
+    fixedUserProfileSchema: ['name', 'rollnumber','passingyear'],
+    extraUserProfileSchema: [
       {
         type: 'radio',
         name: 'gender',
@@ -33,6 +39,7 @@ const CompanyForm = (props: formProps) => {
       }
     ]
   };
+  
 
   return (
     <Layout role={props.role} component="companies">
@@ -46,17 +53,17 @@ const CompanyForm = (props: formProps) => {
         }}
         className="bg-white p-8"
       >
-        <p className="text-xl text-center mb-4 font-bold">{formdata.name} : application form</p>
+        <p className="text-xl text-center mb-4 font-bold">{props.formData.companyName} : application form</p>
         <div style={{width: '65%', margin: 'auto'}} className="border-2 rounded p-2">
 
         <p className="text-sm mb-2 text-center bg-secondary text-white p-2 rounded">EXISTING</p>
         {
-          formdata.fixed.map(i => getComponent(i))
+          props.formData.fixedUserProfileSchema?.map(i => getComponent(i))
         }
         
          <p className="text-sm text-center bg-secondary text-white rounded p-2">NEW</p>
         {
-          formdata.optionals.map(i => (
+          props.formData.extraUserProfileSchema?.map(i => (
             <div>
             { i.type == 'radio' ? <Radio row={true} label={i.name} values={i.values.split(",")} /> :
               i.type == 'checkbox' ? <Checkbox row={true} label={i.name} values={i.values.split(",")} /> :

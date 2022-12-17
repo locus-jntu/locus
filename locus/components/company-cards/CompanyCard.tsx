@@ -5,10 +5,8 @@ import LButton from "../LButton";
 
 const CompanyCard = ({ data, role }) => {
 
-  const [cName, _] = useState(data.name.split(" ").join("").toLowerCase());
-
   return (
-    <Link href={`/${role}/companies/${cName}`} >
+    <Link href={`/${role}/companies/${data.id}`} >
       <div className="hover:border-primary cursor-pointer border-white border-2 py-2 flex text-primary bg-white rounded">
         <div className="text-base w-7/12 md:w-1/2 p-4 m-1">
           <p className="text-xl font-semibold">{data.name}</p>
@@ -49,7 +47,7 @@ const CompanyCard = ({ data, role }) => {
            
            {role == "pc" ?
             <div className="flex">
-              <Link href={`/${role}/companies/${cName}/apply`} >
+              <Link href={`/${role}/companies/${data.id}/apply`} >
                 <LButton style={{ marginRight: 8}} width="100%" name="Apply" />
               </Link>
               <LButton style={{ marginRight: 8}} width={150} name="edit" />
@@ -61,7 +59,7 @@ const CompanyCard = ({ data, role }) => {
                 <LButton width="100%" name="delete" />
               </div> :
             <div>
-              <Link href={`/${role}/companies/${cName}/apply`} >
+              <Link href={`/${role}/companies/${data.id}/apply`} >
                 <LButton style={{ marginRight: 8}} width="100%" name="Apply" />
               </Link>
             </div>

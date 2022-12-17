@@ -90,9 +90,23 @@ public class CompanyServiceImpl implements CompanyService{
 
         applicationForm.put("fixedUserProfileSchema",companyApplicationSchema.getFixedUserProfileSchema());
         applicationForm.put("extraUserProfileSchema",companyApplicationSchema.getExtraUserProfileSchema());
+        applicationForm.put("companyName",companyApplicationSchema.getName());
         // Need to further optimize by sending the values of the getFixedUserProfileSchema only.
         applicationForm.put("userData",profileData);
 
         return applicationForm;
     }
+
+    @Override
+    public Map<String,Object> fetchCompanyDetails(ObjectId companyId) {
+        Map<String,Object> companyDetails = new HashMap<>();
+
+        Company companySchema = companyRepository.getCompanySchema(companyId);
+
+        companyDetails.put("companyDetails",companySchema);
+
+        return companyDetails;
+    }
 }
+
+

@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends MongoRepository<Company,String> {
 
-    @Query(value="{_id: '?0'}",fields = "{extraUserProfileSchema: 1,fixedUserProfileSchema: 1}")
+    @Query(value="{_id: '?0'}",fields = "{extraUserProfileSchema: 1,fixedUserProfileSchema: 1,name: 1}")
     Company getCompanyApplicationSchema(ObjectId companyId);
+
+    @Query(value="{_id: '?0'}")
+    Company getCompanySchema(ObjectId companyId);
 }

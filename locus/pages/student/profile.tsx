@@ -29,7 +29,7 @@ const ProfileForm = () => {
   const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
-  const returnFunc = useFetch(data, "students/saveNewProfileData", "POST");
+  const returnFunc = useFetch(data, "api/student/saveNewProfileData", "POST");
 
   const clickHandler = async() => { 
     try{
