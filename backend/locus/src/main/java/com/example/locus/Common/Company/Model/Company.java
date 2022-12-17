@@ -3,6 +3,8 @@ package com.example.locus.Common.Company.Model;
 import com.example.locus.Common.Company.Dto.ExtraUserProfileSchema;
 import com.example.locus.Common.Enum.Branch;
 import com.example.locus.Common.Enum.JobCategory;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,6 +17,7 @@ import java.util.List;
 @Document
 public class Company {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private @MongoId ObjectId id;
 
     String name;

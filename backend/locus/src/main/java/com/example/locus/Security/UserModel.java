@@ -1,8 +1,9 @@
 package com.example.locus.Security;
 
 import com.example.locus.Common.Enum.UserRole;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
-import lombok.ToString;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -12,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +23,8 @@ public class UserModel implements UserDetails {
 
     private String ROLE_PREFIX = "ROLE_";
 
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private @MongoId ObjectId id;
     private String username;
     private String password;

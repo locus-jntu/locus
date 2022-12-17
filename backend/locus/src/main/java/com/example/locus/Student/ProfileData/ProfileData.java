@@ -1,8 +1,11 @@
 package com.example.locus.Student.ProfileData;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +33,8 @@ class Course{
 @Document
 public class ProfileData {
 
-    @Id
+    @MongoId
+    @JsonSerialize(using = ToStringSerializer.class)
     String rollNumber;
 
     @JsonProperty("email")
