@@ -77,6 +77,13 @@
 			<version>1.18.24</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- Spring EmailService -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>2.5.6</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,6 +1,7 @@
 package com.example.locus.Tpo.ManagePc;
 
 import com.example.locus.Common.Enum.UserRole;
+import com.example.locus.Email.EmailService;
 import com.example.locus.Security.UserModel;
 import com.example.locus.Security.UserRepository;
 import com.example.locus.Tpo.ManagePc.Dto.CreatePcRequest;
@@ -18,12 +19,12 @@ public class ManagePcServiceImpl implements ManagePcService{
     String PC_POSTFIX = "@jntu.in";
     int PASSWORD_LENGTH = 8;
 
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
-    public ManagePcServiceImpl(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
+    EmailService emailService;
+
 
     @Override
     public boolean createPc(CreatePcRequest createPcRequest) {
@@ -44,10 +45,13 @@ public class ManagePcServiceImpl implements ManagePcService{
         userModel.setRoles(roles);
 
         // Create a random password everytime.
-        userModel.setPassword(generateRandomPassword(PASSWORD_LENGTH));
+        String password = generateRandomPassword(PASSWORD_LENGTH);
+        userModel.setPassword(password);
 
         // Saving data into db.
         userRepository.save(userModel);
+
+        emailService.sendSimpleMessage("saimaheshtaduri6@gmail.com","Selected as PC","Username is " + username + ". Password is " + password);
         return true;
     }
 
