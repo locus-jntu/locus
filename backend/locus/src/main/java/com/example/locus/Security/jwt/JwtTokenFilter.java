@@ -51,7 +51,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         Map<String,Object> userInformation = new HashMap<>();
         UserModel userModel = userDetailsService.loadUser(username);
         userInformation.put("username",userModel.getUsername());
-        userInformation.put("userId",userModel.getId());
+        userInformation.put("userId",userModel.getId().toString());
         List<GrantedAuthority> authorityList = jwtUtil.getAuthorities(token);
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,null,authorityList);
