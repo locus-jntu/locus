@@ -4,6 +4,9 @@ import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
 import com.example.locus.Common.Company.Model.Company;
 import com.example.locus.Common.Company.Repository.CompanyRepository;
 import com.example.locus.Common.Enum.JobCategory;
+import com.example.locus.Student.ProfileData.ProfileData;
+import com.example.locus.Student.ProfileData.ProfileRepository;
+import com.example.locus.Student.ProfileData.ProfileService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.example.locus.Common.Enum.JobCategory.DREAM;
 import static com.example.locus.Common.Enum.JobCategory.NON_DREAM;
@@ -23,6 +27,9 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    ProfileRepository profileRepository;
 
     @Override
     public List<Company> getAllCompanies() {
@@ -71,15 +78,23 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public Map<String,Object> fetchCompanyApplicationForm(ObjectId companyId) {
         Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
-//        String userId = (String) details.get("userId");
-
+        String userId =(String) details.get("userId");
         Map<String,Object> applicationForm = new HashMap<>();
 
         Company companyApplicationSchema = companyRepository.getCompanyApplicationSchema(companyId);
+
+        // Fetches user data.
+        Optional<ProfileData> userData = profileRepository.findProfileByUserId(userId);
+        if(userData.isEmpty()){
+            System.out.println("Logical error. User data is not present.");
+            return null;
+        }
+
         applicationForm.put("fixedUserProfileSchema",companyApplicationSchema.getFixedUserProfileSchema());
         applicationForm.put("extraUserProfileSchema",companyApplicationSchema.getExtraUserProfileSchema());
+        // Need to further optimize by sending the values of the getFixedUserProfileSchema only.
+        applicationForm.put("userData",userData.get());
 
-        // Need to send user data;
         return applicationForm;
     }
 }
