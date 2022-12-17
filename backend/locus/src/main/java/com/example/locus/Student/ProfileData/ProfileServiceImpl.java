@@ -25,14 +25,16 @@ public class ProfileServiceImpl implements ProfileService{
 
         Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String userId =(String) details.get("userId");
-        System.out.println(userId);
-//        if(profileRepository.findOne(userId).isEmpty()){
-            profileData.setUserId(userId);
+        Optional<ProfileData> existingProfileData = profileRepository.findProfileByUserId(userId);
+        profileData.setUserId(userId);
+        if(existingProfileData.isEmpty()){
             profileRepository.save(profileData);
-            return true;
-//        }
-//        System.out.println("User Profile Data already exists");
-//        return false;
+        }else{
+            // Updating the existing profile data
+            profileData.set_id(existingProfileData.get().get_id());
+            profileRepository.save(profileData);
+        }
+        return true;
     }
 
     @Override
@@ -44,6 +46,7 @@ public class ProfileServiceImpl implements ProfileService{
             System.out.println("User Profile Data doesn't exist");
            return null;
         }
+        // Can hide the userId and _id
         return profileRepository.findProfileByUserId(userId).get();
     }
 }

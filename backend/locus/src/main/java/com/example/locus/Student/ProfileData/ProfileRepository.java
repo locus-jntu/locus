@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ProfileRepository extends MongoRepository<ProfileData,String> {
 
-    @Query(value = "{userId: '?0'}",fields = "{_id: 0,userId: 0}")
+    @Query(value = "{userId: '?0'}")
     Optional<ProfileData> findProfileByUserId(String userId);
 }
 
