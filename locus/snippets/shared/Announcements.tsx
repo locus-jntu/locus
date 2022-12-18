@@ -20,12 +20,12 @@ const Announcements = (props: AnnouncementsProps) => {
 
   const [announcements, setAnnouncements] = useRecoilState(announcementsAtom);
 
-  const returnFunc = useFetch(null, "api/shared/getAllAnnouncements", "GET");
+  const getAnnouncements = useFetch(null, "api/shared/getAllAnnouncements", "GET");
 
 
  useEffect( () => {
    announcements.length==0 && 
-    returnFunc()
+    getAnnouncements()
     .then((res) => setAnnouncements(res.announcements));
   }, [])
 

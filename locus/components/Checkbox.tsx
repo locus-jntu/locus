@@ -11,7 +11,7 @@ function CheckboxItem(props: radioProps) {
   return (
     <FormControl className="py-2 px-4">
         <label>{props.label}</label>
-        <FormGroup row={props.row ?? false}>
+        <FormGroup onChange={props.onChange} row={props.row ?? false}>
             {
                 props.values.map(val => (
                     <FormControlLabel control={<Checkbox />} label={val} />

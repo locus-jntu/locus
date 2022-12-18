@@ -2,7 +2,7 @@ import Autofill from "../../components/Autofill";
 import Input from "../../components/Input";
 import { data } from "../data/profileData";
 
-export function getComponent(name: string) {
+export function getComponent(name: string, formResponse, setFormResponse) {
    switch(name) {
        case 'rollnumber': 
           return <Input
@@ -58,7 +58,8 @@ export function getComponent(name: string) {
         
         case 'email':
             return <Input
-            value={data.email}
+            value={formResponse.email ?? 'waaitt'}
+            onChange={(e) => setFormResponse({...formResponse, 'email': e.target.value})}
             name="email"
             placeholder="eg: test@gmail.com"
             label="Email"

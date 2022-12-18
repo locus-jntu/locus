@@ -1,7 +1,8 @@
 import { FormatShapes } from "@mui/icons-material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { PassThrough } from "stream";
 import Checkbox from "../../components/Checkbox";
 import Footer from "../../components/Footer";
 import Input from "../../components/Input";
@@ -19,27 +20,7 @@ interface formProps {
   companyId: string
 }
 
-const CompanyForm = (props: formProps) => {
-
-  const router = useRouter();
-  
-  const formdataa = {
-    name: "Goldman Sachs",
-    fixedUserProfileSchema: ['name', 'rollnumber','passingyear'],
-    extraUserProfileSchema: [
-      {
-        type: 'radio',
-        name: 'gender',
-        values: 'male,female'
-      },
-      {
-         type: 'checkbox',
-         name: 'intrests',
-         values:'dance,music,cricket'
-      }
-    ]
-  };
-  
+const CompanyForm = (props) => {
 
   return (
     <Layout role={props.role} component="companies">
@@ -56,26 +37,24 @@ const CompanyForm = (props: formProps) => {
         <p className="text-xl text-center mb-4 font-bold">{props.formData.companyName} : application form</p>
         <div style={{width: '65%', margin: 'auto'}} className="border-2 rounded p-2">
 
-        <p className="text-sm mb-2 text-center bg-secondary text-white p-2 rounded">EXISTING</p>
-        {
-          props.formData.fixedUserProfileSchema?.map(i => getComponent(i))
-        }
-        
-         <p className="text-sm text-center bg-secondary text-white rounded p-2">NEW</p>
-        {
-          props.formData.extraUserProfileSchema?.map(i => (
-            <div>
-            { i.type == 'radio' ? <Radio row={true} label={i.name} values={i.values.split(",")} /> :
-              i.type == 'checkbox' ? <Checkbox row={true} label={i.name} values={i.values.split(",")} /> :
-             <Input containerStyle={{width: '100%'}} name={i.name ?? ''} label={i.name} />
-            }
-           </div>
-          )
-         )
-        } 
-
-
-
+          <p className="text-sm mb-2 text-center  text-secondary font-bold p-2 rounded underline underline-offset-4">EXISTING</p>
+          {
+            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,props.formres,props.setRes))
+          }
+          
+          <p className="text-sm text-center text-secondary font-bold rounded p-2 underline underline-offset-4">NEW</p>
+          {
+            props.formData.extraUserProfileSchema?.map(i => (
+              <div>
+              { i.type == 'radio' ? <Radio row={true} label={i.name} values={i.values.split(",")} /> :
+                i.type == 'checkbox' ? <Checkbox row={true} label={i.name} values={i.values.split(",")} /> :
+              <Input containerStyle={{width: '100%'}} name={i.name ?? ''} label={i.name} />
+              }
+            </div>
+             )
+           )
+          } 
+          <LButton style={{margin: 4}} onClick={() => console.log(props.formres)} width="100%" name="Apply" />
         </div>
         
       </div>
