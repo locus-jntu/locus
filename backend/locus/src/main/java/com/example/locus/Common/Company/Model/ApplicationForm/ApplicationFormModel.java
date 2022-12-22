@@ -1,6 +1,5 @@
-package com.example.locus.Common.Company.Model;
+package com.example.locus.Common.Company.Model.ApplicationForm;
 
-import com.example.locus.Student.ProfileData.ProfileData;
 import lombok.Data;
 
 import java.util.List;

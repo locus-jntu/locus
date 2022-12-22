@@ -1,11 +1,13 @@
 package com.example.locus.Common.Company;
 
+import com.example.locus.Common.Company.Dto.ApplicationFormRequest;
 import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
+import com.example.locus.Common.Company.Model.ApplicationForm.UserApplicationData;
 import com.example.locus.Common.Company.Model.Company;
+import com.example.locus.Common.Company.Repository.ApplicationFormRepository;
 import com.example.locus.Common.Company.Repository.CompanyRepository;
 import com.example.locus.Common.Enum.JobCategory;
-import com.example.locus.Student.ProfileData.ProfileData;
-import com.example.locus.Student.ProfileData.ProfileRepository;
+import com.example.locus.Student.ProfileData.Model.ProfileData;
 import com.example.locus.Student.ProfileData.ProfileService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    ApplicationFormRepository applicationFormRepository;
 
     @Autowired
     ProfileService profileService;
@@ -106,6 +111,25 @@ public class CompanyServiceImpl implements CompanyService{
         companyDetails.put("companyDetails",companySchema);
 
         return companyDetails;
+    }
+
+    @Override
+    public boolean submitCompanyApplicationForm(ApplicationFormRequest applicationFormRequest) {
+//        Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
+//        String userId =(String) details.get("userId");
+//
+//        Optional<UserApplicationData> applicationForm =  applicationFormRepository.findUserApplicationFormByUserId(userId);
+//        String companyId = applicationFormRequest.getCompanyId();
+//        UserApplicationData userApplicationData = applicationFormRequest.getProfileData();
+//
+//        if(applicationForm.isPresent()){
+//            // Need to update the data.
+//
+//        }else{
+//            // Append the data into the array.
+//            applicationFormRepository.insertNewApplicationForm(userApplicationData);
+//        }
+        return true;
     }
 }
 

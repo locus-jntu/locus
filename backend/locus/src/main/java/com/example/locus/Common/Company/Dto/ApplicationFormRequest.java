@@ -1,8 +1,10 @@
 package com.example.locus.Common.Company.Dto;
 
-import com.example.locus.Student.ProfileData.ProfileData;
+import com.example.locus.Common.Company.Model.ApplicationForm.UserApplicationData;
+import lombok.Data;
 
+@Data
 public class ApplicationFormRequest {
-    ProfileData profileData;
-
+    UserApplicationData profileData;
+    String companyId;
 }
