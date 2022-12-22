@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class ApplicationFormRequest {
-    UserApplicationData profileData;
+    UserApplicationData userApplicationData;
     String companyId;
 }

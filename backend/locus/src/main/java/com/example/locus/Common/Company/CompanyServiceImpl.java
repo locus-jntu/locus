@@ -2,9 +2,10 @@ package com.example.locus.Common.Company;
 
 import com.example.locus.Common.Company.Dto.ApplicationFormRequest;
 import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
+import com.example.locus.Common.Company.Model.ApplicationForm.ApplicationFormModel;
 import com.example.locus.Common.Company.Model.ApplicationForm.UserApplicationData;
 import com.example.locus.Common.Company.Model.Company;
-import com.example.locus.Common.Company.Repository.ApplicationFormRepository;
+import com.example.locus.Common.Company.Repository.UserApplicationForm.ApplicationFormRepository;
 import com.example.locus.Common.Company.Repository.CompanyRepository;
 import com.example.locus.Common.Enum.JobCategory;
 import com.example.locus.Student.ProfileData.Model.ProfileData;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +79,12 @@ public class CompanyServiceImpl implements CompanyService{
         }
 
         companyRepository.save(company);
+
+        // Create an application form schema
+        ApplicationFormModel applicationFormModel = new ApplicationFormModel();
+        applicationFormModel.setCompanyId(company.getId().toString());
+        applicationFormModel.setUserApplicationData(new ArrayList<>());
+        applicationFormRepository.save(applicationFormModel);
         return true;
     }
 
@@ -115,20 +123,25 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public boolean submitCompanyApplicationForm(ApplicationFormRequest applicationFormRequest) {
-//        Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
-//        String userId =(String) details.get("userId");
-//
-//        Optional<UserApplicationData> applicationForm =  applicationFormRepository.findUserApplicationFormByUserId(userId);
-//        String companyId = applicationFormRequest.getCompanyId();
-//        UserApplicationData userApplicationData = applicationFormRequest.getProfileData();
-//
-//        if(applicationForm.isPresent()){
-//            // Need to update the data.
-//
-//        }else{
-//            // Append the data into the array.
-//            applicationFormRepository.insertNewApplicationForm(userApplicationData);
-//        }
+
+        System.out.println(applicationFormRequest.getUserApplicationData());
+
+        Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        String userId =(String) details.get("userId");
+
+        String companyId = applicationFormRequest.getCompanyId();
+        UserApplicationData userApplicationData = applicationFormRequest.getUserApplicationData();
+
+        Optional<UserApplicationData> applicationForm =  applicationFormRepository.findUserApplicationFormByUserId(userId,companyId);
+        userApplicationData.setUserId(userId);
+
+        if(applicationForm.isPresent()){
+            // Update the existing obj
+            applicationFormRepository.updateApplicationForm(userApplicationData,companyId);
+            return true;
+        }
+        applicationFormRepository.insertNewApplicationForm(userApplicationData,companyId);
+
         return true;
     }
 }

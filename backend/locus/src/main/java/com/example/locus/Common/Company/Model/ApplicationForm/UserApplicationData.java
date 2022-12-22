@@ -1,7 +1,10 @@
 package com.example.locus.Common.Company.Model.ApplicationForm;
 
 import com.example.locus.Student.ProfileData.Model.ProfileData;
+import lombok.Data;
 
-public class UserApplicationData extends ProfileData {
-
+@Data
+public class UserApplicationData{
+   String userId;
+   ProfileData applicationForm;
 }

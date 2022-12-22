@@ -46,7 +46,7 @@ public class CompanyController {
     }
 
     @PostMapping(value = "/api/student/submitCompanyApplicationForm")
-    public boolean submitCompanyApplicationForm(ApplicationFormRequest applicationFormRequest){
+    public boolean submitCompanyApplicationForm(@RequestBody ApplicationFormRequest applicationFormRequest){
        return companyService.submitCompanyApplicationForm(applicationFormRequest);
     }
 
