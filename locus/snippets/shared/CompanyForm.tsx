@@ -18,9 +18,24 @@ interface formProps {
   formData?: any
   role: string
   companyId: string
+  formResponse: any
+  setFormResponse: any
 }
 
-const CompanyForm = (props) => {
+const CompanyForm = (props: formProps) => {
+
+  const saveResponseFunction = useFetch(props.formResponse, 'api/student/submitCompanyApplicationForm', 'POST')
+
+  async function saveResponse() {
+     const data = await saveResponseFunction()
+     if(data){
+       console.log("successfull");
+     }else {
+       console.log("error while updating the response");
+     }
+    console.log(props.formResponse);
+  }
+  
 
   return (
     <Layout role={props.role} component="companies">
@@ -39,7 +54,7 @@ const CompanyForm = (props) => {
 
           <p className="text-sm mb-2 text-center  text-secondary font-bold p-2 rounded underline underline-offset-4">EXISTING</p>
           {
-            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,props.formres,props.setRes))
+            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,props.formResponse,props.setFormResponse,props.formData.userData))
           }
           
           <p className="text-sm text-center text-secondary font-bold rounded p-2 underline underline-offset-4">NEW</p>
@@ -54,7 +69,7 @@ const CompanyForm = (props) => {
              )
            )
           } 
-          <LButton style={{margin: 4}} onClick={() => console.log(props.formres)} width="100%" name="Apply" />
+          <LButton style={{margin: 4}} onClick={saveResponse} width="100%" name="Apply" />
         </div>
         
       </div>

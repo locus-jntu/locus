@@ -5,7 +5,7 @@ import useFetch from "../../../../utility/hooks/useFetch";
 
 const ApplicationForm = (props) => {
 
-  const [formdata, setFormData] = useState({companyName: '', fixedUserProfileSchema:[], extraUserProfileSchema:[]})
+  const [formdata, setFormData] = useState({companyName: '', fixedUserProfileSchema:[], extraUserProfileSchema:[], userData: {}})
   const [formResponse, setFormResponse] = useState({});
 
   const fetchForm = useFetch(null, `api/student/getCompanyApplicationForm?companyId=${props.companyId}`, "GET");
@@ -25,7 +25,7 @@ const ApplicationForm = (props) => {
   }, [])
 
   return (
-    <CompanyForm companyId={props.companyId} formres={formResponse} setRes={setFormResponse} formData={formdata} role="student"/>
+    <CompanyForm companyId={props.companyId} formResponse={formResponse} setFormResponse={setFormResponse} formData={formdata} role="student"/>
   )
 }
 
