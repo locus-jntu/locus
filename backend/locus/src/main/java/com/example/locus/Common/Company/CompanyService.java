@@ -2,6 +2,8 @@ package com.example.locus.Common.Company;
 
 import com.example.locus.Common.Company.Dto.ApplicationFormRequest;
 import com.example.locus.Common.Company.Dto.CreateCompanyRequest;
+import com.example.locus.Common.Company.Model.ApplicationForm.ApplicationFormModel;
+import com.example.locus.Common.Company.Model.ApplicationForm.UserApplicationData;
 import com.example.locus.Common.Company.Model.Company;
 import org.bson.types.ObjectId;
 
@@ -17,4 +19,6 @@ public interface CompanyService{
     Map<String,Object> fetchCompanyDetails(ObjectId companyId);
 
     boolean submitCompanyApplicationForm(ApplicationFormRequest applicationFormRequest);
+
+    List<UserApplicationData> getAllStudentsApplicationForCompany(String companyId);
 }

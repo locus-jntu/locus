@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.core.userdetails.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CustomApplicationFormRepositoryImpl implements CustomApplicationFormRepository {
@@ -67,4 +68,21 @@ public class CustomApplicationFormRepositoryImpl implements CustomApplicationFor
         update.set("userApplicationData.$.applicationForm",userApplicationData.getApplicationForm());
         mongoTemplate.findAndModify(query,update,ApplicationFormModel.class);
     }
+
+    @Override
+    public List<UserApplicationData> fetchAllApplicationForm(String companyId) {
+        if(companyId == null){
+            System.out.println("Invalid company Id");
+            return null;
+        }
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("companyId").is(companyId));
+
+        ApplicationFormModel applicationFormModel = mongoTemplate.findOne(query,ApplicationFormModel.class);
+
+        return applicationFormModel.getUserApplicationData();
+    }
+
+
 }
