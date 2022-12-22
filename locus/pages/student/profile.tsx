@@ -1,5 +1,5 @@
 import { Button, Chip } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import lightTheme from "../../styles/theme/lightTheme";
 import Autofill from "../../components/Autofill";
 import Heading from "../../components/Heading";
@@ -15,7 +15,11 @@ import Sidebar from "../../components/Sidebar";
 import Layout from "../../components/Layout";
 
 const ProfileForm = () => {
+
   const [data, setData] = React.useState(profileData);
+
+  const [inputData, setInputData] = React.useState([]);
+  const [loadingInputData, setLoadingInputData] = React.useState(true)
 
   const [skill, setSkill] = React.useState("");
   const [language, setLanguage] = React.useState("");
@@ -29,19 +33,53 @@ const ProfileForm = () => {
   const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
-  const returnFunc = useFetch(data, "api/student/saveNewProfileData", "POST");
+  const saveProfileFunction = useFetch(data, "api/student/saveNewProfileData", "POST");
+
+  const getFieldsFunction = useFetch(null, "api/shared/fetchProfileSchema", "GET");
+
+  async function getProfileSchema(){
+    const data = await getFieldsFunction();
+    setInputData(data)
+    setLoadingInputData(false)
+  }
+
+  useEffect(() => {
+    getProfileSchema();
+    //autofilling should also be done
+  }, [])
+
+  const inputRef = useRef([])
+  inputRef.current = []
+
+  function addRefs(el){
+    if(el && !inputRef.current.includes(el)){
+      inputRef.current.push(el)
+    }
+  }
 
   const clickHandler = async() => { 
-    try{
-      setOpen(true);
-      setStatus("loading");
-      const data = await returnFunc();
-      setStatus("success");
-      console.log("data is : ", data);
-    }catch(err){
-        console.log("Error : ",err);
-        setStatus("failed");
-    }
+      
+      inputRef.current.map(i => {
+        if(i.id == 'combo-box-demo'){
+          setData(prev => {
+            return {...prev, [i.name]: i.value }
+          })
+        }
+        else setData(prev => {
+          return {...prev, [i.id]: i.value}
+        })
+      })
+ 
+      try{
+        setOpen(true);
+        setStatus("loading");
+        const data = await saveProfileFunction();
+        setStatus("success");
+        console.log("data is : ", data);
+      }catch(err){
+          console.log("Error : ",err);
+          setStatus("failed");
+      }
   }
 
   return (
@@ -49,250 +87,28 @@ const ProfileForm = () => {
       <div className="flex flex-col items-center justify-center bg-gray-200">
         <p className="pt-4 px-8 font-comforta text-center text-xl font-bold underline underline-offset-4"> Profile  </p>
         <form className="box-border w-full text-primary md:w-11/12 lg:w-9/12 font-montserrat">
-          <div className="p-5 mt-4 mb-4 md:p-8 bg-white rounded drop-shadow-2xl">
-            <Heading label="Personal Information" />
-
-            <Input
-              value={data.rollNumber}
-              onChange={(e: any) =>
-                setData({ ...data, rollNumber: e.target.value })
-              }
-              name="rno"
-              placeholder="eg: 19011P0525"
-              label="Roll number"
-            />
-
-            <label htmlFor="fname" className="m-3">
-              Full name 
-            </label>
-            <div className="flex">
-              <Input
-                value={data.firstName}
-                onChange={(e: any) =>
-                  setData({ ...data, firstName: e.target.value })
-                }
-                placeholder="eg: John"
-                name="fname"
-                helperText="Enter first name"
-                width="50%"
-              />
-              <Input
-                value={data.lastName}
-                onChange={(e: any) =>
-                  setData({ ...data, lastName: e.target.value })
-                }
-                placeholder="eg: Doe"
-                name="lname"
-                helperText="Enter Last name"
-                width="50%"
-              />
-            </div>
-
-            <div className="flex">
-              <Autofill
-                value={data.degree}
-                onChange={(e: any) =>
-                  setData({ ...data, degree: e.target.textContent })
-                }
-                name="degree"
-              />
-              <Autofill
-                value={data.department}
-                onChange={(e: any) =>
-                  setData({ ...data, department: e.target.textContent })
-                }
-                name="department"
-              />
-            </div>
-
-            <Input
-              value={data.parentName}
-              onChange={(e: any) =>
-                setData({ ...data, parentName: e.target.value })
-              }
-              name="parentName"
-              label="Parent's full name"
-            />
-            <Input
-              value={data.email}
-              onChange={(e: any) => setData({ ...data, email: e.target.value })}
-              name="email"
-              placeholder="eg: test@gmail.com"
-              label="Email"
-            />
-
-            <div className="flex">
-              <Input
-                value={data.mobile}
-                onChange={(e: any) =>
-                  setData({ ...data, mobile: e.target.value })
-                }
-                name="mob"
-                width="50%"
-                label="Mobile"
-                placeholder="+91 "
-              />
-              <Input
-                value={data.passingYear}
-                onChange={(e: any) =>
-                  setData({ ...data, passingYear: e.target.value })
-                }
-                name="year"
-                width="50%"
-                label="Passing Year"
-              />
-            </div>
-
-            <label htmlFor="str-addr" className="m-3">
-              {" "}
-              Permanent Address{" "}
-            </label>
-            <Input
-              value={data.address.streetAddress}
-              onChange={(e: any) =>
-                setData({
-                  ...data,
-                  address: { ...data.address, streetAddress: e.target.value },
-                })
-              }
-              name="st-addr"
-              helperText="Enter street address"
-            />
-            <Input
-              value={data.address.streetAddress2}
-              onChange={(e: any) =>
-                setData({
-                  ...data,
-                  address: { ...data.address, streetAddress2: e.target.value },
-                })
-              }
-              name="st-addr2"
-              helperText="Enter street address 2 (OPTIONAL)"
-            />
-
-            <div className="flex">
-              <Input
-                value={data.address.district}
-                onChange={(e: any) =>
-                  setData({
-                    ...data,
-                    address: { ...data.address, district: e.target.value },
-                  })
-                }
-                name="district"
-                width="50%"
-                helperText="Enter district"
-              />
-              <Input
-                value={data.address.city}
-                onChange={(e: any) =>
-                  setData({
-                    ...data,
-                    address: { ...data.address, city: e.target.value },
-                  })
-                }
-                name="city"
-                width="50%"
-                helperText="Enter city"
-              />
-            </div>
-
-            <div className="flex">
-              <Input
-                value={data.address.state}
-                onChange={(e: any) =>
-                  setData({
-                    ...data,
-                    address: { ...data.address, state: e.target.value },
-                  })
-                }
-                name="state"
-                width="50%"
-                helperText="Enter state"
-              />
-              <Input
-                value={data.address.pin}
-                onChange={(e: any) =>
-                  setData({
-                    ...data,
-                    address: { ...data.address, pin: e.target.value },
-                  })
-                }
-                name="pin"
-                width="50%"
-                helperText="Enter pin code"
-              />
-            </div>
-          </div>
-
-          <div className="p-5 my-8 md:p-8 bg-white rounded drop-shadow-2xl">
-            <Heading label="Education Information" />
-
-            <div className="flex">
-              <Input
-                value={data.tenthGrade}
-                onChange={(e: any) =>
-                  setData({ ...data, tenthGrade: e.target.textContent })
-                }
-                name="tenth"
-                width="50%"
-                label="10th"
-                placeholder="eg: 9.8 "
-              />
-              <Input
-                value={data.interGrade}
-                onChange={(e: any) =>
-                  setData({ ...data, interGrade: e.target.textContent })
-                }
-                name="inter"
-                width="50%"
-                label="Intermediate/Diploma"
-                placeholder="eg: 987"
-              />
-            </div>
-
-            <Input
-              value={data.eamcetEcetRank}
-              onChange={(e: any) =>
-                setData({ ...data, eamcetEcetRank: e.target.textContent })
-              }
-              name="eamcet"
-              placeholder="eg: 4500"
-              label="Eamcet/Ecet rank"
-            />
-            <Input
-              value={data.ugAggregate}
-              onChange={(e: any) =>
-                setData({ ...data, ugAggregate: e.target.textContent })
-              }
-              name="ug"
-              placeholder="eg: 9.87"
-              label="UG aggregate"
-            />
-
-            <div className="flex">
-              <Input
-                value={data.historyOfBacklogs}
-                onChange={(e: any) =>
-                  setData({ ...data, historyOfBacklogs: e.target.textContent })
-                }
-                name="historyOfBacklogs"
-                width="50%"
-                label="History of backlogs"
-                placeholder="eg: Yes | Nill"
-              />
-              <Input
-                value={data.currentBacklogs}
-                onChange={(e: any) =>
-                  setData({ ...data, eamcetEcetRank: e.target.textContent })
-                }
-                name="currentBacklogs"
-                width="50%"
-                label="Current Backlogs"
-                placeholder="eg: 2"
-              />
-            </div>
-          </div>
+            {
+              loadingInputData ? "loading.. ": Object.keys(inputData[0]['fixed']).map(i => (
+                <div className="p-5 my-8 md:p-8 bg-white rounded drop-shadow-2xl">
+                  <Heading label={`${i} Information`} />
+                  <div className="grid grid-cols-2">
+                  {
+                     inputData[0]['fixed'][i].map(field => {
+                      const label = field.name.split("_").join(" ");
+                      const [type, width] = field.type.split("_");
+                      switch(type){
+                        case 'string':
+                          return <Input ref={addRefs} className={width=='100' ? "col-span-2" : ''} name={field.name} label={label} width={`100%`} />
+                        case 'dropdown':
+                          return <Autofill ref={addRefs} values={field.values}  fullWidth={true} name={field.name} />
+                      }
+                    }
+                   )
+                  }
+                  </div>
+                </div>
+              ))
+            }
 
           <div className="p-5 my-8 md:p-8 bg-white rounded drop-shadow-2xl">
             <Heading label="Technical Information" />

@@ -10,6 +10,7 @@ interface AutoProps {
   onChange?: any
   clearOnBlur?:boolean
   style?:any
+  values?: any
 }
 
 const Autofill = forwardRef((props: AutoProps, ref) => (
@@ -17,19 +18,12 @@ const Autofill = forwardRef((props: AutoProps, ref) => (
       disablePortal
       id="combo-box-demo"
       className='mx-3 my-6'
-      options={top100Films}
+      options={props.values ?? []}
       value={props.value}
       onChange={props.onChange}
-      sx={{ width: props.fullWidth ? '97%' : '48%' }}
-      renderInput={(params) => <TextField {...params} label={props.name} inputRef={ref} />}
+      sx={{ width: props.fullWidth ? '95%' : '48%' }}
+      renderInput={(params) => <TextField {...params} name={props.name} label={props.name} inputRef={ref} style={props.style} />}
     />
 ))
-
-const top100Films = [
-  'The Shawshank Redemption',
-  'The Godfather',
-  'The Godfather: Part II',
-  'Other'
-]
 
 export default Autofill
