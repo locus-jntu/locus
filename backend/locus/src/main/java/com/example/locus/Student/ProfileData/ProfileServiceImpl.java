@@ -1,23 +1,27 @@
 package com.example.locus.Student.ProfileData;
 
-import org.bson.types.ObjectId;
+import com.example.locus.Student.ProfileData.Model.ProfileData;
+import com.example.locus.Student.ProfileData.Model.ProfileSchema;
+import com.example.locus.Student.ProfileData.Repository.ProfileRepository;
+import com.example.locus.Student.ProfileData.Repository.ProfileSchemaRepository;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class ProfileServiceImpl implements ProfileService{
 
+    @Autowired
     ProfileRepository profileRepository;
 
     @Autowired
-    public ProfileServiceImpl(ProfileRepository testRepository){
-        this.profileRepository = testRepository;
-    }
+    ProfileSchemaRepository profileSchemaRepository;
 
     @Override
     public boolean saveNewProfileData(ProfileData profileData) {
@@ -48,5 +52,10 @@ public class ProfileServiceImpl implements ProfileService{
         }
         // Can hide the userId and _id
         return profileRepository.findProfileByUserId(userId).get();
+    }
+
+    @Override
+    public List<ProfileSchema> fetchProfileSchema(){
+        return profileSchemaRepository.findAll();
     }
 }

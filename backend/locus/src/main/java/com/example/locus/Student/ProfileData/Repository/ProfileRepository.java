@@ -1,11 +1,10 @@
-package com.example.locus.Student.ProfileData;
+package com.example.locus.Student.ProfileData.Repository;
 
-import org.bson.types.ObjectId;
+import com.example.locus.Student.ProfileData.Model.ProfileData;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Repository
