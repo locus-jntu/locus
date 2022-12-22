@@ -13,7 +13,7 @@ const ApplicationForm = (props) => {
   const fetchApplicationForm = async () => {    
     const data = await fetchForm();
     setFormData(data);
-    const dataObj = {}
+    const dataObj = {"companyId": props.companyId}
     data.fixedUserProfileSchema.forEach(key => {
       dataObj[key] = data.userData[key] ?? 'not found' 
     });
