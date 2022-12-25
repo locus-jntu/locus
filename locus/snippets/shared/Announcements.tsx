@@ -37,8 +37,9 @@ const Announcements = (props: AnnouncementsProps) => {
         <p className="py-4 px-8 font-comforta text-center text-xl font-bold  underline underline-offset-4">Announcements !</p>
         <div className="flex h-12 justify-end align-items-end">
           
-          <Link className="flex" href={`/tpo/announcements`} >
+          <Link className="flex" href={`/tpo/announcements/addAnnouncement`} >
           <Button
+            onClick={() => console.log("add")}
             className="flex self-end m-2 rounded py-1 px-6 bg-secondary text-white hover:text-white"
             sx={{
               boxShadow: "none",
