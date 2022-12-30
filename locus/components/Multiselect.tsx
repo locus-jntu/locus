@@ -24,6 +24,9 @@ interface MultiSelectProps {
     label: string
     fullWidth?: boolean
     ref: any
+    name?: string
+    onChange?: any
+    val?: any
 }
 
 const labels = [
@@ -31,31 +34,27 @@ const labels = [
 ];
 
 const Autofill = forwardRef((props: MultiSelectProps, ref) => {
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  // const [personName, setPersonName] = React.useState<string[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
+  // React.useEffect(() => {
+  //   props.onChange()
+  // }, [personName])
+
+  
 
   return (
-    <div className='w-2/4 relative top-1 mr-4 my-3'>
+    <div style={{width: !props.fullWidth && '50%'}} className='relative top-1 mr-4 my-3'>
       <FormControl className='w-full' sx={{ m: 1}}>
         <InputLabel>{props.label}</InputLabel>
         <Select
           multiple
-          value={personName}
-          onChange={handleChange}
-          inputRef={ref}
-          input={<OutlinedInput fullWidth={true} label={props.label} />}
+          value={props.val}
+          onChange={props.onChange}
+          sx={{ width: '100%'}}
+          input={<OutlinedInput inputRef={ref} name={props.name} id={props.name} fullWidth={true} label={props.label} />}
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
+              {selected?.map((value) => (
                 <Chip key={value} label={value} />
               ))}
             </Box>

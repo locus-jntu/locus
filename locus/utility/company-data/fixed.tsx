@@ -58,8 +58,13 @@ export function getComponent(name: string, formResponse, setFormResponse, data) 
         
         case 'email':
             return <Input
-            value={formResponse.email ?? '...'}
-            onChange={(e) => setFormResponse({...formResponse, 'email': e.target.value})}
+            // value={formResponse.fixedUserProfileSchema ?? '...'}
+            onChange={(e) => setFormResponse(prev => {
+              return {
+                ...prev, 
+                fixedUserProfileSchema: {...prev.fixedUserProfileSchema, 'email': e.target.value}
+              }
+            })}
             name="email"
             placeholder="eg: test@gmail.com"
             label="Email"

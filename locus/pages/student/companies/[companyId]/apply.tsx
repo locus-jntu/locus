@@ -13,9 +13,13 @@ const ApplicationForm = (props) => {
   const fetchApplicationForm = async () => {    
     const data = await fetchForm();
     setFormData(data);
-    const dataObj = {"companyId": props.companyId}
-    data.fixedUserProfileSchema.forEach(key => {
-      dataObj[key] = data.userData[key] ?? 'not found' 
+    const dataObj = {"companyId": props.companyId, "fixedUserProfileSchema": {}, "extraUserProfileSchema": {}};
+    data.fixedUserProfileSchema?.forEach(key => {
+      dataObj["fixedUserProfileSchema"][key] = data.userData[key]??'not found'
+    });
+    data.extraUserProfileSchema?.forEach(key => {
+      if(key.type == 'checkbox') dataObj["extraUserProfileSchema"][key.name] = data.userData[key] ?? []
+      else dataObj["extraUserProfileSchema"][key.name] = data.userData[key]??'not found'
     });
     setFormResponse(dataObj)
   }

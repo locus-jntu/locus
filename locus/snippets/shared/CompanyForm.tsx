@@ -13,6 +13,8 @@ import Radio from "../../components/Radio";
 import Sidebar from "../../components/Sidebar";
 import { getComponent } from "../../utility/company-data/fixed";
 import useFetch from "../../utility/hooks/useFetch";
+import MultipleSelect from "../../components/Multiselect";
+
 
 interface formProps {
   formData?: any
@@ -24,18 +26,39 @@ interface formProps {
 
 const CompanyForm = (props: formProps) => {
 
-  const saveResponseFunction = useFetch(props.formResponse, 'api/student/submitCompanyApplicationForm', 'POST')
+  const saveResponseFunction = useFetch(props.formResponse, 'api/student/submitCompanyApplicationForm', 'POST');
 
-  async function saveResponse() {
+
+  async function saveResponse() {    
+     console.log(props.formResponse);
+          
      const data = await saveResponseFunction()
      if(data){
        console.log("successfull");
      }else {
        console.log("error while updating the response");
      }
-    console.log(props.formResponse);
+
   }
-  
+
+  function onChangeOptionals(e, val){
+     props.setFormResponse({...props.formResponse, extraUserProfileSchema: {...props.formResponse.extraUserProfileSchema, [val]: e.target.value}})
+  }
+
+  const handleChange = (e, name) => {
+    console.log(props.formResponse);
+    
+    const value = e.target.value;
+    props.setFormResponse(prev => {
+      return {
+        ...prev,
+        'extraUserProfileSchema': {
+          ...prev.extraUserProfileSchema,
+          [name]: value
+        }
+      }
+    })
+  };
 
   return (
     <Layout role={props.role} component="companies">
@@ -59,15 +82,18 @@ const CompanyForm = (props: formProps) => {
           
           <p className="text-sm text-center text-secondary font-bold rounded p-2 underline underline-offset-4">NEW</p>
           {
-            props.formData.extraUserProfileSchema?.map(i => (
-              <div>
-              { i.type == 'radio' ? <Radio row={true} label={i.name} values={i.values.split(",")} /> :
-                i.type == 'checkbox' ? <Checkbox row={true} label={i.name} values={i.values.split(",")} /> :
-              <Input containerStyle={{width: '100%'}} name={i.name ?? ''} label={i.name} />
+            props.formData.extraUserProfileSchema?.map(i => {
+              const val = i.name
+              const opt = props.formResponse.extraUserProfileSchema
+              return (
+              <div className="w-full">
+              { i.type == 'radio' ? <Radio value={opt[val]} onChange={e => onChangeOptionals(e,val)} row={true} label={i.name} values={i.values.split(",")} /> :
+                i.type == 'checkbox' ? <MultipleSelect val={opt[val]} onChange={e => handleChange(e,val)} name={i.name} fullWidth={true} label={i.name}  /> :
+              <Input onChange={e => onChangeOptionals(e,val)} value={opt[val]} containerStyle={{width: '100%'}} name={i.name ?? ''} label={i.name} />
               }
-            </div>
-             )
-           )
+            </div> )
+             }
+            )
           } 
           <LButton style={{margin: 4}} onClick={saveResponse} width="100%" name="Apply" />
         </div>

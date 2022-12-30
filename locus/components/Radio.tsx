@@ -6,13 +6,14 @@ interface radioProps {
     values: string[],
     row?: boolean,
     onChange?: any,
+    value?:string
 }
 
 const RadioItem = forwardRef((props: radioProps, ref) => {
   return (
     <FormControl className="py-2 px-4">
         <label>{props.label}</label>
-        <RadioGroup ref={ref} row={props.row ?? false} onChange={(e,v) => props.onChange(v)}>
+        <RadioGroup ref={ref} value={props.value} row={props.row ?? false} onChange={props.onChange}>
         {
             props.values.map(val => (
                 <FormControlLabel value={val.toLowerCase()} control={<Radio />} label={val} />
