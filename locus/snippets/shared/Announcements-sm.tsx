@@ -39,7 +39,8 @@ const AnnouncementsSM = (props: AnnouncementsSMProps) => {
                 {
                     props.role === "tpo" && 
                     <div className="flex-1 flex justify-end ">
-                        <Link className="flex" href={`/announcements/add`} >
+                        <Link className="flex" href={`/tpo/announcements`} > 
+                        {/* changed here */}
                         <Button
                             className="flex self-end m-2 rounded py-1 px-6 bg-secondary text-white hover:text-white"
                             sx={{

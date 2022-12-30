@@ -144,6 +144,13 @@ public class CompanyServiceImpl implements CompanyService{
 
         return true;
     }
+
+    @Override
+    public List<UserApplicationData> getAllStudentsApplicationForCompany(String companyId) {
+        return applicationFormRepository.fetchAllApplicationForm(companyId);
+    }
+
+
 }
 
 
