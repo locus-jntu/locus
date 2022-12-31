@@ -88,7 +88,7 @@ const CompanyForm = (props: formProps) => {
               return (
               <div className="w-full">
               { i.type == 'radio' ? <Radio value={opt[val]} onChange={e => onChangeOptionals(e,val)} row={true} label={i.name} values={i.values.split(",")} /> :
-                i.type == 'checkbox' ? <MultipleSelect val={opt[val]} onChange={e => handleChange(e,val)} name={i.name} fullWidth={true} label={i.name}  /> :
+                i.type == 'checkbox' ? <MultipleSelect values={i.values.split(",")} val={opt[val]} onChange={e => handleChange(e,val)} name={i.name} fullWidth={true} label={i.name}  /> :
               <Input onChange={e => onChangeOptionals(e,val)} value={opt[val]} containerStyle={{width: '100%'}} name={i.name ?? ''} label={i.name} />
               }
             </div> )

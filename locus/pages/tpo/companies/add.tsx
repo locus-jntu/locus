@@ -91,7 +91,7 @@ const Companies = () => {
   const addCheckbox = () => {
     const label = checkBoxLabelRef.current.value=="" ? optional.at(index) : checkBoxLabelRef.current.value;
     const names = checkBoxvaluesRef.current.value;
-    const component = <Checkbox row={true} label={label} values={names.split(",")} />
+    const component = <MultipleSelect fullWidth={true} values={names.split(",")} name={label} label={label}  />
     setDefaultKeys(keys => [...keys, {component, name: label}])
     setOptional(keys => keys.filter((_,ind) => ind!=index))
     setOpen(false)
@@ -174,7 +174,7 @@ const Companies = () => {
 
                    <div className="flex">
                         <Autofill ref={jobTypeRef} name="job offer type" />
-                        <MultipleSelect onChange={e => setLabels(e.target.value)} val={labels} ref={labelsRef} label="labels" />
+                        <MultipleSelect values={['CSE','ECE','EEE']} onChange={e => setLabels(e.target.value)} val={labels} ref={labelsRef} label="labels" />
                    </div>
 
                    <Input ref={roleRef} name="role" placeholder="Enter role here" label="role" />
@@ -223,9 +223,9 @@ const Companies = () => {
 
               {
                 defaultKeys.map(i => (
-                    <div className="flex w-full justify-between items-center">
+                    <div className="w-full relative justify-between items-center pr-12">
                         {i.component}
-                        <Button onClick={() => removeItem(i)} style={{height: 48}}> x </Button>
+                        <Button className="absolute top-4 right-0" onClick={() => removeItem(i)} style={{height: 48}}> x </Button>
                     </div>
                 ))
               }

@@ -27,20 +27,16 @@ interface MultiSelectProps {
     name?: string
     onChange?: any
     val?: any
+    values: string[]
 }
 
-const labels = [
-  'CSE', 'ECE', "EEE", "MECH", "CHEM", "METT", "CIVIL"
-];
-
 const Autofill = forwardRef((props: MultiSelectProps, ref) => {
-  // const [personName, setPersonName] = React.useState<string[]>([]);
-
-  // React.useEffect(() => {
-  //   props.onChange()
-  // }, [personName])
-
-  
+  const [data, setData] = React.useState<string[]>([]);
+ 
+  function onChange(e){
+     const val = e.target.value;
+     setData(val)
+  }
 
   return (
     <div style={{width: !props.fullWidth && '50%'}} className='relative top-1 mr-4 my-3'>
@@ -48,8 +44,8 @@ const Autofill = forwardRef((props: MultiSelectProps, ref) => {
         <InputLabel>{props.label}</InputLabel>
         <Select
           multiple
-          value={props.val}
-          onChange={props.onChange}
+          value={props.val ?? data}
+          onChange={props.onChange ?? onChange}
           sx={{ width: '100%'}}
           input={<OutlinedInput inputRef={ref} name={props.name} id={props.name} fullWidth={true} label={props.label} />}
           renderValue={(selected) => (
@@ -61,7 +57,7 @@ const Autofill = forwardRef((props: MultiSelectProps, ref) => {
           )}
           MenuProps={MenuProps}
         >
-          {labels.map((label) => (
+          {props.values?.map((label) => (
             <MenuItem
               key={label}
               value={label}
