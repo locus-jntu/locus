@@ -14,7 +14,8 @@ import lightTheme from "../../../styles/theme/lightTheme";
 import LButton from "../../../components/LButton";
 import { Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import ExcelToJSON from "../../../utility/excel/excelToJSON";
+import { readUploadFile } from "../../../utility/excel/excelToJSON";
+import { exportFile } from "../../../utility/excel/JSONToExcel";
 import { useGenerateKeys } from "../../../utility/useGenerateKeys.js";
 import { getType, getValues } from "../../../utility/helperInput.js";
 import Layout from "../../../components/Layout";
@@ -34,8 +35,6 @@ const Companies = () => {
 
   const [companyData, setCompanyData] = useState({});
 
-
-
   const fixedkeys = [
       "firstName","gender"
    ];
@@ -46,6 +45,7 @@ const Companies = () => {
   const [extraUserProfileSchema, setextraUserProfileSchema] = useState([]);
   const [fixedUserProfileSchema, setfixedUserProfileSchema] = useState([]);
 
+  const [labels, setLabels] = useState([]);
 
   const [constraints, setConstraints] = useState([]);
   
@@ -59,7 +59,7 @@ const Companies = () => {
 
   refs.current = []
 
-  const [keys,setKeys] = useState(["firstName", "lastName", "gendere", "location", "salary"])
+  const [keys,setKeys] = useState([])
 
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState();
@@ -69,7 +69,7 @@ const Companies = () => {
 
   const addString = () => {
      const name = stringRef.current.value=="" ? optional.at(index) : stringRef.current.value;
-     const component = <Input containerStyle={{width: '100%'}} name={name} label={name} />
+     const component = <Input name={name} label={name} />
      setDefaultKeys(keys => [...keys, {component, name}])
      setOptional(keys => keys.filter((_,ind) => ind!=index))
      setOpen(false)
@@ -173,8 +173,8 @@ const Companies = () => {
                    <Input ref={nameRef} name="companyName" placeholder="Enter company name here" label="company name" />
 
                    <div className="flex">
-                        <Autofill ref={jobTypeRef} fullWidth={true} name="job offer type" />
-                        <MultipleSelect ref={labelsRef} label="labels" fullWidth={true} />
+                        <Autofill ref={jobTypeRef} name="job offer type" />
+                        <MultipleSelect onChange={e => setLabels(e.target.value)} val={labels} ref={labelsRef} label="labels" />
                    </div>
 
                    <Input ref={roleRef} name="role" placeholder="Enter role here" label="role" />
@@ -205,8 +205,14 @@ const Companies = () => {
                 </div>
             </form>
             
-            <div className="h-64 bg-secondary w-full mb-4">
-                  <ExcelToJSON></ExcelToJSON>
+            <div className="h-64 flex bg-secondary w-full mb-4">
+                <input
+                    type="file"
+                    name="upload"
+                    id="upload"
+                    onChange={(e) => readUploadFile(e,setKeys)}
+                    className="flex self-center m-auto pl-24 text-white"
+                />
             </div>
 
               <LButton onClick={genKeys} name="Generate Keys" width={164} />
@@ -232,6 +238,7 @@ const Companies = () => {
                         label={i}
                         name={i}
                         value=''
+                        values={["string", "Other"]}
                         fullWidth={true}
                         ref={addRef}
                         onChange={(e,v) => changeHandler(e,v,index)}
@@ -247,14 +254,14 @@ const Companies = () => {
             <div className="h-screen flex flex-col justify-center items-center">
               <div style={{width: 450,minHeight: 380,padding: 24, margin: 'auto'}} className="flex flex-col bg-white rounded ">
                 <div className="border-b-2 border-gray-400">
-                   <Radio row label="Type" onChange={setType} values={["string", "checkbox", "radio"]} />
+                   <Radio row label="Type" onChange={(e) => setType(e.target.value)} values={["string", "checkbox", "radio"]} />
                    <CloseIcon className="float-right" onClick={handleClose} />
                 </div>
                 <div className="rounded  pt-2 text-gray-600 bg-gray-200 flex-1 ">
                 {
                     type=='string' ? 
                         <div className="relative h-full "> 
-                          <Input ref={stringRef}  name="name" label="Input name" placeholder="Ex: roll number" />
+                          <Input ref={stringRef} name="name" label="Input name" placeholder="Ex: roll number" />
                           <button className="absolute bottom-4 right-4" onClick={addString}>Add</button>
                         </div>
                      
