@@ -65,7 +65,8 @@ public class CustomApplicationFormRepositoryImpl implements CustomApplicationFor
         query.addCriteria(Criteria.where("userApplicationData.userId").is(userApplicationData.getUserId()));
 
         Update update = new Update();
-        update.set("userApplicationData.$.applicationForm",userApplicationData.getApplicationForm());
+        update.set("userApplicationData.$.fixedUserProfileSchema",userApplicationData.getFixedUserProfileSchema());
+        update.set("userApplicationData.$.extraUserProfileSchema",userApplicationData.getExtraUserProfileSchema());
         mongoTemplate.findAndModify(query,update,ApplicationFormModel.class);
     }
 
