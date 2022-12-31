@@ -8,6 +8,6 @@ export function getType(i) {
 }
 
 export function getValues(i) {
-    if(i == 'gendere') return 'male,female,other'
+    if(i == 'gender') return 'male,female,other'
     return 'null,null'
 }

@@ -8,6 +8,7 @@ interface ButtonProps {
   height?: number | string
   style?: any
   color?: "inherit" | "secondary" | "primary" | "success" | "error" | "info" | "warning"
+  disabled?: boolean
 }
 
 const LButton = (props: ButtonProps) => (
@@ -26,6 +27,7 @@ const LButton = (props: ButtonProps) => (
         color={props.color ?? "secondary" } 
         variant="contained"
         onClick={props.onClick}
+        disabled={props.disabled}
     >
       {props.name}
     </Button>

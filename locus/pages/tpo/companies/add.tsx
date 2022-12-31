@@ -1,31 +1,20 @@
-import CompanyCard from "../../../components/company-cards/CompanyCard"
-import Nav from "../../../components/Nav"
-import Sidebar from "../../../components/Sidebar"
-import Footer from "../../../components/Footer";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "../../../components/Input";
 import Modal from '@mui/material/Modal';
 import Autofill from "../../../components/Autofill";
 import Radio from "../../../components/Radio";
-import Checkbox from "../../../components/Checkbox";
-import { useRouter } from "next/router";
 import MultipleSelect from "../../../components/Multiselect";
-import lightTheme from "../../../styles/theme/lightTheme";
 import LButton from "../../../components/LButton";
 import { Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { readUploadFile } from "../../../utility/excel/excelToJSON";
-import { exportFile } from "../../../utility/excel/JSONToExcel";
-import { useGenerateKeys } from "../../../utility/useGenerateKeys.js";
-import { getType, getValues } from "../../../utility/helperInput.js";
+import { similarKeys } from "../../../utility/generateKeys.js";
 import Layout from "../../../components/Layout";
 import useFetch from "../../../utility/hooks/useFetch";
-import { NoEncryption } from "@mui/icons-material";
 
 const Companies = () => {
- 
-  const router = useRouter();
-  const { companyId } = router.query;
+
+  const [inputFieldData, setInputfieldData] = useState();
 
   const nameRef = useRef();
   const jobTypeRef = useRef();
@@ -33,11 +22,10 @@ const Companies = () => {
   const roleRef = useRef();
   const descriptionRef = useRef();
 
-  const [companyData, setCompanyData] = useState({});
+  const [fixedkeys, setFixedKeys] = useState([]);
 
-  const fixedkeys = [
-      "firstName","gender"
-   ];
+  const [loadingKeys, setLoadingKeys] = useState(false);
+   // this should come from database
 
   const [defaultKeys, setDefaultKeys] = useState([]);
   const [optional, setOptional] = useState([]);
@@ -120,23 +108,59 @@ const Companies = () => {
      }
   }
 
-  const keysFunc = useGenerateKeys(fixedkeys, keys, setDefaultKeys, setOptional, setfixedUserProfileSchema);
-
   const genKeys = () => {
-    keysFunc();
-    setDefaultKeys(keys => keys.map(i => 
-      {
-        let component = null;
-        if(getType(i) == 'string') component = <Input containerStyle={{width: '100%'}} name={i} label={i} />
-        if(getType(i) == 'radio') component = <Radio row={true} label={i} values={getValues(i).split(",")} />
-        return {
-          component,
-          name: i
+    const [fixed, optionals] = similarKeys(fixedkeys, keys)
+    setOptional(optionals)
+    setDefaultKeys(fixed)
+    setfixedUserProfileSchema(fixed)
+    
+    let res = []    
+    fixed.map((key:string) => {
+      const m = key.toLowerCase();
+      let keyFound
+      Object.keys(inputFieldData[0]?.fixed).forEach(key => {
+        keyFound = inputFieldData[0].fixed[key].filter(i => i.name.toLowerCase().split("_").join(" ") == m);
+        console.log(keyFound);
+        
+        if(keyFound.length > 0){ 
+          let component = null;
+          const label = keyFound[0].name.split("_").join(" ");
+          const [type, width] = keyFound[0].type.split("_");
+          switch(type){
+            case 'string':
+              component =  <Input className={width=='100' ? "col-span-2" : ''} name={keyFound[0].name} label={label} width={`100%`} />
+              break
+            case 'dropdown':
+              component = <Autofill values={keyFound[0].values}  fullWidth={true} name={keyFound[0].name} />
+              break
+          }
+          res.push({component, name:label})
         }
-      }
-    )
-    )
+       }
+      );
+    })
+
+    setDefaultKeys(res);    
   }
+
+  const getFieldsFunction = useFetch(null, "api/shared/fetchProfileSchema", "GET");
+
+  async function getProfileSchema(){
+    setLoadingKeys(true)
+    const data = await getFieldsFunction();
+    setLoadingKeys(false)
+    setInputfieldData(data)
+    const allFixedKeys = []
+    Object.keys(data[0].fixed).forEach(key => 
+        data[0].fixed[`${key}`].map(i => allFixedKeys.push(i.name.split("_").join(" ")))
+    )
+    setFixedKeys(allFixedKeys);
+  }
+
+  useEffect(() => {
+    getProfileSchema();
+    //autofilling should also be done
+  }, [])
 
   const addhandler = async () => {
     const payload = {
@@ -174,7 +198,7 @@ const Companies = () => {
 
                    <div className="flex">
                         <Autofill ref={jobTypeRef} name="job offer type" />
-                        <MultipleSelect values={['CSE','ECE','EEE']} onChange={e => setLabels(e.target.value)} val={labels} ref={labelsRef} label="labels" />
+                        <MultipleSelect values={['CSE','ECE','EEE','MECH','CIVIL','CHEM','METT']} onChange={e => setLabels(e.target.value)} val={labels} ref={labelsRef} label="labels" />
                    </div>
 
                    <Input ref={roleRef} name="role" placeholder="Enter role here" label="role" />
@@ -206,16 +230,18 @@ const Companies = () => {
             </form>
             
             <div className="h-64 flex bg-secondary w-full mb-4">
-                <input
-                    type="file"
-                    name="upload"
-                    id="upload"
-                    onChange={(e) => readUploadFile(e,setKeys)}
-                    className="flex self-center m-auto pl-24 text-white"
-                />
+                {loadingKeys ? <p>Loading </p> : 
+                  <input
+                      type="file"
+                      name="upload"
+                      id="upload"
+                      onChange={(e) => readUploadFile(e,setKeys)}
+                      className="flex self-center m-auto pl-24 text-white"
+                  />
+                }
             </div>
 
-              <LButton onClick={genKeys} name="Generate Keys" width={164} />
+              <LButton onClick={genKeys} disabled={keys.length == 0} name="Generate Keys" width={164} />
               
               <p className="pt-4 px-8 mt-8 font-comforta text-center text-lg font-bold underline underline-offset-4"> company form  </p>
 
