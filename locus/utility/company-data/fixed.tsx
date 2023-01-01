@@ -2,90 +2,26 @@ import Autofill from "../../components/Autofill";
 import Input from "../../components/Input";
 import { data } from "../data/profileData";
 
-export function getComponent(name: string, formResponse, setFormResponse, data) {
-   switch(name) {
-       case 'rollnumber': 
-          return <Input
-          value={data.rollNumber ?? '...'}
-          name="rno"
-          placeholder="eg: 19011P0525"
-          label="Roll number"
-        />
+export function getComponent(name: string, data, inputfieldData,addRefs) {
+   
+    let component = null
+    
+    Object.keys(inputfieldData[0].fixed).forEach(section => {
+       const field = inputfieldData[0].fixed[section].filter(input => input.name.toLowerCase().split("_").join(" ") == name.toLowerCase())
+       
+       if(field.length > 0){
+        const label = field[0].name.split("_").join(" ");
+        const [type, width] = field[0].type.split("_");
+        switch(type){
+          case 'string':
+            component = <Input ref={addRefs} value={data[label]??''} className={width=='100' ? "col-span-2" : ''} name={field[0].name} label={label} width={`100%`} />
+            break
+          case 'dropdown':
+            component = <Autofill ref={addRefs} value={data[label]??''} values={field[0].values}  fullWidth={true} name={field[0].name} />
+            break
+        }
+       }
+    })
 
-        case 'name':
-            return <>
-            <label htmlFor="fname" className="m-3">
-              Full name 
-            </label>
-            <div className="flex">
-              <Input
-                value={data.firstName ?? '...'}
-                placeholder="eg: John"
-                name="fname"
-                helperText="Enter first name"
-                width="50%"
-              />
-              <Input
-                value={data.lastName ?? '...'}
-                placeholder="eg: Doe"
-                name="lname"
-                helperText="Enter Last name"
-                width="50%"
-              />
-            </div>
-            </>
-        
-        case 'degree':
-            return <Autofill
-            value={data.degree ?? '...'}
-            fullWidth={true}
-            name="degree"
-            />
-        
-        case 'department':
-            return <Autofill
-            value={data.department ?? '...'}
-            fullWidth={true}
-            name="department"
-          />
-        
-        case 'parentname':
-            return  <Input
-            value={data.parentName ?? '...'}
-            name="parentName"
-            label="Parent's full name"
-          />
-        
-        case 'email':
-            return <Input
-            // value={formResponse.fixedUserProfileSchema ?? '...'}
-            onChange={(e) => setFormResponse(prev => {
-              return {
-                ...prev, 
-                fixedUserProfileSchema: {...prev.fixedUserProfileSchema, 'email': e.target.value}
-              }
-            })}
-            name="email"
-            placeholder="eg: test@gmail.com"
-            label="Email"
-          />
-        
-        case 'mobile':
-            return <Input
-            value={data.mobile}
-            name="mob"
-            width="50%"
-            label="Mobile"
-            placeholder="+91 "
-          />
-        
-        case 'passingyear':
-            return <Input
-            value={data.passingYear}
-            name="year"
-            width="50%"
-            label="Passing Year"
-          />
-
-   }
+    return component
 }

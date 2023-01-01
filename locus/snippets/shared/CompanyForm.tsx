@@ -28,9 +28,47 @@ const CompanyForm = (props: formProps) => {
 
   const saveResponseFunction = useFetch(props.formResponse, 'api/student/submitCompanyApplicationForm', 'POST');
 
+  const getFieldsFunction = useFetch(null, "api/shared/fetchProfileSchema", "GET");
+
+  const [inputfieldData, setInputfieldData] = useState([])
+  const [fixedInputResponses, setfixedInputResponsesData] = useState();
+
+
+  async function getProfileSchema(){
+    const data = await getFieldsFunction();
+    setInputfieldData(data)
+  }
+
+  useEffect(() => {
+    
+    getProfileSchema();
+    console.log(props.formData.fixedUserProfileSchema);
+    
+    //autofilling should also be done
+  }, [])
+
+  const inputRef = useRef([])
+  inputRef.current = []
+
+  function addRefs(el){
+    if(el && !inputRef.current.includes(el)){
+      inputRef.current.push(el)
+    }
+  }
 
   async function saveResponse() {    
      console.log(props.formResponse);
+
+     inputRef.current.map(i => {
+      if(i.id == 'combo-box-demo'){
+        setfixedInputResponsesData(prev => {
+          return {...prev, [i.name]: i.value }
+        })
+      }
+      else setfixedInputResponsesData(prev => {
+        return {...prev, [i.id]: i.value}
+      })
+    })
           
      const data = await saveResponseFunction()
      if(data){
@@ -77,7 +115,7 @@ const CompanyForm = (props: formProps) => {
 
           <p className="text-sm mb-2 text-center  text-secondary font-bold p-2 rounded underline underline-offset-4">EXISTING</p>
           {
-            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,props.formResponse,props.setFormResponse,props.formData.userData))
+            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,props.formData.userData,inputfieldData,addRefs))
           }
           
           <p className="text-sm text-center text-secondary font-bold rounded p-2 underline underline-offset-4">NEW</p>
