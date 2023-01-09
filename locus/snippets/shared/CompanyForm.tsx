@@ -14,6 +14,7 @@ import Sidebar from "../../components/Sidebar";
 import { getComponent } from "../../utility/company-data/fixed";
 import useFetch from "../../utility/hooks/useFetch";
 import MultipleSelect from "../../components/Multiselect";
+import SecureLS from "secure-ls";
 
 
 interface formProps {
@@ -27,7 +28,9 @@ interface formProps {
 const CompanyForm = (props: formProps) => {
 
   const saveResponseFunction = useFetch(props.formResponse, 'api/student/submitCompanyApplicationForm', 'POST');
-
+  
+  
+  const [loading, setLoading] = useState(false);
   const getFieldsFunction = useFetch(null, "api/shared/fetchProfileSchema", "GET");
 
   const [inputfieldData, setInputfieldData] = useState([])
@@ -35,8 +38,10 @@ const CompanyForm = (props: formProps) => {
 
 
   async function getProfileSchema(){
+    setLoading(true)
     const data = await getFieldsFunction();
     setInputfieldData(data)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -44,7 +49,6 @@ const CompanyForm = (props: formProps) => {
     getProfileSchema();
     console.log(props.formData.fixedUserProfileSchema);
     
-    //autofilling should also be done
   }, [])
 
   const inputRef = useRef([])
@@ -55,38 +59,43 @@ const CompanyForm = (props: formProps) => {
       inputRef.current.push(el)
     }
   }
-
-  useEffect(() => {
-    inputRef?.current.map(i => {
-      if(i.id == 'combo-box-demo'){
-        setfixedInputResponsesData(prev => {
-          return {...prev, [i.name]: i.value }
-        })
-      }
-      else setfixedInputResponsesData(prev => {
-        return {...prev, [i.id]: i.value}
-      })
-    })
-
-    props.setFormResponse(prev => {
-      return {
-        ...prev, 
-        fixedUserProfileSchema: fixedInputResponses
-      }
-    })
-  }, [inputRef])
   
 
   async function saveResponse() {    
      console.log(props.formResponse);
-         
-     const data = await saveResponseFunction()
-     if(data){
-       console.log("successfull");
-     }else {
-       console.log("error while updating the response");
-     }
+     console.log("fixedIR ",fixedInputResponses);
+     
+    try{
+      var ls = new SecureLS({encodingType: 'aes', isCompression: false})
+      const jwt = ls.get("jwt");
 
+      const headers = jwt ? {   
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + jwt,
+      } : {
+        "Content-Type": "application/json"
+      };
+
+      const payload = {
+        companyId: props.formResponse.companyId,
+        userApplicationData: {
+          fixedUserProfileSchema: fixedInputResponses,
+          extraUserProfileSchema: props.formResponse.extraUserProfileSchema
+        }
+      }      
+
+      const data = await fetch(`http://localhost:8080/api/student/submitCompanyApplicationForm`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload),
+      });
+       const response = await data.json();
+       if(response) console.log("success")
+       else console.log("unsuccessful")
+    }catch(e) {
+      console.log("err", e);
+      
+    }
   }
 
   function onChangeOptionals(e, val){
@@ -94,7 +103,6 @@ const CompanyForm = (props: formProps) => {
   }
 
   const handleChange = (e, name) => {
-    console.log(props.formResponse);
     
     const value = e.target.value;
     props.setFormResponse(prev => {
@@ -125,7 +133,8 @@ const CompanyForm = (props: formProps) => {
 
           <p className="text-sm mb-2 text-center  text-secondary font-bold p-2 rounded underline underline-offset-4">EXISTING</p>
           {
-            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,props.formData.userData,inputfieldData,addRefs))
+            loading ? <p>loading...</p> : 
+            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,props.formData.userData,inputfieldData,addRefs,inputRef,setfixedInputResponsesData))
           }
           
           <p className="text-sm text-center text-secondary font-bold rounded p-2 underline underline-offset-4">NEW</p>
