@@ -37,9 +37,13 @@ const ProfileForm = () => {
 
   const getFieldsFunction = useFetch(null, "api/shared/fetchProfileSchema", "GET");
 
+  const getProfileData = useFetch(null, "api/student/fetchProfileData", "GET");
+
   async function getProfileSchema(){
-    const data = await getFieldsFunction();
-    setInputData(data)
+    const fdata = await getFieldsFunction();
+    const pdata = await getProfileData();
+    setInputData(fdata)
+    setData(pdata)
     setLoadingInputData(false)
   }
 
@@ -57,25 +61,28 @@ const ProfileForm = () => {
     }
   }
 
-  const clickHandler = async() => { 
-      
-      inputRef.current.map(i => {
-        if(i.id == 'combo-box-demo'){
-          setData(prev => {
-            return {...prev, [i.name]: i.value }
-          })
-        }
-        else setData(prev => {
-          return {...prev, [i.id]: i.value}
+  function inputChangeHandler(){
+    inputRef.current.map(i => {
+      if(i.id == 'combo-box-demo'){
+        setData(prev => {
+          return {...prev, [i.name]: i.value }
         })
+      }
+      else setData(prev => {
+        return {...prev, [i.id]: i.value}
       })
- 
+    })
+  }
+
+  const clickHandler = async() => { 
       try{
         setOpen(true);
         setStatus("loading");
-        const data = await saveProfileFunction();
+        console.log(data);
+        
+        const pdata = await saveProfileFunction();
         setStatus("success");
-        console.log("data is : ", data);
+        console.log("data is : ", pdata);
       }catch(err){
           console.log("Error : ",err);
           setStatus("failed");
@@ -98,9 +105,9 @@ const ProfileForm = () => {
                       const [type, width] = field.type.split("_");
                       switch(type){
                         case 'string':
-                          return <Input ref={addRefs} className={width=='100' ? "col-span-2" : ''} name={field.name} label={label} width={`100%`} />
+                          return <Input ref={addRefs} value={data[field.name]}  onChange={inputChangeHandler} className={width=='100' ? "col-span-2" : ''} name={field.name} label={label} width={`100%`} />
                         case 'dropdown':
-                          return <Autofill ref={addRefs} values={field.values}  fullWidth={true} name={field.name} />
+                          return <Autofill ref={addRefs} onChange={inputChangeHandler} values={field.values}  fullWidth={true} name={field.name} />
                       }
                     }
                    )
