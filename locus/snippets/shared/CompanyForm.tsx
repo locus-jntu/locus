@@ -56,10 +56,8 @@ const CompanyForm = (props: formProps) => {
     }
   }
 
-  async function saveResponse() {    
-     console.log(props.formResponse);
-
-     inputRef.current.map(i => {
+  useEffect(() => {
+    inputRef?.current.map(i => {
       if(i.id == 'combo-box-demo'){
         setfixedInputResponsesData(prev => {
           return {...prev, [i.name]: i.value }
@@ -69,7 +67,19 @@ const CompanyForm = (props: formProps) => {
         return {...prev, [i.id]: i.value}
       })
     })
-          
+
+    props.setFormResponse(prev => {
+      return {
+        ...prev, 
+        fixedUserProfileSchema: fixedInputResponses
+      }
+    })
+  }, [inputRef])
+  
+
+  async function saveResponse() {    
+     console.log(props.formResponse);
+         
      const data = await saveResponseFunction()
      if(data){
        console.log("successfull");

@@ -14,10 +14,10 @@ export function getComponent(name: string, data, inputfieldData,addRefs) {
         const [type, width] = field[0].type.split("_");
         switch(type){
           case 'string':
-            component = <Input ref={addRefs} value={data[label]??''} className={width=='100' ? "col-span-2" : ''} name={field[0].name} label={label} width={`100%`} />
+            component = <Input ref={addRefs} value={data[label]} className={width=='100' ? "col-span-2" : ''} name={field[0].name} label={label} width={`100%`} />
             break
           case 'dropdown':
-            component = <Autofill ref={addRefs} value={data[label]??''} values={field[0].values}  fullWidth={true} name={field[0].name} />
+            component = <Autofill ref={addRefs} value={data[label]} values={field[0].values}  fullWidth={true} name={field[0].name} />
             break
         }
        }
