@@ -6,35 +6,35 @@ import java.util.List;
 
 @Data
 public class FixedUserSchema {
-    String rollNumber;
+    String roll_number;
 
-    String email;
+    String mail_id;
 
-    String firstName;
+    String first_name;
 
-    String lastName;
+    String last_name;
 
     String department;
 
     String degree;
 
-    String parentName;
+    String parent_name;
 
-    String tenthGrade;
+    String ssc_gpa;
 
-    String interGrade;
+    String intermediate_diploma_percentage;
 
-    String mobile;
+    String contact_number;
 
-    String passingYear;
+    String passing_year;
 
-    String eamcetEcetRank;
+    String eamcet_rank;
 
-    String ugAggregate;
+    String ug_aggregate_gpa;
 
-    String currentBacklogs;
+    String history_of_backlogs;
 
-    String historyOfBacklogs;
+    String current_backlogs;
 
     List<String> skills;
 
