@@ -1,5 +1,7 @@
 package com.example.locus.Student.ProfileData;
 
+import com.example.locus.Student.ProfileData.Dto.ProfileDataRequest;
+import com.example.locus.Student.ProfileData.Model.FixedUserSchema;
 import com.example.locus.Student.ProfileData.Model.ProfileData;
 import com.example.locus.Student.ProfileData.Model.ProfileSchema;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,12 @@ public class ProfileController {
     }
 
     @PostMapping(value = "/api/student/saveNewProfileData")
-    public boolean createNewProfileData(@RequestBody ProfileData profileDataModel){
-        return profileService.saveNewProfileData(profileDataModel);
+    public boolean createNewProfileData(@RequestBody ProfileDataRequest profileDataRequest){
+        return profileService.saveNewProfileData(profileDataRequest);
     }
 
     @GetMapping(value = "/api/student/fetchProfileData")
-    public ProfileData fetchProfileData(){
+    public FixedUserSchema fetchProfileData(){
         return profileService.fetchProfileData();
     }
 

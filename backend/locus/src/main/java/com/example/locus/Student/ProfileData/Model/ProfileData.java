@@ -9,24 +9,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.List;
 
-class Address{
-    public String streetAddress;
-    public String streetAddress2;
-    public String district;
-    public String state;
-    public String city;
-    public String pin;
-}
-class Internship{
-    public String role;
-    public String org;
-    public String dur;
-}
 
-class Course{
-    public String cname;
-    public String org;
-}
 @Document
 @Data
 public class ProfileData {
@@ -37,43 +20,5 @@ public class ProfileData {
 
     String userId;
 
-    String rollNumber;
-
-    String email;
-
-    String firstName;
-
-    String lastName;
-
-    String department;
-
-    String degree;
-
-    String parentName;
-
-    String tenthGrade;
-
-    String interGrade;
-
-    String mobile;
-
-    String passingYear;
-
-    String eamcetEcetRank;
-
-    String ugAggregate;
-
-    String currentBacklogs;
-
-    String historyOfBacklogs;
-
-    List<String> skills;
-
-    List<String> languages;
-
-    List<Internship> internships;
-
-    List<Course> courses;
-
-    private Address address;
+    FixedUserSchema fixedUserSchema;
 }

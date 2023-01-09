@@ -1,5 +1,7 @@
 package com.example.locus.Student.ProfileData;
 
+import com.example.locus.Student.ProfileData.Dto.ProfileDataRequest;
+import com.example.locus.Student.ProfileData.Model.FixedUserSchema;
 import com.example.locus.Student.ProfileData.Model.ProfileData;
 import com.example.locus.Student.ProfileData.Model.ProfileSchema;
 import com.example.locus.Student.ProfileData.Repository.ProfileRepository;
@@ -24,13 +26,15 @@ public class ProfileServiceImpl implements ProfileService{
     ProfileSchemaRepository profileSchemaRepository;
 
     @Override
-    public boolean saveNewProfileData(ProfileData profileData) {
+    public boolean saveNewProfileData(ProfileDataRequest profileDataRequest) {
         // Do validation before storing the data.
 
         Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String userId =(String) details.get("userId");
         Optional<ProfileData> existingProfileData = profileRepository.findProfileByUserId(userId);
+        ProfileData profileData = new ProfileData();
         profileData.setUserId(userId);
+        profileData.setFixedUserSchema(profileDataRequest);
         if(existingProfileData.isEmpty()){
             profileRepository.save(profileData);
         }else{
@@ -42,7 +46,7 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override
-    public ProfileData fetchProfileData() {
+    public FixedUserSchema fetchProfileData() {
         Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String userId =(String) details.get("userId");
         Optional<ProfileData> userProfileData = profileRepository.findProfileByUserId(userId);
@@ -51,7 +55,7 @@ public class ProfileServiceImpl implements ProfileService{
            return null;
         }
         // Can hide the userId and _id
-        return profileRepository.findProfileByUserId(userId).get();
+        return profileRepository.findProfileByUserId(userId).get().getFixedUserSchema();
     }
 
     @Override

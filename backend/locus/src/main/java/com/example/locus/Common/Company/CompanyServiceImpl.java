@@ -8,6 +8,7 @@ import com.example.locus.Common.Company.Model.Company;
 import com.example.locus.Common.Company.Repository.UserApplicationForm.ApplicationFormRepository;
 import com.example.locus.Common.Company.Repository.CompanyRepository;
 import com.example.locus.Common.Enum.JobCategory;
+import com.example.locus.Student.ProfileData.Model.FixedUserSchema;
 import com.example.locus.Student.ProfileData.Model.ProfileData;
 import com.example.locus.Student.ProfileData.ProfileService;
 import org.bson.types.ObjectId;
@@ -95,7 +96,7 @@ public class CompanyServiceImpl implements CompanyService{
         Company companyApplicationSchema = companyRepository.getCompanyApplicationSchema(companyId);
 
         // Fetches user data.
-        ProfileData profileData = profileService.fetchProfileData();
+        FixedUserSchema profileData = profileService.fetchProfileData();
         if(profileData == null){
             System.out.println("Logical error. User data is not present.");
             return null;
