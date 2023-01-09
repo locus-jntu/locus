@@ -7,10 +7,11 @@ interface AutoProps {
   fullWidth?: boolean
   name: string
   value?: any
-  onChange?: any
+  onInputChange?: any
   clearOnBlur?:boolean
   style?:any
   values?: any
+  defaultValue?: string
 }
 
 const Autofill = forwardRef((props: AutoProps, ref) => (
@@ -20,7 +21,8 @@ const Autofill = forwardRef((props: AutoProps, ref) => (
       className='mx-3 my-6'
       options={props.values ?? []}
       value={props.value}
-      onChange={props.onChange}
+      defaultValue={props.defaultValue}
+      onInputChange={props.onInputChange}
       sx={{ width: props.fullWidth ? '95%' : '48%' }}
       renderInput={(params) => <TextField {...params} name={props.name} label={props.name} inputRef={ref} style={props.style} />}
     />

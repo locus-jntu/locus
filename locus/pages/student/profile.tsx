@@ -107,7 +107,7 @@ const ProfileForm = () => {
                         case 'string':
                           return <Input ref={addRefs} value={data[field.name]}  onChange={inputChangeHandler} className={width=='100' ? "col-span-2" : ''} name={field.name} label={label} width={`100%`} />
                         case 'dropdown':
-                          return <Autofill ref={addRefs} onChange={inputChangeHandler} values={field.values}  fullWidth={true} name={field.name} />
+                          return <Autofill ref={addRefs} defaultValue={data[field.name]} onInputChange={inputChangeHandler} values={field.values}  fullWidth={true} name={field.name} />
                       }
                     }
                    )
