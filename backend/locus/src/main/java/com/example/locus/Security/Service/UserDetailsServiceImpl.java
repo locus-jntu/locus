@@ -1,6 +1,7 @@
-package com.example.locus.Security;
+package com.example.locus.Security.Service;
 
 import com.example.locus.Security.Model.UserModel;
+import com.example.locus.Security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

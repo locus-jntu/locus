@@ -1,6 +1,6 @@
 package com.example.locus.Security.jwt;
 
-import com.example.locus.Security.UserDetailsServiceImpl;
+import com.example.locus.Security.Service.UserDetailsServiceImpl;
 import com.example.locus.Security.Model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

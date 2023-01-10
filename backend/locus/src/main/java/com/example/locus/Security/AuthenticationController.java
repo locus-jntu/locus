@@ -1,6 +1,8 @@
 package com.example.locus.Security;
 
+import com.example.locus.Security.Dto.CreatePcRequest;
 import com.example.locus.Security.Dto.RegisterNewStudents;
+import com.example.locus.Security.Service.UserManager;
 import com.example.locus.Security.jwt.JwtUtil;
 import com.example.locus.Security.jwt.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -50,5 +54,15 @@ public class AuthenticationController {
     @PostMapping("/api/tpo/registerNewStudents")
     public boolean registerNewStudents(@RequestBody RegisterNewStudents registerNewStudent){
         return userManager.registerNewStudents(registerNewStudent);
+    }
+
+    @PostMapping("/api/tpo/createPc")
+    public boolean createPc(@RequestBody CreatePcRequest createPcRequest){
+        return userManager.createPc(createPcRequest);
+    }
+
+    @GetMapping("/api/tpo/deletePc")
+    public boolean deletePc(@RequestParam(name = "username") String pcUsername){
+        return userManager.deletePc(pcUsername);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.locus.Tpo.ManagePc.Dto;
+package com.example.locus.Security.Dto;
 
 import lombok.Data;
 
