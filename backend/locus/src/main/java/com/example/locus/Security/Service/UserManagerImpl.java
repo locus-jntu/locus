@@ -32,7 +32,7 @@ public class UserManagerImpl implements UserManager{
     public boolean registerNewStudents(RegisterNewStudents registerNewStudents) {
 
         for(UserData userData: registerNewStudents.getNewStudents()){
-            if(userData.getEmail() != null && userData.getRoll_number() != null){
+            if(userData.getMail_id() != null && userData.getRoll_number() != null){
 
                 String rollNumber = userData.getRoll_number();
                 // Check if user exists

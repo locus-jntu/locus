@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class UserData{
     String roll_number;
-    String email;
+    String mail_id;
 }

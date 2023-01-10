@@ -2,7 +2,7 @@ package com.example.locus.Common.Enum;
 
 public enum Branch {
     CSE,
-    EC,
+    ECE,
     EEE,
     MECH,
     CHEM,
