@@ -1,7 +1,7 @@
 package com.example.locus.Security.jwt;
 
 import com.example.locus.Security.UserDetailsServiceImpl;
-import com.example.locus.Security.UserModel;
+import com.example.locus.Security.Model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,8 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

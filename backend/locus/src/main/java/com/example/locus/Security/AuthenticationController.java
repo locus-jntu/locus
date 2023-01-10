@@ -1,5 +1,6 @@
 package com.example.locus.Security;
 
+import com.example.locus.Security.Dto.RegisterNewStudents;
 import com.example.locus.Security.jwt.JwtUtil;
 import com.example.locus.Security.jwt.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class AuthenticationController {
     AuthenticationManager authenticationManager;
 
     @Autowired
+    UserManager userManager;
+
+    @Autowired
     JwtUtil jwtUtil;
 
     @PostMapping("/api/login")
@@ -41,5 +45,10 @@ public class AuthenticationController {
         payload.put("roles",userDetails.getAuthorities());
         payload.put("username",userDetails.getUsername());
         return payload;
+    }
+
+    @PostMapping("/api/tpo/registerNewStudents")
+    public boolean registerNewStudents(@RequestBody RegisterNewStudents registerNewStudent){
+        return userManager.registerNewStudents(registerNewStudent);
     }
 }

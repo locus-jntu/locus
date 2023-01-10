@@ -1,4 +1,4 @@
-package com.example.locus.Security;
+package com.example.locus.Security.Model;
 
 import com.example.locus.Common.Enum.UserRole;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

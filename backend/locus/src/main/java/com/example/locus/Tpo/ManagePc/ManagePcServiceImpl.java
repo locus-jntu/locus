@@ -2,7 +2,7 @@ package com.example.locus.Tpo.ManagePc;
 
 import com.example.locus.Common.Enum.UserRole;
 import com.example.locus.Email.EmailService;
-import com.example.locus.Security.UserModel;
+import com.example.locus.Security.Model.UserModel;
 import com.example.locus.Security.UserRepository;
 import com.example.locus.Tpo.ManagePc.Dto.CreatePcRequest;
 import org.springframework.beans.factory.annotation.Autowired;
