@@ -66,7 +66,6 @@ public class UserManagerImpl implements UserManager{
                // Creating a profile
                 FixedUserSchema fixedUserSchema = new FixedUserSchema();
                 fixedUserSchema.setMail_id(email);
-                fixedUserSchema.setDegree("BTech");
                 profileService.createNewProfile(fixedUserSchema,userModel.getId().toString());
 
                // Send mail after registration
