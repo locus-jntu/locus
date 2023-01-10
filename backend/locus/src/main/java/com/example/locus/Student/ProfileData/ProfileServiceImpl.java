@@ -6,9 +6,11 @@ import com.example.locus.Student.ProfileData.Model.ProfileData;
 import com.example.locus.Student.ProfileData.Model.ProfileSchema;
 import com.example.locus.Student.ProfileData.Repository.ProfileRepository;
 import com.example.locus.Student.ProfileData.Repository.ProfileSchemaRepository;
+import org.bson.types.ObjectId;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +28,7 @@ public class ProfileServiceImpl implements ProfileService{
     ProfileSchemaRepository profileSchemaRepository;
 
     @Override
-    public boolean saveNewProfileData(ProfileDataRequest profileDataRequest) {
+    public boolean updateProfile(FixedUserSchema profileDataRequest) {
         // Do validation before storing the data.
 
         Map<String,Object> details = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getDetails();
@@ -35,14 +37,15 @@ public class ProfileServiceImpl implements ProfileService{
         ProfileData profileData = new ProfileData();
         profileData.setUserId(userId);
         profileData.setFixedUserSchema(profileDataRequest);
-        if(existingProfileData.isEmpty()){
-            profileRepository.save(profileData);
-        }else{
+        if(!existingProfileData.isEmpty()){
             // Updating the existing profile data
             profileData.set_id(existingProfileData.get().get_id());
             profileRepository.save(profileData);
+            return true;
         }
-        return true;
+
+        System.out.println("Internal Error!!! User Profile Not found");
+        return false;
     }
 
     @Override
@@ -61,5 +64,15 @@ public class ProfileServiceImpl implements ProfileService{
     @Override
     public List<ProfileSchema> fetchProfileSchema(){
         return profileSchemaRepository.findAll();
+    }
+
+    @Override
+    public boolean createNewProfile(FixedUserSchema profileDataRequest, String userId) {
+
+        ProfileData profileData = new ProfileData();
+        profileData.setFixedUserSchema(profileDataRequest);
+        profileData.setUserId(userId);
+        profileRepository.save(profileData);
+        return true;
     }
 }

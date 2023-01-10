@@ -7,6 +7,9 @@ import com.example.locus.Security.Dto.RegisterNewStudents;
 import com.example.locus.Security.Dto.UserData;
 import com.example.locus.Security.Model.UserModel;
 import com.example.locus.Security.UserRepository;
+import com.example.locus.Student.ProfileData.Model.FixedUserSchema;
+import com.example.locus.Student.ProfileData.Model.ProfileData;
+import com.example.locus.Student.ProfileData.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +29,20 @@ public class UserManagerImpl implements UserManager{
     EmailService emailService;
 
     @Autowired
+    ProfileService profileService;
+
+    @Autowired
     UserRepository userRepository;
 
     @Override
     public boolean registerNewStudents(RegisterNewStudents registerNewStudents) {
 
         for(UserData userData: registerNewStudents.getNewStudents()){
-            if(userData.getMail_id() != null && userData.getRoll_number() != null){
+            String rollNumber = userData.getRoll_number();
+            String email = userData.getMail_id();
 
-                String rollNumber = userData.getRoll_number();
+            if(email != null && rollNumber != null){
+
                 // Check if user exists
                 if(userRepository.findUserByUsername(rollNumber) != null){
                    continue;
@@ -55,10 +63,18 @@ public class UserManagerImpl implements UserManager{
 
                userRepository.save(userModel);
 
+               // Creating a profile
+                FixedUserSchema fixedUserSchema = new FixedUserSchema();
+                fixedUserSchema.setMail_id(email);
+                fixedUserSchema.setDegree("BTech");
+                profileService.createNewProfile(fixedUserSchema,userModel.getId().toString());
+
                // Send mail after registration
                 emailService.sendSimpleMessage("saimaheshtaduri6@gmail.com","Selected as PC","Username is " + rollNumber + ". Password is " + password);
+
+
             }else{
-                System.out.println("Skipping registration, Invalid email or null rollnumber");
+                System.out.println("Skipping registration, Invalid email: " + email + " or rollnumber: " + email);
             }
         }
 

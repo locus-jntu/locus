@@ -4,6 +4,7 @@ import com.example.locus.Student.ProfileData.Dto.ProfileDataRequest;
 import com.example.locus.Student.ProfileData.Model.FixedUserSchema;
 import com.example.locus.Student.ProfileData.Model.ProfileData;
 import com.example.locus.Student.ProfileData.Model.ProfileSchema;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +29,9 @@ public class ProfileController {
         return "Hello World";
     }
 
-    @PostMapping(value = "/api/student/saveNewProfileData")
-    public boolean createNewProfileData(@RequestBody ProfileDataRequest profileDataRequest){
-        return profileService.saveNewProfileData(profileDataRequest);
+    @PostMapping(value = "/api/student/updateProfile")
+    public boolean updateProfile(@RequestBody ProfileDataRequest profileDataRequest){
+        return profileService.updateProfile(profileDataRequest);
     }
 
     @GetMapping(value = "/api/student/fetchProfileData")
