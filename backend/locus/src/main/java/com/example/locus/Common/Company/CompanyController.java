@@ -37,7 +37,7 @@ public class CompanyController {
         return companyService.createNewCompany(companyRequest);
     }
 
-    @GetMapping(value = "/api/student/getCompanyDetails")
+    @GetMapping(value = "/api/shared/getCompanyDetails")
     public Map<String,Object> getCompanyDetails(@RequestParam(name = "companyId") String companyId){
         return companyService.fetchCompanyDetails(new ObjectId(companyId));
     }

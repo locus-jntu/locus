@@ -5,11 +5,9 @@ import useFetch from "../../../../utility/hooks/useFetch";
 
 const CompanyDetails = (props) => {
 
-  console.log(props);
-
   const [companyData, setCompanyData] = useState({companyDetails: {}});
 
-  const fetchCompanyDetails = useFetch(null, `api/student/getCompanyDetails?companyId=${props.companyId}`, "GET");
+  const fetchCompanyDetails = useFetch(null, `api/shared/getCompanyDetails?companyId=${props.companyId}`, "GET");
 
   const fetchDetails = async () => {
     const data = await fetchCompanyDetails();

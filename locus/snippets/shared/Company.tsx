@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import Accordian from "../../components/Accordian";
 import Layout from "../../components/Layout";
 import LButton from "../../components/LButton";
+import {exportFile} from "../../utility/excel/JSONToExcel";
+import useFetch from "../../utility/hooks/useFetch";
 
 interface companyProps {
   companyData: any
   role: string
+  studentResponsesData?: any
 }
 
 const Company = (props: companyProps) => {
@@ -56,6 +59,35 @@ const Company = (props: companyProps) => {
       }
     ]
   }
+
+  function downloadExcel(){
+
+    const jsonData = props.studentResponsesData.map(response => {
+
+      Object.keys(response.extraUserProfileSchema).map(key => {
+         if(typeof(response.extraUserProfileSchema[key]) != "string"){
+          response.extraUserProfileSchema[key] = response.extraUserProfileSchema[key].join("|")
+         }
+      })
+
+      Object.keys(response.fixedUserProfileSchema).map(key => {
+        if(typeof(response.fixedUserProfileSchema[key]) != "string"){
+         response.fixedUserProfileSchema[key] = response.fixedUserProfileSchema[key].join("|")
+        }
+     })      
+
+      return {
+        ...response.extraUserProfileSchema,
+        ...response.fixedUserProfileSchema,
+        userId: response.userId,
+      }
+    })
+
+    const headerData = Object.keys(jsonData[0])
+
+    exportFile(jsonData, headerData, props.companyData.companyDetails.name);
+    
+  }
  
   return (
     <Layout role={props.role} component='companies'>
@@ -97,7 +129,15 @@ const Company = (props: companyProps) => {
             Past Alumni Details :{" "}
           </p> 
 
-          <Accordian data={data.pastdata} />
+          <Accordian data={data.pastdata} /> 
+
+          {
+            props.role=='tpo' && 
+             <div className="w-full flex justify-end pt-4">
+                 <LButton width={200} onClick={downloadExcel} name="download Excel" />
+             </div>
+            
+          }
 
         </div>
     </Layout>
