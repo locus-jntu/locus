@@ -1,6 +1,5 @@
 import Autofill from "../../components/Autofill";
 import Input from "../../components/Input";
-import { data } from "../data/profileData";
 
 function onChange(inputRef, setfixedInputResponsesData){  
   inputRef?.current.map(i => {
@@ -18,7 +17,6 @@ function onChange(inputRef, setfixedInputResponsesData){
 export function getComponent(name: string, data, inputfieldData,addRefs,inputRef,setfixedInputResponsesData) {
    
     let component = null
-    console.log("data", data);
     
     Object.keys(inputfieldData[0].fixed).forEach(section => {
        const field = inputfieldData[0].fixed[section].filter(input => input.name.toLowerCase().split("_").join(" ") == name.toLowerCase())

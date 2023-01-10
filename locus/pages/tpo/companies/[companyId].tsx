@@ -20,6 +20,8 @@ const CompanyDetails = (props) => {
 
   async function getStudentResponseForm(){
      const data = await studentResponseFormFunction();
+     console.log("dataa:",data);
+     
      setStudentResponsesData(data)
   }
 

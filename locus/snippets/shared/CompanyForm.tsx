@@ -26,29 +26,23 @@ interface formProps {
 }
 
 const CompanyForm = (props: formProps) => {
-
-  const saveResponseFunction = useFetch(props.formResponse, 'api/student/submitCompanyApplicationForm', 'POST');
   
   
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const getFieldsFunction = useFetch(null, "api/shared/fetchProfileSchema", "GET");
 
   const [inputfieldData, setInputfieldData] = useState([])
-  const [fixedInputResponses, setfixedInputResponsesData] = useState();
-
+  const [fixedInputResponses, setfixedInputResponsesData] = useState(props.formResponse.fixedUserProfileSchema);
 
   async function getProfileSchema(){
     setLoading(true)
     const data = await getFieldsFunction();
     setInputfieldData(data)
-    setLoading(false)
+    setLoading(false)    
   }
 
-  useEffect(() => {
-    
+  useEffect(() => {    
     getProfileSchema();
-    console.log(props.formData.fixedUserProfileSchema);
-    
   }, [])
 
   const inputRef = useRef([])
@@ -62,8 +56,6 @@ const CompanyForm = (props: formProps) => {
   
 
   async function saveResponse() {    
-     console.log(props.formResponse);
-     console.log("fixedIR ",fixedInputResponses);
      
     try{
       var ls = new SecureLS({encodingType: 'aes', isCompression: false})

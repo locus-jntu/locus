@@ -61,7 +61,8 @@ const Company = (props: companyProps) => {
   }
 
   function downloadExcel(){
-
+    console.log(props.studentResponsesData);
+    
     const jsonData = props.studentResponsesData.map(response => {
 
       Object.keys(response.extraUserProfileSchema).map(key => {
