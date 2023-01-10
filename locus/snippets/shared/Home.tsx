@@ -5,6 +5,8 @@ import NoAccess from "../../snippets/shared/NoAccess"
 import HomeIntro from "../../snippets/shared/HomeIntro"
 import CompaniesSM from "../../snippets/shared/Companies-sm"
 import AnnouncementsSM from "../../snippets/shared/Announcements-sm"
+import LButton from "../../components/LButton"
+import useFetch from "../../utility/hooks/useFetch"
 
 interface HomeProps {
    role: string
@@ -12,11 +14,43 @@ interface HomeProps {
 
 const Home = (props: HomeProps) => {
 
+  const payload = {
+    newStudents: [
+      {
+        email: "test@gmail.com",
+        roll_number: "19011P0525"
+      },
+      {
+        email: "test2@gmail.com",
+        roll_number: "19011P0512"
+      },
+      {
+        email: "tes32t@gmail.com",
+        roll_number: "19011P0506"
+      },
+
+    ]
+  }
+
+  const registerStudentsFunction = useFetch(payload, `api/tpo/registerNewStudents`, "POST");
+
+  const registerStudents = async () => {
+    const resp = await registerStudentsFunction();
+    console.log("resgitering response: ", resp);
+  }
+  
+
   return (
        <Layout role={props.role} component="dashboard">
           <HomeIntro role={props.role}/>
           <CompaniesSM />
           <AnnouncementsSM role={props.role} />
+          {
+            props.role=='tpo' && 
+             <div className="w-full flex justify-end p-8">
+                 <LButton width={200} onClick={registerStudents} name="Register New Students" />
+             </div>
+          }
         </Layout>
   )
 }

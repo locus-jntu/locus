@@ -137,7 +137,6 @@ const Company = (props: companyProps) => {
              <div className="w-full flex justify-end pt-4">
                  <LButton width={200} onClick={downloadExcel} name="download Excel" />
              </div>
-            
           }
 
         </div>

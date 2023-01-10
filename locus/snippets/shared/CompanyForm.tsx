@@ -34,34 +34,6 @@ const CompanyForm = (props: formProps) => {
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState("");
 
-  const addhandler = async () => {
-    try{
-      const payload = {
-        name: nameRef.current.value,
-        year: '2022',
-        description: descriptionRef.current.value,
-        branches: labelsRef.current.value,
-        assignee: ['me'],
-        status: 'ppt',
-        ctc: '12',
-        role: roleRef.current.value,
-        jobCategory: 'DREAM',
-        eligibility: 'string for now',
-        fixedUserProfileSchema,
-        extraUserProfileSchema
-      }
-      setOpen(true);
-      setStatus("loading");
-      const companyFunction = useFetch(payload, "api/admin/createNewCompany", "POST");
-      const data = await companyFunction();
-      setStatus("success");
-      console.log(data);
-    }catch(err){
-      console.log("Error : ",err);
-      setStatus("failed");
-    }
-  }
-
   async function getProfileSchema(){
     setLoading(true)
     const data = await getFieldsFunction();
