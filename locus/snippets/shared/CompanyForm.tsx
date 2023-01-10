@@ -1,8 +1,4 @@
-import { FormatShapes } from "@mui/icons-material";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { PassThrough } from "stream";
 import Checkbox from "../../components/Checkbox";
 import Footer from "../../components/Footer";
 import Input from "../../components/Input";
@@ -15,6 +11,7 @@ import { getComponent } from "../../utility/company-data/fixed";
 import useFetch from "../../utility/hooks/useFetch";
 import MultipleSelect from "../../components/Multiselect";
 import SecureLS from "secure-ls";
+import Popup from "../../components/Popup";
 
 
 interface formProps {
@@ -33,6 +30,37 @@ const CompanyForm = (props: formProps) => {
 
   const [inputfieldData, setInputfieldData] = useState([])
   const [fixedInputResponses, setfixedInputResponsesData] = useState(props.formResponse.fixedUserProfileSchema);
+  const [userData, setUserData] = useState(props.formData.userData);
+  const [open, setOpen] = useState(false)
+  const [status, setStatus] = useState("");
+
+  const addhandler = async () => {
+    try{
+      const payload = {
+        name: nameRef.current.value,
+        year: '2022',
+        description: descriptionRef.current.value,
+        branches: labelsRef.current.value,
+        assignee: ['me'],
+        status: 'ppt',
+        ctc: '12',
+        role: roleRef.current.value,
+        jobCategory: 'DREAM',
+        eligibility: 'string for now',
+        fixedUserProfileSchema,
+        extraUserProfileSchema
+      }
+      setOpen(true);
+      setStatus("loading");
+      const companyFunction = useFetch(payload, "api/admin/createNewCompany", "POST");
+      const data = await companyFunction();
+      setStatus("success");
+      console.log(data);
+    }catch(err){
+      console.log("Error : ",err);
+      setStatus("failed");
+    }
+  }
 
   async function getProfileSchema(){
     setLoading(true)
@@ -50,8 +78,9 @@ const CompanyForm = (props: formProps) => {
 
   function addRefs(el){
     if(el && !inputRef.current.includes(el)){
-      inputRef.current.push(el)
+      inputRef.current.push(el);
     }
+
   }
   
 
@@ -60,6 +89,9 @@ const CompanyForm = (props: formProps) => {
     try{
       var ls = new SecureLS({encodingType: 'aes', isCompression: false})
       const jwt = ls.get("jwt");
+
+      setOpen(true);
+      setStatus("loading");
 
       const headers = jwt ? {   
         "Content-Type": "application/json",
@@ -82,11 +114,11 @@ const CompanyForm = (props: formProps) => {
         body: JSON.stringify(payload),
       });
        const response = await data.json();
-       if(response) console.log("success")
-       else console.log("unsuccessful")
+       if(response)  setStatus("success");
+       else  setStatus("failed");
     }catch(e) {
       console.log("err", e);
-      
+      setStatus("failed");
     }
   }
 
@@ -108,6 +140,11 @@ const CompanyForm = (props: formProps) => {
     })
   };
 
+  useEffect(()=> {
+    console.log(userData);
+    
+  })
+
   return (
     <Layout role={props.role} component="companies">
       <div
@@ -126,7 +163,7 @@ const CompanyForm = (props: formProps) => {
           <p className="text-sm mb-2 text-center  text-secondary font-bold p-2 rounded underline underline-offset-4">EXISTING</p>
           {
             loading ? <p>loading...</p> : 
-            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,props.formData.userData,inputfieldData,addRefs,inputRef,setfixedInputResponsesData))
+            props.formData.fixedUserProfileSchema?.map(i => getComponent(i,userData,inputfieldData,addRefs,inputRef,setfixedInputResponsesData))
           }
           
           <p className="text-sm text-center text-secondary font-bold rounded p-2 underline underline-offset-4">NEW</p>
@@ -146,8 +183,8 @@ const CompanyForm = (props: formProps) => {
           } 
           <LButton style={{margin: 4}} onClick={saveResponse} width="100%" name="Apply" />
         </div>
-        
       </div>
+      <Popup open={open} successButtonText="checkout all companies" setOpen={setOpen} status={status} loadingText="Adding company.." successPageRoute="/student/companies" />
     </Layout>
   );
 };

@@ -3,6 +3,8 @@ import Input from "../../components/Input";
 
 function onChange(inputRef, setfixedInputResponsesData){  
   inputRef?.current.map(i => {
+    console.log(i);
+    
     if(i.id == 'combo-box-demo'){
       setfixedInputResponsesData(prev => {
         return {...prev, [i.name]: i.value }
@@ -16,17 +18,17 @@ function onChange(inputRef, setfixedInputResponsesData){
 
 export function getComponent(name: string, data, inputfieldData,addRefs,inputRef,setfixedInputResponsesData) {
    
-    let component = null
+    let component = null    
     
     Object.keys(inputfieldData[0].fixed).forEach(section => {
-       const field = inputfieldData[0].fixed[section].filter(input => input.name.toLowerCase().split("_").join(" ") == name.toLowerCase())
+       const field = inputfieldData[0].fixed[section].filter(input => input.name.toLowerCase() == name.toLowerCase())
        
        if(field.length > 0){
         const label = field[0].name.split("_").join(" ");
         const [type, width] = field[0].type.split("_");
         switch(type){
           case 'string':
-            component = <Input ref={addRefs} value={data[field[0].name]} onChange={e => onChange(inputRef,setfixedInputResponsesData)} className={width=='100' ? "col-span-2" : ''} name={field[0].name} label={label} width={`100%`} />
+            component = <Input ref={addRefs} defaultValue={data[field[0].name]} onChange={e => onChange(inputRef,setfixedInputResponsesData)} className={width=='100' ? "col-span-2" : ''} name={field[0].name} label={label} width={`100%`} />
             break
           case 'dropdown':
             component = <Autofill ref={addRefs} value={data[field[0].name]} values={field[0].values}  fullWidth={true} name={field[0].name} />

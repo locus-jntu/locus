@@ -417,7 +417,7 @@ const ProfileForm = () => {
               SUBMIT
             </Button>
 
-            <Popup open={open} setOpen={setOpen} status={status} loadingText="Saving your data.." successPageRoute="/student" />
+            <Popup open={open} setOpen={setOpen} successButtonText="Go to Dashboard" status={status} loadingText="Saving your data.." successPageRoute="/student" />
 
           </div>
         </form>

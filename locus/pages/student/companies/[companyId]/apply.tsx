@@ -18,7 +18,7 @@ const ApplicationForm = (props) => {
     setFormData(data);
     const dataObj = {"companyId": props.companyId, "fixedUserProfileSchema": {}, "extraUserProfileSchema": {}};
     data.fixedUserProfileSchema?.forEach(key => {
-      dataObj["fixedUserProfileSchema"][key] = data.userData[key.split(" ").join("_")]??'not found'
+      dataObj["fixedUserProfileSchema"][key] = data.userData[key]??'not found'
     });
     
     data.extraUserProfileSchema?.forEach(key => {

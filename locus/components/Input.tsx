@@ -17,12 +17,13 @@ interface InputProps {
   rows?: number;
   containerStyle?: any
   className?: string 
+  defaultValue?: string
 }
 
 const Input = forwardRef((props: InputProps, ref) => (
     <div className={props.className} style={{ ...props.containerStyle, width: props.width ?? '100%' }}>
       {props.label !== undefined && <label className='m-3' htmlFor={props.name} style={props.labelStyles} > {props.label} </label> }
-      <TextField inputRef={ref} style={props.style} multiline={props.multiline} rows={props.rows} size={props.size ?? "medium"} value={props.value} onChange={props.onChange} helperText={props.helperText ?? ''} InputLabelProps={{ shrink: false }} className='flex mx-3 mt-2 mb-5 ' placeholder={props.placeholder ?? ''} id={props.name} variant= {props.variant ?? 'outlined'} />
+      <TextField defaultValue={props.defaultValue} inputRef={ref} style={props.style} multiline={props.multiline} rows={props.rows} size={props.size ?? "medium"} value={props.value} onChange={props.onChange} helperText={props.helperText ?? ''} InputLabelProps={{ shrink: false }} className='flex mx-3 mt-2 mb-5 ' placeholder={props.placeholder ?? ''} id={props.name} variant= {props.variant ?? 'outlined'} />
     </div>
 ))
 

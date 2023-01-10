@@ -11,6 +11,7 @@ import { readUploadFile } from "../../../utility/excel/excelToJSON";
 import { similarKeys } from "../../../utility/generateKeys.js";
 import Layout from "../../../components/Layout";
 import useFetch from "../../../utility/hooks/useFetch";
+import Popup from "../../../components/Popup";
 
 const Companies = () => {
 
@@ -54,6 +55,9 @@ const Companies = () => {
   const handleClose = () => setOpen(false);
 
   const [type, setType] = useState('');  
+  
+  const [modelOpen, setModelOpen] = useState(false)
+  const [status, setStatus] = useState("");
 
   const addString = () => {
      const name = stringRef.current.value=="" ? optional.at(index) : stringRef.current.value;
@@ -119,7 +123,7 @@ const Companies = () => {
       const m = key.toLowerCase();
       let keyFound
       Object.keys(inputFieldData[0]?.fixed).forEach(key => {
-        keyFound = inputFieldData[0].fixed[key].filter(i => i.name.toLowerCase().split("_").join(" ") == m);
+        keyFound = inputFieldData[0].fixed[key].filter(i => i.name.toLowerCase() == m);
         console.log(keyFound);
         
         if(keyFound.length > 0){ 
@@ -163,25 +167,31 @@ const Companies = () => {
   }, [])
 
   const addhandler = async () => {
-    const payload = {
-      name: nameRef.current.value,
-      year: '2022',
-      description: descriptionRef.current.value,
-      branches: labelsRef.current.value,
-      assignee: ['me'],
-      status: 'ppt',
-      ctc: '12',
-      role: roleRef.current.value,
-      jobCategory: 'DREAM',
-      eligibility: 'string for now',
-      fixedUserProfileSchema,
-      extraUserProfileSchema
+    try{
+      const payload = {
+        name: nameRef.current.value,
+        year: '2022',
+        description: descriptionRef.current.value,
+        branches: labelsRef.current.value,
+        assignee: ['me'],
+        status: 'ppt',
+        ctc: '12',
+        role: roleRef.current.value,
+        jobCategory: 'DREAM',
+        eligibility: 'string for now',
+        fixedUserProfileSchema,
+        extraUserProfileSchema
+      }
+      setModelOpen(true);
+      setStatus("loading");
+      const companyFunction = useFetch(payload, "api/admin/createNewCompany", "POST");
+      const data = await companyFunction();
+      setStatus("success");
+      console.log(data);
+    }catch(err){
+      console.log("Error : ",err);
+      setStatus("failed");
     }
-    const companyFunction = useFetch(payload, "api/admin/createNewCompany", "POST");
-    const data = await companyFunction();
-
-    console.log(data);
-    
   }
 
   return (
@@ -197,7 +207,7 @@ const Companies = () => {
                    <Input ref={nameRef} name="companyName" placeholder="Enter company name here" label="company name" />
 
                    <div className="flex">
-                        <Autofill ref={jobTypeRef} name="job offer type" />
+                        <Autofill values={['Intership', 'FullTime']} ref={jobTypeRef} name="job offer type" />
                         <MultipleSelect values={['CSE','ECE','EEE','MECH','CIVIL','CHEM','METT']} onChange={e => setLabels(e.target.value)} val={labels} ref={labelsRef} label="labels" />
                    </div>
 
@@ -275,6 +285,9 @@ const Companies = () => {
 
               <LButton name="Add company" width='100%' onClick={addhandler} />
           </div>
+
+          <Popup open={modelOpen} successButtonText="Go to all companies" setOpen={setModelOpen} status={status} loadingText="Adding company.." successPageRoute="/tpo/companies" />
+
 
           <Modal open={open} >
             <div className="h-screen flex flex-col justify-center items-center">

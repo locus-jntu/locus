@@ -12,18 +12,8 @@ interface popupProps{
     setOpen: any
     loadingText: string
     successPageRoute?: string
+    successButtonText?: string
 }
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-};
 
 export default function Popup(props: popupProps) {
   
@@ -52,7 +42,7 @@ export default function Popup(props: popupProps) {
                   color="secondary"
                   variant="contained"
                 >
-                  Go to Dashboard
+                  {props.successButtonText}
                 </Button>
               </> : props.status === "loading" ? 
               <>
