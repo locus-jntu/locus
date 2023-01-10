@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import lightTheme from "../../styles/theme/lightTheme";
+import useFetch from "../../utility/hooks/useFetch";
 
 interface HomeIntroProps {
     role: string
@@ -7,14 +9,30 @@ interface HomeIntroProps {
 
 const HomeIntro = (props: HomeIntroProps) => {
 
+  const getUserDataFunction = useFetch(null, `api/student/fetchProfileData`, "GET");
+
+  const [userData, setUserData] = useState();
+
+  const getUserData = async () => {
+    const uData = await getUserDataFunction();
+    setUserData(uData);  
+    console.log(uData);
+  }
+
+  useEffect(() => {
+    getUserData();
+  },[])
+
  const data = {
-    name: "Taduri saimahesh",
-    rollNumber: "19011p0525",
-    department: "CSE-IDP",
     total: 60,
     applied: 26,
     ongoing: 13
  }
+ 
+ const name = props.role=='tpo' ? "Dr. PADMAVATI" : props.role=='student' && userData ? `${userData.first_name} ${userData.last_name}` : '...' 
+ const department = props.role=='tpo' ? "JNTUHUCEST" : props.role=='student' && userData ? `${userData.department}` : '...' 
+ const rollNumber = props.role=='tpo' ? "TPO" : props.role=='student' && userData ? `${userData.roll_number}` : '...' 
+
 
  return (
     <>
@@ -43,10 +61,11 @@ const HomeIntro = (props: HomeIntroProps) => {
             <p><span className="text-sm font-medium pr-2">ONGOING - </span> {data.ongoing} </p>
             </div>
             <p className="font-bold text-lg mb-6 border-b-2 lg:text-2xl border-rose-900">Good morning !</p>
-            <p className="font-bold text-2xl uppercase mb-1">{data.name}</p>
-            <p className="tracking-wider mb-2 "><span className="mr-2">{data.rollNumber}</span> | <span className="ml-2">{data.department}</span></p>
+            <p className="font-bold text-2xl uppercase mb-1">{name}</p>
+            <p className="tracking-wider mb-2 "><span className="mr-2">{rollNumber}</span> | <span className="ml-2">{department}</span></p>
         </div>
     </div>  
+    
     <Link href={props.role==="student" ? `/${props.role}/companies` : `/${props.role}/companies/add`}>
         <p className="text-center my-24 text-xl hover:underline underline-offset-4 cursor-pointer"> {props.role==="student" ? `Apply for your dream companies` : `Add a new company`} &nbsp;&nbsp;&nbsp;<span className="text-3xl"> &rarr; </span> </p> 
     </Link>

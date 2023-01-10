@@ -12,7 +12,7 @@ const CompaniesSM = () => {
     const getCompaniesFunction = useFetch(null, "api/shared/getAllCompanies", "GET");
 
     useEffect(() => {
-        companies.length==0 &&
+        companies?.length==0 &&
         getCompaniesFunction()
         .then(res => setCompanies(res.companies));
     }, []);
@@ -32,7 +32,7 @@ const CompaniesSM = () => {
           <div className="py-2 px-2 bg-white h-96 rounded-lg shadow-2xl">
             <p className="text-right font-gray-400 mb-2"><span className="bg-primary text-white rounded py-1 text-sm px-4"> Total </span></p>
             {
-              companies.map(item => <ShortCompanyCard data={item} />)
+              companies?.map(item => <ShortCompanyCard data={item} />)
             }
           </div>
         </div>

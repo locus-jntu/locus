@@ -8,10 +8,6 @@ import Note from "../../components/Note";
 import  useFetch from "../../utility/hooks/useFetch.js";
 import { data as profileData } from "../../utility/data/profileData";
 import Popup from "../../components/Popup";
-import { useRecoilValue } from "recoil";
-import { Token } from "../../providers/TokenProvider";
-import Nav from "../../components/Nav";
-import Sidebar from "../../components/Sidebar";
 import Layout from "../../components/Layout";
 
 const ProfileForm = () => {
@@ -33,7 +29,7 @@ const ProfileForm = () => {
   const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
-  const saveProfileFunction = useFetch(data, "api/student/saveNewProfileData", "POST");
+  const saveProfileFunction = useFetch(data, "api/student/updateProfile", "POST");
 
   const getFieldsFunction = useFetch(null, "api/shared/fetchProfileSchema", "GET");
 
@@ -61,7 +57,9 @@ const ProfileForm = () => {
     }
   }
 
-  function inputChangeHandler(){
+  function inputChangeHandler(){  
+    console.log();
+      
     inputRef.current.map(i => {
       if(i.id == 'combo-box-demo'){
         setData(prev => {
@@ -243,7 +241,7 @@ const ProfileForm = () => {
             <div className="flex flex-col mb-6 md:flex-row ">
               <label className="m-3 w-32"> Courses </label>
               <div className="skills flex flex-wrap w-full rounded">
-                {data.courses.length > 0 ? (
+                {data.courses?.length > 0 ? (
                   data.courses.map((i) => (
                     <Note
                       data={{ cname: i.cname, org: i.org }}

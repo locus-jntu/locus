@@ -38,7 +38,6 @@ const Home = (props: HomeProps) => {
     const resp = await registerStudentsFunction();
     console.log("resgitering response: ", resp);
   }
-  
 
   return (
        <Layout role={props.role} component="dashboard">
