@@ -57,30 +57,32 @@ const ProfileForm = () => {
     }
   }
 
-  function inputChangeHandler(){  
-    console.log();
-      
-    inputRef.current.map(i => {
-      if(i.id == 'combo-box-demo'){
-        setData(prev => {
-          return {...prev, [i.name]: i.value }
+  function inputChangeHandler(e, name){  
+    if(e){      
+      inputRef.current.map(i => {
+        if(i.id == 'combo-box-demo'){
+          if(i.name == name){
+            setData(prev => {
+              return {...prev, [i.name]: e.target.textContent}
+            })
+          }
+        }
+        else setData(prev => {
+          return {...prev, [i.id]: i.value}
         })
-      }
-      else setData(prev => {
-        return {...prev, [i.id]: i.value}
       })
-    })
+    }
   }
 
   const clickHandler = async() => { 
       try{
         setOpen(true);
         setStatus("loading");
-        console.log(data);
+        console.log("clicked :" ,data);
         
         const pdata = await saveProfileFunction();
-        setStatus("success");
-        console.log("data is : ", pdata);
+        if(pdata) setStatus("success");
+        else setStatus("failed")
       }catch(err){
           console.log("Error : ",err);
           setStatus("failed");
@@ -103,9 +105,9 @@ const ProfileForm = () => {
                       const [type, width] = field.type.split("_");
                       switch(type){
                         case 'string':
-                          return <Input ref={addRefs} value={data[field.name]}  onChange={inputChangeHandler} className={width=='100' ? "col-span-2" : ''} name={field.name} label={label} width={`100%`} />
+                          return <Input ref={addRefs} value={data[field.name]}  onChange={e => inputChangeHandler(e,field.name)} className={width=='100' ? "col-span-2" : ''} name={field.name} label={label} width={`100%`} />
                         case 'dropdown':
-                          return <Autofill ref={addRefs} defaultValue={data[field.name]} onInputChange={inputChangeHandler} values={field.values}  fullWidth={true} name={field.name} />
+                          return <Autofill ref={addRefs} defaultValue={data[field.name]} onInputChange={e => inputChangeHandler(e,field.name)} values={field.values}  fullWidth={true} name={field.name} />
                       }
                     }
                    )
