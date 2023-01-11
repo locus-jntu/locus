@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -124,6 +125,11 @@ public class UserManagerImpl implements UserManager{
     @Override
     public boolean changePassword() {
         return false;
+    }
+
+    @Override
+    public List<UserModel> fetchAllPc() {
+        return userRepository.findUserByRole(UserRole.PC);
     }
 
     public String generateRandomPassword(int len){

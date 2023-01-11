@@ -2,6 +2,7 @@ package com.example.locus.Security;
 
 import com.example.locus.Security.Dto.CreatePcRequest;
 import com.example.locus.Security.Dto.RegisterNewStudents;
+import com.example.locus.Security.Model.UserModel;
 import com.example.locus.Security.Service.UserManager;
 import com.example.locus.Security.jwt.JwtUtil;
 import com.example.locus.Security.jwt.UserCredentials;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -65,4 +67,10 @@ public class AuthenticationController {
     public boolean deletePc(@RequestParam(name = "username") String pcUsername){
         return userManager.deletePc(pcUsername);
     }
+
+    @GetMapping("/api/tpo/fetchAllPcs")
+    public List<UserModel> fetchAllPc(){
+       return userManager.fetchAllPc();
+    }
+
 }

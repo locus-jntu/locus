@@ -21,8 +21,6 @@ import java.util.Set;
 @Data
 public class UserModel implements UserDetails {
 
-    private String ROLE_PREFIX = "ROLE_";
-
 
     @JsonSerialize(using = ToStringSerializer.class)
     private @MongoId ObjectId id;
@@ -35,7 +33,7 @@ public class UserModel implements UserDetails {
         List<GrantedAuthority> list = new ArrayList<>();
 
         for(UserRole role : roles){
-            list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role));
+            list.add(new SimpleGrantedAuthority("ROLE_" + role));
         }
 
         return list;
