@@ -123,7 +123,7 @@ const ProfileForm = () => {
             <div className="flex flex-col mb-6 md:flex-row ">
               <label className="m-3 w-32"> Skills </label>
               <div className="skills flex flex-wrap w-full ml-4">
-                {data.skills.length > 0 ? (
+                {data.skills?.length > 0 ? (
                   data.skills.map((item) => (
                     <Chip
                       className="text-white flex justify-between mr-2 mb-2"
@@ -160,7 +160,7 @@ const ProfileForm = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    skills: [...data.skills, skill],
+                    skills: data?.skills > 0 ? [...data.skills, skill] : [skill],
                   });
                   setSkill("");
                 }}
@@ -183,7 +183,7 @@ const ProfileForm = () => {
             <div className="flex flex-col mb-6 md:flex-row">
               <label className="m-3 w-32"> Pragramming Languages </label>
               <div className="skills flex flex-wrap w-full ml-4">
-                {data.languages.length > 0 ? (
+                {data.languages?.length > 0 ? (
                   data.languages.map((item) => (
                     <Chip
                       className="text-white flex justify-between mr-2 mb-2"
@@ -220,7 +220,7 @@ const ProfileForm = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    languages: [...data.languages, language],
+                    languages: data?.languages > 0 ? [...data.languages, language] : [language],
                   });
                   setLanguage("");
                 }}
@@ -292,7 +292,7 @@ const ProfileForm = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    courses: [...data.courses, course],
+                    courses: data?.courses > 0 ? [...data.courses, course] : [course],
                   });
                   setCourse({ cname: "", org: "" });
                 }}
@@ -315,7 +315,7 @@ const ProfileForm = () => {
             <div className="flex flex-col mb-6 md:flex-row ">
               <label className="m-3 w-32"> Internships </label>
               <div className="skill flex flex-wrap w-full rounded">
-                {data.internships.length > 0 ? (
+                {data.internships?.length > 0 ? (
                   data.internships.map((i) => (
                     <Note
                       data={{ role: i.role, org: i.org, dur: i.dur }}
@@ -380,7 +380,7 @@ const ProfileForm = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    internships: [...data.internships, internship],
+                    internships: data?.internships > 0 ? [...data.internships, internship] : [internship]
                   });
                   setInternship({
                     role: "",

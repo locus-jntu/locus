@@ -17,15 +17,15 @@ const Home = (props: HomeProps) => {
   const payload = {
     newStudents: [
       {
-        email: "test@gmail.com",
+        mail_id: "test@gmail.com",
         roll_number: "19011P0525"
       },
       {
-        email: "test2@gmail.com",
+        mail_id: "test2@gmail.com",
         roll_number: "19011P0512"
       },
       {
-        email: "tes32t@gmail.com",
+        mail_id: "tes32t@gmail.com",
         roll_number: "19011P0506"
       },
 

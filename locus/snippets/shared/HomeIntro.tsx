@@ -16,11 +16,10 @@ const HomeIntro = (props: HomeIntroProps) => {
   const getUserData = async () => {
     const uData = await getUserDataFunction();
     setUserData(uData);  
-    console.log(uData);
   }
 
   useEffect(() => {
-    getUserData();
+    props.role=='student' && getUserData();
   },[])
 
  const data = {
