@@ -14,6 +14,6 @@ public interface UserRepository extends MongoRepository<UserModel,String> {
     @Query("{username: '?0'}")
     UserModel findUserByUsername(String username);
 
-    @Query(value = "{roles: '?0'}",fields = "{'username':1}")
+    @Query(value = "{roles: '?0'}",fields="{password : 0}")
     List<UserModel> findUserByRole(UserRole role);
 }
