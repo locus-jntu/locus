@@ -124,7 +124,6 @@ const Companies = () => {
       let keyFound
       Object.keys(inputFieldData[0]?.fixed).forEach(key => {
         keyFound = inputFieldData[0].fixed[key].filter(i => i.name.toLowerCase() == m);
-        console.log(keyFound);
         
         if(keyFound.length > 0){ 
           let component = null;
@@ -186,8 +185,9 @@ const Companies = () => {
       setStatus("loading");
       const companyFunction = useFetch(payload, "api/admin/createNewCompany", "POST");
       const data = await companyFunction();
-      setStatus("success");
-      console.log(data);
+      if(data)
+       setStatus("success");
+      else setStatus("failed");
     }catch(err){
       console.log("Error : ",err);
       setStatus("failed");
@@ -245,7 +245,7 @@ const Companies = () => {
                       type="file"
                       name="upload"
                       id="upload"
-                      onChange={(e) => readUploadFile(e,setKeys)}
+                      onChange={(e) => readUploadFile(e,setKeys,true)}
                       className="flex self-center m-auto pl-24 text-white"
                   />
                 }

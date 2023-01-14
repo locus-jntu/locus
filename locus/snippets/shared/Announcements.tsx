@@ -37,53 +37,51 @@ const Announcements = (props: AnnouncementsProps) => {
         <p className="py-4 px-8 font-comforta text-center text-xl font-bold  underline underline-offset-4">Announcements !</p>
         <div className="flex h-12 justify-end align-items-end">
           
-          <Link className="flex" href={`/tpo/announcements`} >
-          <Button
-            className="flex self-end m-2 rounded py-1 px-6 bg-secondary text-white hover:text-white"
-            sx={{
-              boxShadow: "none",
-              color: lightTheme.palette.secondary.main,
-            }}
-            color="success"
-            variant="contained"
-          >
-            Add
-          </Button>
-          </Link>
+          {props.role == 'tpo' && 
+          <>
+            <Link className="flex" href={`/tpo/announcements`} >
+            <Button
+              className="flex self-end m-2 rounded py-1 px-6 bg-secondary text-white hover:text-white"
+              sx={{
+                boxShadow: "none",
+                color: lightTheme.palette.secondary.main,
+              }}
+              color="success"
+              variant="contained"
+            >
+              Add
+            </Button>
+            </Link>
 
-          <Link className="flex" href={`/tpo/announcements`} >
-          <Button
-            className="flex self-end m-2 rounded py-1 px-6 bg-secondary text-white hover:text-white"
-            sx={{
-              boxShadow: "none",
-              color: lightTheme.palette.secondary.main,
-            }}
-            color="primary"
-            variant="contained"
-          >
-            Edit
-          </Button>
-          </Link>
+            <Link className="flex" href={`/tpo/announcements`} >
+            <Button
+              className="flex self-end m-2 rounded py-1 px-6 bg-secondary text-white hover:text-white"
+              sx={{
+                boxShadow: "none",
+                color: lightTheme.palette.secondary.main,
+              }}
+              color="primary"
+              variant="contained"
+            >
+              Edit
+            </Button>
+            </Link>
 
-          <Link className="flex" href={`/tpo/announcements`} >
-          <Button
-            className="flex self-end m-2 rounded py-1 px-6 bg-secondary text-white hover:text-white"
-            sx={{
-              boxShadow: "none",
-              color: lightTheme.palette.secondary.main,
-            }}
-            color="warning"
-            variant="contained"
-          >
-            Delete
-          </Button>
-          </Link>
-
-          
-
-          
-
-          
+            <Link className="flex" href={`/tpo/announcements`} >
+            <Button
+              className="flex self-end m-2 rounded py-1 px-6 bg-secondary text-white hover:text-white"
+              sx={{
+                boxShadow: "none",
+                color: lightTheme.palette.secondary.main,
+              }}
+              color="warning"
+              variant="contained"
+            >
+              Delete
+            </Button>
+            </Link>
+          </>
+          }
 
           <div className="py-2 px-4">
             <SortIcon />

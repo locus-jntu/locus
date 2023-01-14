@@ -1,6 +1,6 @@
 const xlsx = require('xlsx');
 
-export const readUploadFile = (e, setKeys) => {
+export const readUploadFile = (e, setKeys, header=false) => {
   e.preventDefault();
   const selectedType = e.target.files[0];
   if (selectedType) {
@@ -12,7 +12,7 @@ export const readUploadFile = (e, setKeys) => {
           const sheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[sheetName];
           const json = xlsx.utils.sheet_to_json(worksheet, {header: 1,defval: ""});
-          setKeys(json[0])
+          { header ? setKeys(json[0]) : setKeys(json) }
       };
   }
 }

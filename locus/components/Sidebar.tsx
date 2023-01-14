@@ -12,6 +12,7 @@ import lightTheme from "../styles/theme/lightTheme";
 import { useState, useEffect } from "react";
 import SecureLS from "secure-ls";
 import { useRouter } from "next/router";
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 const Sidebar = ({ component, name="user" }) => {
   const classname = (id) =>
@@ -76,16 +77,14 @@ const Sidebar = ({ component, name="user" }) => {
         </div>
       </Link>
 
-      {role=="tpo"?<Link href={`/${role}/managepc`}>
+      {role=="tpo" && <Link href={`/${role}/managepc`}>
         <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("managepc")}`}>
           <PeopleIcon />{" "}
           <span className="hidden group-hover:block pl-8">
             ManagePC
           </span>
         </div>
-      </Link>: null}
-
-        
+      </Link>}
 
       <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("events")}`}>
         <VideoLibraryIcon />{" "}
@@ -93,6 +92,15 @@ const Sidebar = ({ component, name="user" }) => {
           Events
         </span>
       </div> 
+
+      {role=="tpo" && <Link href={`/${role}/registration`}>
+        <div className={`p-2 px-4 hover:bg-primary rounded flex mb-4 hover:text-white ${classname("registrations")}`}>
+          <PersonAddAlt1Icon />{" "}
+          <span className="hidden group-hover:block pl-8">
+            Registrations
+          </span>
+        </div>
+      </Link>}
  
       <div onClick={logout} className="flex absolute bottom-8 p-2 px-4 hover:underline underline-offset-4 cursor-pointer">
         <LogoutIcon />{" "}
