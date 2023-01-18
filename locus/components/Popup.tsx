@@ -13,6 +13,7 @@ interface popupProps{
     loadingText: string
     successPageRoute?: string
     successButtonText?: string
+    onSuccessButtonClick?: any
 }
 
 export default function Popup(props: popupProps) {
@@ -33,7 +34,9 @@ export default function Popup(props: popupProps) {
                 <CheckCircleIcon style={{fontSize: 48}} color='success' />
                 <p className='my-4'>Successfully Updated !</p>
                 <Button
-                  onClick={() => router.push(props.successPageRoute ?? "")}
+                  onClick={() => {
+                    props.successPageRoute ? router.push(props.successPageRoute) :  props.onSuccessButtonClick();
+                  }}
                   className="rounded w-full py-3 bg-secondary text-white hover:text-white"
                   sx={{
                     boxShadow: "none",

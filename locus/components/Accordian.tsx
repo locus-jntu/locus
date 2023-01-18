@@ -4,7 +4,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { data } from '../utility/data/profileData';
+import { data } from '../utility/data';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 interface accordianProps {

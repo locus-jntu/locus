@@ -23,7 +23,6 @@ import java.util.Set;
 public class UserManagerImpl implements UserManager{
 
     String PC_PREFIX = "pc.";
-    String PC_POSTFIX = "@jntu.in";
 
     int PASSWORD_LENGTH = 8;
 
@@ -84,7 +83,7 @@ public class UserManagerImpl implements UserManager{
 
     @Override
     public boolean createPc(CreatePcRequest createPcRequest) {
-        String username = PC_PREFIX + createPcRequest.getUsername() + PC_POSTFIX;
+        String username = PC_PREFIX + createPcRequest.getUsername() + "@" + createPcRequest.getDepartment().toLowerCase();
 
         UserModel userModel = userRepository.findUserByUsername(username);
         if(userModel != null){
@@ -131,6 +130,11 @@ public class UserManagerImpl implements UserManager{
     @Override
     public List<UserModel> fetchAllPc() {
         return userRepository.findUserByRole(UserRole.PC);
+    }
+
+    @Override
+    public List<UserModel> fetchAllStudents() {
+        return userRepository.findUserByRole(UserRole.STUDENT);
     }
 
     public String generateRandomPassword(int len){

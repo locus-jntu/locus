@@ -6,7 +6,7 @@ import Heading from "../../components/Heading";
 import Input from "../../components/Input";
 import Note from "../../components/Note";
 import  useFetch from "../../utility/hooks/useFetch.js";
-import { data as profileData } from "../../utility/data/profileData";
+import { data as profileData } from "../../utility/data";
 import Popup from "../../components/Popup";
 import Layout from "../../components/Layout";
 

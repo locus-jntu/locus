@@ -16,4 +16,6 @@ public interface UserManager {
     boolean changePassword();
 
     List<UserModel> fetchAllPc();
+
+    List<UserModel> fetchAllStudents();
 }

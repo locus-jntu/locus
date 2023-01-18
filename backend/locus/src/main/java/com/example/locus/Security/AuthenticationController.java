@@ -73,4 +73,9 @@ public class AuthenticationController {
        return userManager.fetchAllPc();
     }
 
+    @GetMapping("/api/tpo/fetchAllStudents")
+    public List<UserModel> fetchAllStudents(){
+        return userManager.fetchAllStudents();
+    }
+
 }
