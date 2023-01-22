@@ -1,17 +1,34 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import Input from "../../../components/Input";
 import Modal from '@mui/material/Modal';
 import Autofill from "../../../components/Autofill";
 import Radio from "../../../components/Radio";
 import MultipleSelect from "../../../components/Multiselect";
 import LButton from "../../../components/LButton";
-import { Button } from "@mui/material";
+import { Button, Checkbox } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { readUploadFile } from "../../../utility/excel/excelToJSON";
 import { similarKeys } from "../../../utility/generateKeys.js";
 import Layout from "../../../components/Layout";
 import useFetch from "../../../utility/hooks/useFetch";
 import Popup from "../../../components/Popup";
+
+const EC1 = forwardRef((props,ref) => (
+  <div className='flex items-center'>
+      <p className={props.criteria ? '' : 'text-gray-400'}> Only the students with atleast  </p>
+      <Input disabled={!props.criteria} ref={ref} width={90} name="cgpa" /> 
+      <p className={props.criteria ? '' : 'text-gray-400'}>CGPA are eligible.</p>
+  </div>
+))
+
+const EC2 = forwardRef((props,ref) => (
+  <div className='flex items-center'>
+      <p className={props.criteria ? '' : 'text-gray-400'}> Students with </p>
+      <Input disabled={!props.criteria} ref={ref} width={90} name="backlogs" /> 
+      <p className={props.criteria ? '' : 'text-gray-400'}> active backlog(s) can apply. </p>
+  </div>
+))
+
 
 const Companies = () => {
 
@@ -58,6 +75,13 @@ const Companies = () => {
   
   const [modelOpen, setModelOpen] = useState(false)
   const [status, setStatus] = useState("");
+
+  //eligibility criteria
+  const gpaRef = useRef()
+  const backlogRef = useRef()
+  const [gpaCriteria, setGpaCriteria] = useState(false)
+  const [backlogCriteria, setBacklogCriteria] = useState(false)
+
 
   const addString = () => {
      const name = stringRef.current.value=="" ? optional.at(index) : stringRef.current.value;
@@ -159,6 +183,7 @@ const Companies = () => {
     )
     setFixedKeys(allFixedKeys);
   }
+  
 
   useEffect(() => {
     getProfileSchema();
@@ -166,6 +191,15 @@ const Companies = () => {
   }, [])
 
   const addhandler = async () => {
+    const criteria = [
+      gpaCriteria && {
+        cgpa: gpaRef?.current.value
+      },
+      backlogCriteria && {
+        backlogs: backlogRef?.current.value
+      }
+    ]
+    
     try{
       const payload = {
         name: nameRef.current.value,
@@ -178,6 +212,7 @@ const Companies = () => {
         role: roleRef.current.value,
         jobCategory: 'DREAM',
         eligibility: 'string for now',
+        criteria,
         fixedUserProfileSchema,
         extraUserProfileSchema
       }
@@ -193,6 +228,15 @@ const Companies = () => {
       setStatus("failed");
     }
   }
+
+  function changeGpaEligibility(e){
+     setGpaCriteria(e.target.checked);
+  }
+
+  function changeBacklogEligibility(e){
+    setBacklogCriteria(e.target.checked);
+ }
+  
 
   return (
     
@@ -213,20 +257,16 @@ const Companies = () => {
 
                    <Input ref={roleRef} name="role" placeholder="Enter role here" label="role" />
                    
-                   <div>
-                       <label className="pl-4">Eligibility</label>
-                       <ul className="mt-8 mb-8">{
-                          constraints.map(i => <li>{i}</li>)
-                        }</ul>
-                        <div className="flex justify-end">
-                            <Input
-                                name="eligibility"
-                                variant="standard"
-                                width="50%"
-                                helperText="Add constraint here"
-                            />
-                            <LButton name="ADD" />
-                        </div>
+                   <div className="my-4">
+                      <label className="pl-4">Eligibility</label>
+                      <div className='flex justify-start'>
+                        <Checkbox onChange={changeGpaEligibility} />
+                        <EC1 criteria={gpaCriteria} ref={gpaRef}/>
+                      </div>
+                      <div className='flex justify-start'>
+                        <Checkbox onChange={changeBacklogEligibility} />
+                        <EC2 criteria={backlogCriteria} ref={backlogRef} />
+                      </div>
                    </div>
 
                    <Input

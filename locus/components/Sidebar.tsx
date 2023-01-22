@@ -38,7 +38,7 @@ const Sidebar = ({ component, name="user" }) => {
       style={{ transition: "width 0.1s" }}
       className="group text-primary hidden flex relative text-left pt-8 px-2 bg-secondary shadow-2xl w-20 hover:w-60 lg:block"
     >
-      <Link href={`/${role}/profile`}>
+      <Link href={role == 'student' ? `/${role}/profile` : ``}>
         <div className="flex p-2 px-2 h-16 mb-12 font-bold">
           <Avatar sx={{ bgcolor: lightTheme.palette.primary.main }}>
               <PersonIcon />
