@@ -191,14 +191,10 @@ const Companies = () => {
   }, [])
 
   const addhandler = async () => {
-    const criteria = [
-      gpaCriteria && {
-        cgpa: gpaRef?.current.value
-      },
-      backlogCriteria && {
+    const criteria = {
+        cgpa: gpaRef?.current.value,
         backlogs: backlogRef?.current.value
-      }
-    ]
+    }
     
     try{
       const payload = {
